@@ -164,7 +164,7 @@ Voici les différents types de blocs disponibles :
 
 -   **Commentaire** : Permet d’ajouter des commentaires à son scénario.
 
-Chacun de ces blocs a ces options pour mieux les manipuler :
+Chacun de ces blocs a ses options pour mieux les manipuler :
 
 -   La case à cocher, à gauche, permet de désactiver complètement le
     bloc sans pour autant le supprimer.
@@ -211,6 +211,10 @@ sélectionner un élément à tester :
 Une fois la condition renseignée, vous devez utiliser le bouton
 "ajouter", à gauche, afin d’ajouter un nouveau **bloc** ou une
 **action** dans le bloc actuel.
+
+> **Tip**
+>
+> Il ne faut SURTOUT PAS utiliser des [ ] dans les tests de condition, seule les parentheses () sont possible
 
 #### Bloc Code
 
@@ -696,6 +700,8 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
     timeout n’est pas atteint, le scénario attend.
 
 -   **Arrêter Jeedom** (jeedom_poweroff) : Demande à Jeedom de s’éteindre.
+
+-   **Redémarrer Jeedom** (jeedom_reboot) : Demande à Jeedom de redémarrer.
 
 -   **Retourner un texte/une donnée** (scenario_return) : Retourne un texte ou une valeur
     pour une interaction par exemple.

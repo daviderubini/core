@@ -768,7 +768,6 @@ function displayPlan(_code) {
             if (isset(data.image)) {
                 $('.div_displayObject').append(data.image);
             }
-            $('.div_backgroundPlan').height($('body').height());
             if (isset(data.configuration.backgroundTransparent) && data.configuration.backgroundTransparent == 1) {
                 $('.div_backgroundPlan').css('background-color','transparent');
             }else if (isset(data.configuration.backgroundColor)) {
@@ -782,6 +781,11 @@ function displayPlan(_code) {
             } else {
                 $('.div_displayObject').width($('.div_displayObject img').attr('data-sixe_x')).height($('.div_displayObject img').attr('data-sixe_y'));
                 $('.div_displayObject img').css('height', ($('.div_displayObject img').attr('data-sixe_y')) + 'px').css('width', ($('.div_displayObject img').attr('data-sixe_x')) + 'px');
+            }
+            if($('body').height() > $('.div_displayObject').height()){
+              $('.div_backgroundPlan').height($('body').height());
+            }else{
+              $('.div_backgroundPlan').height($('.div_displayObject').height());
             }
             $('.div_grid').width($('.div_displayObject').width()).height($('.div_displayObject').height());
             if(deviceInfo.type != 'desktop'){

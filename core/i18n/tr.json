@@ -2563,7 +2563,7 @@
     },
     "desktop/php/database.php": {
         "Rechercher": "Arayın",
-        "Cliquez sur une commande à droite ou tapez une commande personnalisée ci-dessous": "Sağdaki bir komut tıklayın veya aşağıya özel komutu yazın",
+        "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous": "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous",
         "OK": "OK"
     },
     "desktop/js/database.js": {

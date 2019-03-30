@@ -396,6 +396,9 @@ class jeedom {
 		if (trim($_apikey) == '') {
 			return false;
 		}
+		if($_plugin != 'core' && self::apiAccess($_apikey)){
+			return true;
+		}
 		if ($_plugin != 'core' && $_plugin != 'proapi' && !self::apiModeResult(config::byKey('api::' . $_plugin . '::mode', 'core', 'enable'))) {
 			return false;
 		}

@@ -1505,7 +1505,7 @@ class scenarioExpression {
 						case 'eqAnalyse':
 						$url = network::getNetworkAccess('internal') . '/index.php?v=d&p=eqAnalyse&report=1';
 						$this->setLog($scenario, __('Génération du rapport ', __FILE__) . $url);
-						$cmd_parameters['files'] = array(report::generate($url,'other',$options['export_type'], $options));
+						$cmd_parameters['files'] = array(report::generate($url,'other','eqAnalyse',$options['export_type'], $options));
 						$cmd_parameters['title'] = __('[' . config::byKey('name') . '] Rapport équipement du ', __FILE__) . date('Y-m-d H:i:s');
 						$cmd_parameters['message'] = __('Veuillez trouver ci-joint le rapport équipement généré le ', __FILE__) . date('Y-m-d H:i:s');
 						break;
@@ -1522,9 +1522,20 @@ class scenarioExpression {
 						$cmd->execCmd($cmd_parameters);
 					}
 				} elseif ($this->getExpression() == 'tag') {
-					$tags = $scenario->getTags();
-					$tags['#' . $options['name'] . '#'] = $options['value'];
-					$this->setLog($scenario, __('Mise à jour du tag ', __FILE__) . '#' . $options['name'] . '#' . ' => ' . $options['value']);
+						$tags = $scenario->getTags();
+					$options['value'] = self::setTags($options['value'], $scenario);
+					try {
+						$result = evaluate($options['value']);
+						if (!is_numeric($result)) {
+							$result = $options['value'];
+						}
+					} catch (Exception $ex) {
+						$result = $options['value'];
+					} catch (Error $ex) {
+						$result = $options['value'];
+					}
+					$tags['#' . $options['name'] . '#'] = $result;
+					$this->setLog($scenario, __('Mise à jour du tag ', __FILE__) . '#' . $options['name'] . '#' . ' => ' . $result);
 					$scenario->setTags($tags);
 				} else {
 					$cmd = cmd::byId(str_replace('#', '', $this->getExpression()));

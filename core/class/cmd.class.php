@@ -548,7 +548,7 @@ class cmd {
 				$collectDate = $cmd->getCollectDate();
 				$valueDate = $cmd->getValueDate();
 			}
-			if ($_quote && (strpos($cmd_value, ' ') !== false || preg_match("/[a-zA-Z#]/", $cmd_value) || $cmd_value === '')) {
+			if ($_quote && (substr_count($cmd_value,'.') > 1 || strpos($cmd_value, ' ') !== false || preg_match("/[a-zA-Z#]/", $cmd_value) || $cmd_value === '')) {
 				$cmd_value = '"' . trim($cmd_value, '"') . '"';
 			}
 			if (!$json) {
@@ -1607,6 +1607,13 @@ class cmd {
 			return array();
 		}
 		return history::getStatistique($this->getId(), $_startTime, $_endTime);
+	}
+	
+	public function getTemporalAvg($_startTime, $_endTime) {
+		if ($this->getType() != 'info' || $this->getType() == 'string') {
+			return array();
+		}
+		return history::getTemporalAvg($this->getId(), $_startTime, $_endTime);
 	}
 	
 	public function getTendance($_startTime, $_endTime) {

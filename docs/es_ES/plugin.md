@@ -1,5 +1,5 @@
-El submenú Administración de Plugin permite manipular a los plugins
-a saber: descargar, actualizar y activar ...
+Le sous-menu Gestion des plugins permet de manipuler les plugins, à
+savoir : les télécharger, les mettre à jour et les activer,etc.​
 
 Plugin de gestión
 ===================
@@ -46,26 +46,24 @@ En dessous à gauche, on retrouve une zone état avec :
 
 -   ** ** Versión: la versión del plug-in instalado
 
--   ** ** Autor: El autor del plugin
+-   **Action** : Permet d’activer ou désactiver le plugin
 
--   ** ** Acción: Activar o desactivar el plugin
+-   **Version Jeedom** : Version de Jeedom minimum requise
+    pour le fonctionnement du plugin
 
--   ** ** jeedom Versión: Indica la versión del mínimo requerido Jeedom
-    para el plugin
-
--   ** ** Licencia: Indica la licencia plugin para ser generalmente
+-   **Licence** : Indique la licence du plugin qui sera généralement
     AGPL
 
-A droite, on retrouve la zone Log qui permet de définir 
+A droite, on retrouve la zone Log et surveillance qui permet de définir 
 
 -   le niveau de logs spécifique au plugin (on retrouve cette même possibilité dans
 Administation → Configuration sur l’onglet logs, en bas de page)
 
 -   de voir les logs du plugin
 
--   Heartbeat : toute les 5 mins, Jeedom regarde si au moins un équipement du plugin a communiqué dans les X dernières minutes (si vous voulez désactiver la fonctionnalité, il suffit de mettre 0)
+-   Heartbeat : toutes les 5 mins, Jeedom regarde si au moins un équipement du plugin a communiqué dans les X dernières minutes (si vous voulez désactiver la fonctionnalité, il suffit de mettre 0)
 
--   Redemarrer démon : si le hertbeat tombe en erreur alors Jeedom va redémarrer le démon
+-   Redémarrer démon : si le Heartbeat tombe en erreur alors Jeedom va redémarrer le démon
 
 Si le plugin possède des dépendances et/ou un démon, ces zones
 supplémentaires s’affichent sous les zones citées ci-dessus.

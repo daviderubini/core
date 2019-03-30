@@ -2,14 +2,28 @@
 Änderungsprotokoll
 =========
 
-3.3.0
+3.3.19
+=====
+- Correction de bugs (en particulier lors de l'update)
+
+
+3.3.18
+=====
+- Correction de bugs
+
+3.3.17
 =====
 
--   Möglichkeit, eine Variable zu löschen.
--   3D-Anzeige hinzugefügt (beta)
--   Überholung des Cloud-Backup-Systems (inkrementelles und verschlüsseltes Backup).
--    Integriertes Notizsystem hinzugefügt (in Analyse -> Notiz).
--   Der Begriff Tag wurde auf dem Gerät hinzugefügt (befindet sich in der erweiterten Konfiguration des Geräts).
+- Correction d'une erreur sur les backups samba
+
+3.3.16
+=====
+
+-   Possibilité de supprimer une variable.
+-   Ajout d'un affichage 3D (beta)
+-   Refonte du système de backup cloud (backup incrémental et chiffré).
+-   Ajout d'un système de prise de note intégré (dans Analyse -> Note).
+-   Ajout de la notion de tag sur les équipements (se trouve dans la configuration avancée de l'équipement).
 -   Ajout d'un système d'historique sur la suppression des commandes, équipements, objets, vue, design, design 3d, scénario et utilisateur.
 -   Ajout de l'action jeedom_reboot pour lancer un redémarrage de Jeedom.
 -   Ajout d'option dans la fenêtre de génération de cron.
@@ -38,7 +52,6 @@
 -   Les widgets scénarios sont maintenant affiché par défaut sur le dashboard
 -   Changement du pas des widgets par horizontal 25 à 40, vertical 5 à 20 et marge 1 à 4 (vous pouvez remettre les anciennes valeurs dans la configuration de jeedom, onglet widget)
 -   Possibilité de mettre une icone sur les sénarios
--   Affichage des widgets mobile en une seule colonne
 -   Ajout de la gestion des démons sur le moteur de tache
 -   Ajout de la fonction color_gradient dans les scénarios
 
@@ -55,24 +68,24 @@
 3.2.14
 =====
 
-- Vorbereitung zur Vermeidung eines Fehlers beim Umstellen auf 3.3.X
+- Préparation pour éviter une erreur lors du passage en 3.3.X
 - Correction d'un soucis lors d'une demande de support pour les plugins tierces
 
 3.2.12
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs
 - Optimisations
 
 3.2.11
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs.
 
 3.2.10
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs.
 - Amélioration de la synchronisation avec le market.
 - Amélioration du processus d'update en particulier au niveau de la copie des fichiers qui vérifie maintenant la taille du fichier copié.
 - Correction de bugs sur les fonctions stateDuration, lastStateDuration et lastChangeStateDuration (merci @kiboost).
@@ -82,7 +95,7 @@
 3.2.9
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs
 - Correction d'un bug sur les icônes de l'éditeur de fichier et sur le testeur d'expression
 - Correction de bugs sur les listenners
 - Ajout d'une alerte si un plugin bloque les crons
@@ -91,7 +104,7 @@
 3.2.8
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs
 - Ajout d'une option dans l'administration de Jeedom pour préciser la plage d'ip local (utile dans les installations type docker)
 - Correction d'un bug sur le calcul d'utilisation des variables
 - Ajout d'un indicateur sur la page santé donnant le nombre de processus tué par manque de mémoire (indique globalement que le jeedom est trop chargé)
@@ -109,20 +122,20 @@
 =====
 
 - Fehlerkorrekturen
-- Aktualisierung der Dokumentation
+- Mise à jour de la docs
 - Uniformisation des noms de certaine commande dans les scénarios
-- Leistungsoptimierung
+- Optimisation des performances
 
 3.2.5
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs
 - Réactivation des interactions (inactive a cause de la mise à jour)
 
 3.2.4
 =====
 
-- Fehlerkorrekturen
+- Correction de bugs
 - Correction d'un bugs sur certaine modale en Espagnol
 - Correction d'une erreur de calcul sur time_diff
 - Préparation pour le futur système d'alerting
@@ -219,7 +232,7 @@
 
 -   JEED-124 : Corriger la gestion des timeouts des scénarios
 
--   Fehlerkorrekturen
+-   Correction de bugs
 
 -   Possibilité de désactiver une interaction
 
@@ -246,12 +259,12 @@
 3.1
 ===
 
--   Fehlerkorrekturen
+-   Correction de bugs
 
 -   Optimisation globale de Jeedom (sur le chargement des classes de
     plugins, temps presque divisé par 3)
 
--   Support für Debian 9
+-   Support de Debian 9
 
 -   Mode onepage (changement de page sans recharger toute la page, juste
     la partie qui change)
@@ -426,7 +439,7 @@
 -   Refonte de la configuration des droits utilisateurs (tout est sur la
     page de gestion des utilisateurs)
 
--   Bibliotheken aktualisiert : jquery (in 3.0) , jquery mobile, hightstock
+-   Mise à jour des libs : jquery (en 3.0) , jquery mobile, hightstock
     et table sorter, font-awesome
 
 -   Grosse amélioration des designs:
@@ -622,7 +635,7 @@
 2.4.5
 =====
 
--   Fehlerkorrekturen
+-   Correction de bugs
 
 -   Optimisation de la vérification des mises à jour
 
@@ -653,7 +666,7 @@
 -   Ajout dans les scénarios d’un bouton de choix d’équipement sur les
     commandes de type slider
 
--   Bootstrap-Update in 2.3.7
+-   Mise à jour de bootstrap en 2.3.7
 
 -   Ajout de la notion de résumé domotique (permet de connaitre d’un
     seul coup le nombre de lumières à ON, les porte ouvertes, les
@@ -679,7 +692,7 @@
 2.3
 ---
 
--   Korrektur der Filter auf dem Markt
+-   Correction des filtres sur le market
 
 -   Correction des checkbox sur la page d’édition des vues (sur une
     zone graphique)
@@ -748,7 +761,7 @@
 -   Ajout d’un tag *jeedom\_name* dans les scénarios (donne le nom
     du jeedom)
 
--   Fehlerkorrekturen
+-   Correction de bugs
 
 -   Déplacement de tous les fichiers temporaire dans /tmp
 
@@ -852,7 +865,7 @@
 2.2
 ---
 
--   Fehlerkorrekturen
+-   Correction de bugs
 
 -   Simplification de l’accès aux configurations des plugins à partir de
     la page santé
@@ -895,7 +908,7 @@
 
 -   Optimisation du chargement du dashboard
 
--   Viele Warnungen behoben
+-   Correction de nombreux warning
 
 -   Possibilité lors d’un appel api à un scénario de passer des tags
     dans l’url
@@ -992,7 +1005,7 @@
 
 -   Optimisation du chargement du dashboard
 
--   Viele Warnungen behoben
+-   Correction de nombreux warning
 
 -   Possibilité lors d’un appel api à un scénario de passer des tags
     dans l’url

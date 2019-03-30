@@ -2563,7 +2563,7 @@
     },
     "desktop/php/database.php": {
         "Rechercher": "поиск",
-        "Cliquez sur une commande à droite ou tapez une commande personnalisée ci-dessous": "Нажмите команду справа или введите пользовательскую команду ниже",
+        "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous": "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous",
         "OK": "ОК"
     },
     "desktop/js/database.js": {
