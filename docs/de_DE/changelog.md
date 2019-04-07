@@ -4,26 +4,26 @@
 
 3.3.19
 =====
-- Correction de bugs (en particulier lors de l'update)
+- Fehler Korrekturen (vor allem während des Updates)
 
 
 3.3.18
 =====
-- Correction de bugs
+- Fehlerkorrekturen
 
 3.3.17
 =====
 
-- Correction d'une erreur sur les backups samba
+- Fehler bei Samba-Backups behoben
 
 3.3.16
 =====
 
--   Possibilité de supprimer une variable.
--   Ajout d'un affichage 3D (beta)
--   Refonte du système de backup cloud (backup incrémental et chiffré).
--   Ajout d'un système de prise de note intégré (dans Analyse -> Note).
--   Ajout de la notion de tag sur les équipements (se trouve dans la configuration avancée de l'équipement).
+-   Möglichkeit, eine Variable zu löschen.
+-   3D-Anzeige hinzugefügt (beta)
+-   Überholung des Cloud-Backup-Systems (inkrementelles und verschlüsseltes Backup).
+-   Integriertes Notizsystem hinzugefügt (in Analyse -> Notiz).
+-   Der Begriff Tag wurde auf dem Gerät hinzugefügt (befindet sich in der erweiterten Konfiguration des Geräts).
 -   Ajout d'un système d'historique sur la suppression des commandes, équipements, objets, vue, design, design 3d, scénario et utilisateur.
 -   Ajout de l'action jeedom_reboot pour lancer un redémarrage de Jeedom.
 -   Ajout d'option dans la fenêtre de génération de cron.
