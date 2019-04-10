@@ -36,7 +36,7 @@ page). Dans ce tableau, on retrouve :
     de son statut et un bouton pour voir le cron dans le détail (tel que stocké en base)
 
 -   **Actif** : indique si la tâche est active (peut être lancée
-    par Jeedom) ou non
+    por Jeedom) o no
 
 -   **PID** : indique le process ID actuel
 
@@ -46,10 +46,10 @@ page). Dans ce tableau, on retrouve :
     la diminuer
 
 -   **Unique** : si c’est à "oui" alors la tâche se lancera une fois
-    puis se supprimera
+    y se eliminará
 
 -   **Classe** : classe PHP appelée pour exécuter la tâche (peut
-    être vide)
+    estar vacío)
 
 -   **Fonction** : fonction PHP appelée dans la classe appelée (ou non
     si la classe est vide)

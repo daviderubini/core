@@ -49,7 +49,7 @@ En dessous à gauche, on retrouve une zone état avec :
 -   **Action** : Permet d’activer ou désactiver le plugin
 
 -   **Version Jeedom** : Version de Jeedom minimum requise
-    pour le fonctionnement du plugin
+    para el funcionamiento del plugin
 
 -   **Licence** : Indique la licence du plugin qui sera généralement
     AGPL
@@ -59,7 +59,7 @@ A droite, on retrouve la zone Log et surveillance qui permet de définir
 -   le niveau de logs spécifique au plugin (on retrouve cette même possibilité dans
 Administation → Configuration sur l’onglet logs, en bas de page)
 
--   de voir les logs du plugin
+-   de ver los logs del plugin
 
 -   Heartbeat : toutes les 5 mins, Jeedom regarde si au moins un équipement du plugin a communiqué dans les X dernières minutes (si vous voulez désactiver la fonctionnalité, il suffit de mettre 0)
 
@@ -68,7 +68,7 @@ Administation → Configuration sur l’onglet logs, en bas de page)
 Si le plugin possède des dépendances et/ou un démon, ces zones
 supplémentaires s’affichent sous les zones citées ci-dessus.
 
-Dépendances :
+Dependencias :
 
 -   **Nom** : généralement sera local
 
@@ -79,9 +79,9 @@ Dépendances :
     KO, Jeedom s’en chargera de lui-même au bout d’un moment)
 
 -   **Dernière installation** : date de la dernière installation des
-    dépendances
+    dependencias
 
-Démon :
+Daemon :
 
 -   **Nom** : généralement sera local
 
@@ -136,8 +136,7 @@ Enfin, on peut retrouver une section Panel qui permettra d’activer ou
 désactiver l’affichage du panel sur le dashboard ou en mobile si le
 plugin en propose un.
 
-Installation d’un plugin 
-========================
+Instalación de un plugin
 
 Pour installer un nouveau plugin, il suffit de cliquer sur le bouton
 "Market" (et que Jeedom soit relié à Internet). Après un petit temps de
@@ -152,16 +151,16 @@ chargement, vous obtiendrez la page.
 En haut de la fenêtre, vous avez des filtres :
 
 -   **Gratuit/Payant** : permet d’afficher uniquement les gratuits ou
-    les payants.
+    los de pago.
 
 -   **Officiel/Conseillé** : permet d’afficher uniquement les plugins
-    officiels ou les conseillés
+    oficiales o recomendados
 
 -   **Installé/Non installé** : permet d’afficher uniquement les plugins
-    installés ou non installés
+    instalados o no instalados
 
 -   **Menu déroulant Catégorie** : permet d’afficher uniquement
-    certaines catégories de plugins
+    algunas categorías de plugins
 
 -   **Rechercher** : permet de rechercher un plugin (dans le nom ou la
     description de celui-ci)
@@ -180,16 +179,16 @@ d’informations sur le plugin, notamment :
 -   S’il est officiel/recommandé ou s’il est obsolète (il faut vraiment
     éviter d’installer des plugins obsolètes)
 
--   4 actions :
+-   4 acciones :
 
     -   **Installer stable** : permet d’installer le plugin dans sa
-        version stable
+        versión estable
 
     -   **Installer beta** : permet d’installer le plugin dans sa
         version beta (seulement pour les betatesteurs)
 
     -   **Installer pro** : permet d’installer la version pro (très
-        peu utilisé)
+        poco utilizado)
 
     -   **Supprimer** : si le plugin est actuellement installé, ce
         bouton permet de le supprimer

@@ -184,7 +184,7 @@ eqLogic::fullById
 Devuelve un equipo y sus controles y las declaraciones de éstos
 (Para los comandos de información de tipo)
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -193,7 +193,7 @@ eqLogic::byId
 
 Retourne l’équipement spécifié
 
-Paramètres:
+Parámetros: 
 
 -   int id
 
@@ -202,7 +202,7 @@ eqLogic::byType
 
 Retourne tous les équipements appartenant au type (plugin) spécifié
 
-Paramètres:
+Parámetros:
 
 -   string type
 
@@ -211,7 +211,7 @@ eqLogic::byObjectId
 
 Retourne tous les équipements appartenant à l’objet spécifié
 
-Paramètres:
+Parámetros:
 
 -   int object\_id
 
@@ -224,7 +224,7 @@ array(…​.)),'eqType2' ⇒array( 'id'⇒…​,'cmds' ⇒ array(…​.))…�
 array( 'id'⇒…​,'cmds' ⇒ array(…​.)),id2 ⇒ array( 'id'⇒…​,'cmds' ⇒
 array(…​.))..)
 
-Paramètres:
+Parámetros:
 
 -   string\[\] eqType = tableau des types d’équipements voulus
 
@@ -235,7 +235,7 @@ eqLogic::save
 
 Retourne l’équipement enregistré/créé
 
-Paramètres:
+Parámetros:
 
 -   int id (vide si c’est une création)
 
@@ -272,7 +272,7 @@ cmd::byId
 
 Retourne la commande spécifiée
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -281,7 +281,7 @@ cmd::byEqLogicId
 
 Retourne toutes les commandes appartenant à l’équipement spécifié
 
-Paramètres:
+Parámetros:
 
 -   int eqLogic\_id
 
@@ -290,7 +290,7 @@ cmd::execCmd
 
 Exécute la commande spécifiée
 
-Paramètres:
+Parámetros:
 
 -   int id : id d’une commande ou tableau d’id si vous voulez executer
     plusieurs commande d’un coup
@@ -304,7 +304,7 @@ cmd::getStatistique
 Retourne les statistiques sur la commande (ne marche que sur les
 commandes de type info et historisées)
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -318,7 +318,7 @@ cmd::getTendance
 Retourne la tendance sur la commande (ne marche que sur les commandes de
 type info et historisées)
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -332,7 +332,7 @@ cmd::getHistory
 Retourne l’historique de la commande (ne marche que sur les commandes de
 type info et historisées)
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -345,7 +345,7 @@ cmd::save
 
 Retourne l’objet spécifié
 
-Paramètres:
+Parámetros:
 
 -   int id (vide si c’est une création)
 
@@ -386,7 +386,7 @@ cmd::event
 
 Permet d'envoyer une valeur à une commande
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -407,7 +407,7 @@ scenario::byId
 
 Retourne le scénario spécifié
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -416,7 +416,7 @@ scenario::export
 
 Retourne l’export du scénario ainsi que le nom humain du scénario
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -425,7 +425,7 @@ scenario::import
 
 Permet d’importer un scénario.
 
-Paramètres:
+Parámetros:
 
 -   int id : id du scénario dans lequel importer (vide si création)
 
@@ -438,7 +438,7 @@ scenario::changeState
 
 Change l’état du scénario spécifié.
 
-Paramètres:
+Parámetros:
 
 -   int id
 
@@ -452,7 +452,7 @@ log::get
 
 Permet de récuperer un log
 
-Paramètres:
+Parámetros:
 
 -   string log : nom du log à recuperer
 
@@ -465,7 +465,7 @@ log::list
 
 Permet de récuperer la list des logs de Jeedom
 
-Paramètres:
+Parámetros:
 
 -   string filtre : (optionnel) filtre sur le nom des logs à recuperer
 
@@ -474,7 +474,7 @@ log::empty
 
 Permet de vider un log
 
-Paramètres:
+Parámetros:
 
 -   string log : nom du log à vider
 
@@ -483,7 +483,7 @@ log::remove
 
 Permet de supprimer un log
 
-Paramètres:
+Parámetros:
 
 -   string log : nom du log a supprimer
 
@@ -495,7 +495,7 @@ datastore::byTypeLinkIdKey
 
 Récupère la valeur d’une variable stockée dans le datastore
 
-Paramètres:
+Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
     c’est scenario)
@@ -510,7 +510,7 @@ datastore::save
 
 Enregistre la valeur d’une variable dans le datastore
 
-Paramètres:
+Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
     c’est scenario)
@@ -544,7 +544,7 @@ interact::tryToReply
 Essaie de faire correspondre une demande avec une interaction, exécute
 l’action et répond en conséquence
 
-Paramètres:
+Parámetros:
 
 -   query (phrase de la demande)
 
@@ -597,7 +597,7 @@ plugin::install
 
 Installation/Mise à jour d’un plugin donné
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -606,7 +606,7 @@ plugin::remove
 
 Suppression d’un plugin donné
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -615,7 +615,7 @@ plugin::dependancyInfo
 
 Renvoi les informations sur le status des dépendances du plugins
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -624,7 +624,7 @@ plugin::dependancyInstall
 
 Force l’installation des dépendances du plugin
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -633,7 +633,7 @@ plugin::deamonInfo
 
 Renvoi les informations sur le status du démon du plugin
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -642,7 +642,7 @@ plugin::deamonStart
 
 Force le démarrage du démon
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -651,7 +651,7 @@ plugin::deamonStop
 
 Force l’arret du démon
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 
@@ -660,7 +660,7 @@ plugin::deamonChangeAutoMode
 
 Change le mode de gestion du démon
 
-Paramètres:
+Parámetros:
 
 -   string plugin\_id : nom du plugin (nom logique)
 

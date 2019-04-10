@@ -5,15 +5,14 @@ le monde réel de manière "intelligente".
 La page de gestion des Scénarios
 ================================
 
-Gestion
--------
+Gestión
 
 Pour y accéder, rien de plus simple, il suffit d’aller sur Outils ->
 Scénarios. Vous y trouverez la liste des scénarios de votre Jeedom ainsi
 que des fonctions pour les gérer au mieux :
 
 -   **Ajouter** : Permet de créer un scénario. La procédure est décrite
-    dans le chapitre suivant.
+    en el capitulo siguiente.
 
 -   **Désactiver scénarios** : Permet de désactiver tous les scénarios.
 
@@ -27,7 +26,7 @@ que des fonctions pour les gérer au mieux :
     **visible**, **multi lancement**, **mode synchrone**, **Log** et
     **Timeline** (ces paramètres sont décrits dans le chapitre suivant).
     Vous pouvez également accéder aux logs de chaque scénario et les
-    démarrer individuellement.
+    comenzar individualmente.
 
 -   **Testeur d’expression** : Permet d’executer un test sur une
     expression de votre choix et d’en afficher le résultat.
@@ -47,8 +46,7 @@ votre profil, vous pouvez le laisser toujours visible). Vous pourrez
 alors **chercher**votre scénario, mais aussi en**ajouter** un par ce
 menu.
 
-Edition d’un scénario
-=====================
+Edición de un escenario 
 
 Après avoir cliqué sur **Ajouter**, vous devez choisir le nom de votre
 scénario et vous êtes redirigés vers la page de ses paramètres généraux.
@@ -79,13 +77,12 @@ En haut, on retrouve quelques fonctions utiles pour gérer notre scénario
 -   **Log** : Permet d’afficher les logs du scénario.
 
 -   **Dupliquer** : Permet de copier le scénario pour en créer un
-    nouveau avec un autre nom.
+    nuevo con otro nombre.
 
 -   **Liens** : Permet de visualiser le graphique des éléments en lien
     avec le scénario.
 
-Onglet Général
---------------
+Pestaña General
 
 Dans l’onglet **Général**, on retrouve les paramètres principaux de
 notre scénario :
@@ -104,7 +101,7 @@ notre scénario :
 -   **Objet parent** : Affectation à un objet parent.
 
 -   **Timeout secondes (0 = illimité)** : La durée d’exécution maximale
-    autorisée
+    autorizada
 
 -   **Multi lancement** : Cochez cette case si vous souhaitez que le
     scénario puisse être lancé plusieurs fois en même temps.
@@ -147,7 +144,7 @@ Voici les différents types de blocs disponibles :
     sous condition(s).
 
 -   **Action** : Permet de lancer des actions simples sans
-    aucune condition.
+    ninguna condición.
 
 -   **Boucle** : Permet de réaliser des actions de manière répétitive de
     1 jusqu’à un nombre défini (ou même la valeur d’un capteur, ou un
@@ -277,7 +274,7 @@ Les actions ajoutées dans les blocs ont plusieurs options. Dans l’ordre :
 -   Un bouton pour supprimer l’action.
 
 -   Un bouton pour les actions spécifiques, avec à chaque fois la
-    description de cette action.
+    descripción de esta acción.
 
 -   Un bouton pour rechercher une commande d’action.
 
@@ -330,7 +327,7 @@ comparaisons dans les conditions :
 
 -   < : strictement inférieur à,
 
--   <= : inférieur ou égal à,
+-   <=: inferior o igual a,
 
 -   != : différent de, n’est pas égal à,
 
@@ -345,12 +342,11 @@ suivants :
 
 -   && / ET / et / AND / and : et,
 
--   \|| / OU / ou / OR / or : ou,
+-   \|| / O / o / OR / or : o,
 
 -   \|^ / XOR / xor : ou exclusif.
 
-Les tags
---------
+Las etiquetas
 
 Un tag est remplacé lors de l’exécution du scénario par sa valeur. Vous
 pouvez utiliser les tags suivants :
@@ -408,15 +404,14 @@ déclenché par une interaction :
 -   #query# : interaction ayant déclenché le scénario,
 
 -   #profil# : profil de l’utilisateur ayant déclenché le scénario
-    (peut être vide).
+    (puede estar vacío).
 
 > **Important**
 >
 > Lorsqu’un scénario est déclenché par une interaction, celui-ci est
 > forcément exécuté en mode rapide.
 
-Les fonctions de calcul
------------------------
+Las funciones de cálculo
 
 Plusieurs fonctions sont disponibles pour les équipements :
 
@@ -425,7 +420,7 @@ Plusieurs fonctions sont disponibles pour les équipements :
     (period=[month,day,hour,min] ou [expression
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   min(commande,période) et minBetween(commande,start,end) :
@@ -433,7 +428,7 @@ Plusieurs fonctions sont disponibles pour les équipements :
     (period=[month,day,hour,min] ou [expression
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   max(commande,période) et maxBetween(commande,start,end) :
@@ -441,7 +436,7 @@ Plusieurs fonctions sont disponibles pour les équipements :
     (period=[month,day,hour,min] ou [expression
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   duration(commande, valeur, période) et
@@ -450,7 +445,7 @@ Plusieurs fonctions sont disponibles pour les équipements :
     période (period=[month,day,hour,min] ou [expression
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   statistics(commande,calcul,période) et
@@ -460,12 +455,12 @@ Plusieurs fonctions sont disponibles pour les équipements :
     (period=[month,day,hour,min] ou [expression
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   tendance(commande,période,seuil) : Donne la tendance de la
     commande sur la période (period=[month,day,hour,min] ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   stateDuration(commande) : Donne la durée en secondes
@@ -488,10 +483,10 @@ Plusieurs fonctions sont disponibles pour les équipements :
     stateChangesBetween(commande, [valeur], start, end) : Donnent le
     nombre de changements d’état (vers une certaine valeur si indiquée,
     ou au total sinon) sur la période (period=[month,day,hour,min] ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) ou
     entre les 2 bornes demandées (sous la forme Y-m-d H:i:s ou
-    [expression
+    [expresión
     PHP](http://php.net/manual/fr/datetime.formats.relative.php)) :
 
 -   lastBetween(commande,start,end) : Donne la dernière valeur
@@ -525,7 +520,7 @@ Plusieurs fonctions sont disponibles pour les équipements :
 
 -   eqEnable(equipement) : Renvoie l’état de l’équipement. -2 si
     l’équipement est introuvable, 1 si l’équipement est actif et 0 s’il
-    est inactif
+    está inactivo
 
 -   value(cmd) : Renvoie la valeur d'une commande si elle n'est pas donnée automatiquement par Jeedom (cas lors du stockage du nom de la commande dans une variable)    
 
@@ -549,14 +544,14 @@ s’utiliser avec [des expressions
 PHP](http://php.net/manual/fr/datetime.formats.relative.php) comme par
 exemple :
 
--   Now : maintenant
+-   Now : ahora
 
 -   Today : 00:00 aujourd’hui (permet par exemple d’obtenir des
     résultats de la journée si entre 'Today' et 'Now')
 
 -   Last Monday : lundi dernier à 00:00
 
--   5 days ago : il y a 5 jours
+-   5 days ago : hace 5 días
 
 -   Yesterday noon : hier midi
 
@@ -629,7 +624,7 @@ effectuer des conversions ou des calculs :
 
 -   time_op(time,value) : Permet de faire des opérations sur le temps,
     avec time=temps (ex : 1530) et value=valeur à ajouter ou à
-    soustraire en minutes.
+    restar en minutos.
 
 -   `time_between(time,start,end)` : Permet de tester si un temps est
     entre deux valeurs avec `time=temps` (ex : 1530), `start=temps`, `end=temps`.
@@ -648,7 +643,7 @@ effectuer des conversions ou des calculs :
 Et les exemples pratiques :
 
 
-| Exemple de fonction                  | Résultat retourné                    |
+| Ejemplo de función                  | Resultado devuelto                    |
 |--------------------------------------|--------------------------------------|
 | randText(il fait #[salon][oeil][température]#;La température est de #[salon][oeil][température]#;Actuellement on a #[salon][oeil][température]#) | la fonction retournera un de ces textes aléatoirement à chaque exécution.                           |
 | randomColor(40,60)                 | Retourne une couleur aléatoire  proche du vert.   
@@ -658,7 +653,7 @@ Et les exemples pratiques :
 | odd(3)                             | Renvoie 1                            |
 | median(15,25,20)                   | Renvoie 20                           |
 | time_op(#time#, -90)               | s’il est 16h50, renvoie : 1650 - 0130 = 1520                          |
-| formatTime(1650)                   | Renvoie 16h50                        |
+| formatTime(1650)                   | Devuelve 16h50                        |
 | floor(130/60)                      | Renvoie 2 (minutes si 130s, ou heures si 130m)                      |
 
 Les commandes spécifiques
@@ -669,7 +664,7 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 -   **Pause** (sleep) : Pause de x seconde(s).
 
 -   **variable** (variable) : Création/modification d’une variable ou de la valeur
-    d’une variable.
+    de una variable.
 
 -   **Supprimer variable** (delete_variable) : Permet de supprimer une variable
 
