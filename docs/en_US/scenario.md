@@ -8,15 +8,15 @@ Management
 
 It's easy to reach it, simply go to Tools -> Scenarios. You will find the list of scenarios in Jeedom and some features to manage them:
 
--   **Ajouter** : Permet de créer un scénario. La procédure est décrite
-    dans le chapitre suivant.
+-   **Add** : Allow to create a scenario. The procedure is described
+    in the following chapter.
 
--   **Désactiver scénarios** : Permet de désactiver tous les scénarios.
+-   **Disable Scenarios**: Allow to disables all scenarios.
 
--   **Voir variables** : Permet de voir les variables, leur valeur ainsi
-    que l’endroit où elle sont utilisées. Vous pouvez également y en
-    créer une. Les variables sont décrites dans un chapitre de
-    cette page.
+-   **View variables** : Allows you to see the variables, their value and
+    where they are used. You can also
+    create one. The variables are described in a chapter of
+    this page.
 
 -   **Vue d’ensemble** : Permet d’avoir une vue d’ensemble de tous
     les scénarios. Vous pouvez changer les valeurs **actif**,
