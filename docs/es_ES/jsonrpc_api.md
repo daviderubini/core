@@ -569,7 +569,7 @@ jeedom::reboot
 
 Permet de redémarrer Jeedom
 
-jeedom::isOk
+jeedom::isok
 ------------
 
 Permet de savoir si l’état global de Jeedom est OK
@@ -579,7 +579,7 @@ jeedom::update
 
 Permet de lancer un update de Jeedom
 
-jeedom::backup
+jeedom::copia de seguridad
 --------------
 
 Permet de lancer un backup de Jeedom
@@ -701,9 +701,9 @@ Force l’arret du DNS Jeedom
 network::dnsRun
 ---------------
 
-Renvoi le status du DNS Jeedom
+Devuelve el estado de DNS Jeedom
 
-API JSON Exemples
+API JSON Ejemplos
 =================
 
 Voici un exemple d’utilisation de l’API. Pour l’exemple ci-dessous

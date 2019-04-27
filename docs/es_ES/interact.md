@@ -506,7 +506,7 @@ l’humidité, la luminosité des différentes pièces (objet au sens Jeedom).
     existantes (en fonction des filtres) en remplaçant \#commande\# par
     le nom de la commande et \#objet\# par le nom de l’objet.
 
--   La réponse sera de type "21 °C" ou "200 lux". Il suffit de mettre :
+-   La respuesta será de tipo "21 °C" o "200 lux". Sólo tienes que poner :
     \#valeur\# \#unite\# (l’unité est à compléter dans la configuration
     de chaque commande pour laquelle on veut en avoir une)
 

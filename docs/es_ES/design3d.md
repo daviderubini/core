@@ -6,7 +6,7 @@ Es accesible a través de Inicio → Dashboard
 >
 > Es posible ir directamente a un diseño 3D a través del submenú.
 
-# Importation du modèle 3D
+# Importación del modelo 3D
 
 > **IMPORTANT**
 >
@@ -24,14 +24,14 @@ Une fois votre modèle 3D créé il faut l'exporter au format OBJ. Si vous utili
 
 Une fois votre modèle 3D exporté il faut dans Jeedom créer un nouveau design 3D. Pour cela il faut passer en mode édition en cliquant sur le petit crayon à droite, puis ensuite cliquer sur le +, donner un nom à ce nouveau design 3D puis valider.
 
-Jeedom va automatiquement passer sur le nouveau design 3D, il faut repasser en mode édition et cliquer sur les petites roues crantées.
+Jeedom cambiará automáticamente al nuevo diseño 3D, debes volver al modo de edición y hacer clic en las ruedas pequeñas con muescas.
 
-Vous pouvez à partir de cette écran :
+Puedes desde esta pantalla:
 
 - Cambiar el nombre de su diseño
 - Añadir un código de acceso
 - Seleccione un icono
-- Importer votre modèle 3D
+- Importa tu modelo 3D
 
 Cliquez sur le bouton "envoyer" au niveau de "Modèle 3D" et sélectionner votre fichier zip
 
@@ -89,7 +89,7 @@ Pour configurer un élément sur le design 3D il vous faire un double clic sur l
     - Activar: activa la traslación al abrir (tipo Puerta/Ventana corredera)
     - Dirección: dirección en la que debe moverse la puerta/ventana (usted tiene arriba/abajo/derecha/izquierda)
     - Répéter : par défaut la Porte/Fenêtre bouge d'une fois sa dimension dans le sens donné mais vous pouvez augmenter cette valeur
-- Masquer quand la Porte/Fenêtre est ouverte
+- Ocultar cuando la puerta/ventana está abierta
     - Habilitar: Oculta el elemento si la puerta/ventana está abierta.
 - Color
     - Couleur ouverte : si coché l'élément prendra cette couleur si la Porte/Fenêtre est ouverte
@@ -103,7 +103,7 @@ Pour configurer un élément sur le design 3D il vous faire un double clic sur l
 - Color
     - Couleur fermé : si coché l'élément prendra cette couleur si le volet est fermé
 
-## Couleur conditionnelle
+## Color condicional
 
 Permet de donner la couleur choisie à l'élément si la condition est valide. Vous pouvez mettre autant de couleurs/conditions que vous voulez.
 

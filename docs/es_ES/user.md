@@ -31,7 +31,7 @@ A continuación tiene una tabla:
 
 -   ** ** clave de la API: API personal clave de usuario
 
--   ** ** autenticación de doble indica si la autenticación de dos factores
+-   **Doble autenticación**: indica si la doble autenticación 
     está activo (OK) o no (NOK)
 
 -   ** ** Fecha de la última conexión: Fecha de la última conexión

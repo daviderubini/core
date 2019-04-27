@@ -53,7 +53,7 @@ Se puede definir ciertos comportamientos de la interfaz:
     lors de l’arrivée sur le dashboard/mobile
 
 -   **Vue par défaut** : vue à afficher par défaut lors de l’arrivée sur
-    le dashboard/mobile
+    el dashboard/movil
 
 -   **Design par défaut** : design à afficher par défaut lors de
     l’arrivée sur le dashboard/mobile

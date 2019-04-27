@@ -40,15 +40,15 @@ Arriba a la derecha, un par de botones:
 -   **Supprimer** : Supprime le plugin de votre Jeedom. Attention, cela
     También elimina de forma permanente todas las instalaciones de este plugin
 
-En dessous à gauche, on retrouve une zone état avec :
+Abajo a la izquierda, hay una zona estado con :
 
 -   ** ** Estado: muestra el estado del plugin (activo / inactivo)
 
 -   ** ** Versión: la versión del plug-in instalado
 
--   **Action** : Permet d’activer ou désactiver le plugin
+-   **Acción** : Permite activar o desactivar el plugin
 
--   **Version Jeedom** : Version de Jeedom minimum requise
+-   **Versión Jeedom** : Versión Jeedom mínima requerida
     para el funcionamiento del plugin
 
 -   **Licence** : Indique la licence du plugin qui sera généralement
@@ -70,11 +70,11 @@ supplémentaires s’affichent sous les zones citées ci-dessus.
 
 Dependencias :
 
--   **Nom** : généralement sera local
+-   **Nombre** : normalmente será local
 
 -   **Statut** : vous dira si les dépendances sont OK ou KO
 
--   **Installation** : permettra d’installer ou réinstaller les
+-   **Instalación**: instalará o reinstalará los
     dépendances (si vous ne le faites pas manuellement et qu’elles sont
     KO, Jeedom s’en chargera de lui-même au bout d’un moment)
 
@@ -83,22 +83,22 @@ Dependencias :
 
 Daemon :
 
--   **Nom** : généralement sera local
+-   ** Nombre** : normalmente será local
 
--   **Statut** : vous dira si le démon est OK ou KO
+-   **Estado**: le dirá si el deamon es OK o KO
 
 -   **Configuration** : sera OK si tous les critères pour que le démon
     tourne sont réunis ou donnera la cause du blocage
 
 -   **(Re)Démarrer** : permet de lancer ou relancer le démon
 
--   **Arrêter** : permet d’arrêter le démon (Uniquement dans le cas où
-    la gestion automatique est désactivée)
+-   **Parar**: permite detener al deamon (solamente en el caso de
+    la gestión automática está desactivada)
 
--   **Gestion automatique** : permet d’activer ou désactiver la gestion
+-   **Gestión automática** : permite de activar o desactivar la gestión
     automatique (ce qui permet à Jeedom de gérer lui même le démon et le
     relancer si besoin. Sauf contre indication, il est conseillé de
-    laisser la gestion automatique active)
+    dejar la gestión automática activa)
 
 -   **Dernier lancement** : date du dernier lancement du démon
 
@@ -112,19 +112,19 @@ Daemon :
 En dessous, on retrouve une zone fonctionnalités. Celle-ci permet de voir
 si le plugin utilise une des fonctions core Jeedom tel que :
 
--   **Interact** : des interactions spécifiques
+-   **Interac** : interacciones específicas
 
--   **Cron** : un cron à la minute
+-   **Cron**: un cron por minuto
 
--   **Cron5** : un cron toutes les 5 minutes
+-   **Cron5** : un cron cada 5 minutos
 
--   **Cron15** : un cron toutes les 15 minutes
+-   **Cron15** : un cron cada 15 minutos
 
--   **Cron30** : un cron toutes les 30 minutes
+-   **Cron30** : un cron cada 30 minutos
 
--   **CronHourly** : un cron toutes les heures
+-   **CronHourly** : un cron cada hora
 
--   **CronDaily** : un cron journalier
+-   **CronDaily** : un cron diario
 
 > **Tip**
 >
@@ -148,22 +148,22 @@ chargement, vous obtiendrez la page.
 > l’administration (Configuration→Mises à jour→Onglet market) afin de
 > retrouver les plugins que vous avez déjà achetés par exemple.
 
-En haut de la fenêtre, vous avez des filtres :
+En la parte superior de la ventana, tienes filtros:
 
 -   **Gratuit/Payant** : permet d’afficher uniquement les gratuits ou
     los de pago.
 
--   **Officiel/Conseillé** : permet d’afficher uniquement les plugins
+-   **Oficial/Aconsejado** : permite mostrar solamente los plugins
     oficiales o recomendados
 
--   **Installé/Non installé** : permet d’afficher uniquement les plugins
+-   **Instalado/No instalado** : permite mostrar solamente los plugins
     instalados o no instalados
 
 -   **Menu déroulant Catégorie** : permet d’afficher uniquement
     algunas categorías de plugins
 
 -   **Rechercher** : permet de rechercher un plugin (dans le nom ou la
-    description de celui-ci)
+    descripción de este)
 
 -   **Nom d’utilisateur** : affiche le nom d’utilisateur utilisé pour la
     connexion au Market ainsi que le statut de la connexion
@@ -177,21 +177,21 @@ celui-ci pour faire apparaître sa fiche. Cette fiche vous donne beaucoup
 d’informations sur le plugin, notamment :
 
 -   S’il est officiel/recommandé ou s’il est obsolète (il faut vraiment
-    éviter d’installer des plugins obsolètes)
+    evitar la instalación de plugins obsoletos)
 
 -   4 acciones :
 
-    -   **Installer stable** : permet d’installer le plugin dans sa
+    -   **Instalar estable** : permite instalar el plugin en su
         versión estable
 
     -   **Installer beta** : permet d’installer le plugin dans sa
-        version beta (seulement pour les betatesteurs)
+        versión beta (solo para probadores beta)
 
     -   **Installer pro** : permet d’installer la version pro (très
         poco utilizado)
 
     -   **Supprimer** : si le plugin est actuellement installé, ce
-        bouton permet de le supprimer
+        botón permite borrarlo
 
 En dessous, vous retrouvez la description du plugin, la compatibilité
 (si Jeedom détecte une incompatibilité, il vous le signalera), les avis
@@ -203,27 +203,20 @@ l’historique des modifications, un bouton "Documentation" qui renvoie
 vers la documentation du plugin. Ensuite vous avez la langue disponible
 et les diverses informations sur la date de la dernière version stable.
 
-> **Important**
->
-> Il n’est vraiment pas recommandé de mettre un plugin beta sur un
-> Jeedom non beta, beaucoup de soucis de fonctionnement peuvent en
-> résulter.
+> **Importante**>>
+ No es recomendable poner un plugin beta en
+>> Jeedom no beta, muchos problemas operativos pueden aparecer
 
-> **Important**
+>> **Importante**
 >
-> Certains plugins sont payants, dans ce cas la fiche du plugin vous
-> proposera de l’acheter. Une fois cela fait, il faut attendre une
-> dizaine de minutes (temps de validation du paiement), puis retourner
-> sur la fiche du plugin pour l’installer normalement.
+> Algunos plugins son de pago, en este caso será indicado en la pagina de presentación del plugin que os propondrá comprarlo.
+>> Una vez hecho esto, tienes que esperar mas o menos diez minutos (tiempo de validación del pago), luego tienes que regresar en  la pagina de presentación del plugin para instalarlo normalmente.
 
-> **Tip**
->
-> Vous pouvez aussi ajouter un plugin à Jeedom à partir d’un fichier ou
-> depuis un dépôt Github. Pour cela, il faut, dans la configuration de
-> Jeedom, activer la fonction adéquate dans la partie "Mises à jour et
-> fichiers". Il sera ensuite possible, en mettant la souris tout à
-> gauche, et en faisant apparaître le menu de la page plugin, de cliquer
-> sur "Ajout depuis une autre source". Vous pourrez ensuite choisir la
-> source "Fichier". Attention, dans le cas de l’ajout par un fichier
-> zip, le nom du zip doit être le même que l’ID du plugin et dès
-> l’ouverture du ZIP un dossier plugin\_info doit être présent.
+> **Consejo**
+>>
+> También puedes agregar un plugin a Jeedom desde un archivo o
+> desde un repositorio Github. Para ello, es necesario, en la configuración de
+> Jeedom, activar la función apropiada en la sección "Actualizaciones y
+> archivos". Entonces, poniendo el ratón
+> a la izquierda y mostrando el menú de la página plugin, de hacer un clic
+> en "Agregar desde otra fuente". A continuación, puedes elegir la > fuente "Archivo". Atención, si agregas un archivo zip, el nombre de este zip debe ser el mismo que el ID del plugin y desde >  la apertura del ZIP en una carpeta plugin\_info debe ser presente.

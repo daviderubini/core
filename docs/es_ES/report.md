@@ -8,7 +8,7 @@ Vous pouvez le faire sur des vues, design, page de panel....
 
 Elle se déclenche à partir d'un scénarion avec la commande report, vous pouvez choisir de vous faire envoyer ce rapport à l'aide d'une commande message (mail, télégram....)
 
-# Utilisation
+# Uso
 
 Son utilisation est très simple vous selectionnez si vous voulez voir :
 

@@ -225,7 +225,7 @@ rien à régler en mode par défaut. Voici les options disponibles en mode
     général en code CSS.
 
 -   **Style du tableau (CSS)** : Permet de définir le style du
-    tableau uniquement.
+    tablero solamente.
 
 En dessous pour chaque case, la **configuration détaillée** vous permet
 ceci :
@@ -252,7 +252,7 @@ types d’informations que l’on peut trouver :
 
 -   **Type de pile**,
 
--   **Dernière remontée de l’information**,
+-   **Último feedback de la información**,
 
 -   **Niveau restant**, (si bien sûr votre équipement fonctionne
     sur pile).
@@ -270,7 +270,7 @@ depuis 30 minutes, alors il faut le mettre en alerte.
 > Les paramètres globaux sont dans **Administration→Configuration→Logs**
 > (ou **Equipements**)
 
-Onglet Commentaire 
+Pestaña Comentario
 ------------------
 
 Permet d’écrire un commentaire à propos de l’équipement (date de
@@ -417,7 +417,7 @@ Onglet Configuration
 -   **Gestion des valeurs**
 
     -   **Valeur interdite** : Si la commande prend une de ces valeurs,
-        Jeedom l’ignore avant de l’appliquer.
+        Jeedom lo ignora antes de aplicarlo.
 
     -   **Valeur retour d’état** : Permet de faire revenir la commande à
         cette valeur après un certain temps.
@@ -432,7 +432,7 @@ Onglet Configuration
         ne prendra pas en compte la 2eme remontée (évite de déclencher
         plusieurs fois un scénario, sauf si la commande est de
         type binaire). Vous pouvez forcer la répétition de la valeur ou
-        l’interdire complètement.
+        prohibirlo por completo.
 
     -   **Push URL** : Permet de rajouter une URL à appeler en cas de
         mise à jour de la commande. Vous pouvez utiliser les tags

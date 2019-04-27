@@ -266,7 +266,7 @@ Paramètres d’affichage
 Dispositivo 
 ==========
 
-Paramètres d’affichage 
+Ajustes de pantalla
 ---------------------
 
 No hay parámetros de visualización específicos
@@ -347,13 +347,13 @@ afficherez le widget en question
     clic
 
 -   **Posición** : le permite elegir la ubicación en la que se muestra el
-    widget (par défaut bas droite)
+    widget (por defecto abajo a la derecha)
 
 Resumén 
 ======
 
 -   **Lien** : Permet d’indiquer le résumé à afficher (Général pour le
-    global sinon indiquer l’objet)
+    global de lo contrario indicar el objeto)
 
 -   **Color de fondo** : Permite cambiar el color de fondo o el color de la
     o transparencia, no olvide de cambiar "Predeterminado" a NO

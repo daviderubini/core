@@ -97,7 +97,7 @@ Elles sont dans le dossier /var/www/html/backup
 Comment mettre à jour Jeedom en SSH ? 
 =====================================
 
-En SSH faites :
+En SSH haz:
 
 ``` {.bash}
 sudo su -
@@ -106,13 +106,13 @@ chmod -R 775 /var/www/html
 chown -R www-data:www-data /var/www/html
 ```
 
-La Webapp est-elle compatible Symbian ? 
+¿ La Webapp es compatible con Symbian ?
 =======================================
 
 La webapp nécessite un smartphone supportant le HTML5 et le CSS3. Elle n’est donc malheureusement pas compatible Symbian.
 
-Sur quelles plateformes Jeedom peut-il fonctionner ? 
-====================================================
+¿ En qué plataformas puede funcionar Jeedom ?
+================================================== ==
 
 Pour que Jeedom fonctionne, il faut une plateforme linux avec les droits
 root ou un système type docker. Il ne fonctionne donc pas sur une
@@ -121,12 +121,12 @@ plateforme android pure.
 Je ne peux mettre à jour certain plugin "Echec lors du téléchargement du fichier. Veuillez réessayer plus tard (taille inférieure à 100 octets)..." ? 
 ====================================================
 
-Cela peut etre du à plusieurs chose, il faut : 
+Esto puede ser debido a varias cosas, es necesario :
 
 - Vérifier que votre Jeedom est toujours connecté au market (dans la page d'administration de jeedom, partie mise à jour vous avez un bouton de test)
 - Vérifier que le compte market à bien acheté le plugin en question
 - Vérifier que vous avez bien de la place sur Jeedom (la page santé vous l'indiquera)
-- Vérifier que votre version de Jeedom est bien compatible avec le plugin
+- Comprueba que tu versión de Jeedom sea compatible con el plugin
 - Vérifiez que votre Jeedom est toujours correctement connecté au market (Dans la configuration de Jeedom, onglet mise à jour)
 
 J’ai une page blanche 
@@ -148,7 +148,7 @@ souvent, celui-ci indique le souci.
 J’ai un problème d’identifiant BDD 
 ==================================
 
-Il faut réinitialiser ceux-ci :
+Tienes que restablecer estos :
 
 ``` {.bash}
 bdd_password=$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 15)
@@ -161,7 +161,7 @@ sudo sed -i -e "s/#PASSWORD#/${bdd_password}/g" core/config/common.config.php
 sudo chown www-data:www-data core/config/common.config.php
 ```
 
-J’ai des \{\{…​\}\} partout 
+Tengo \{\{...\}\} en todas partes
 =======================
 
 La cause la plus fréquente est l’utilisation d’un plugin en version beta
@@ -181,13 +181,13 @@ Cette erreur n’est pas due à Jeedom, mais à un problème avec le système.
 Si celui-ci persiste suite à une réinstallation, il est conseillé de
 voir avec le SAV pour un souci hardware. Voici la [documentation](https://jeedom.github.io/documentation/howto/fr_FR/recovery_mode_jeedom_smart) pour la Smart
 
-Mon scénario ne s’arrête plus/pas 
+Mi escenario no se detiene mas/nunca
 =================================
 
 Il est conseillé de regarder les commandes exécutées par le scénario,
 souvent cela vient d’une commande qui ne se termine pas.
 
-J’ai des instabilités ou des erreurs 504 
+Tengo inestabilidades o errores 504
 ========================================
 
 Vérifiez si votre système de fichiers n’est pas corrompu, en SSH la
@@ -200,8 +200,8 @@ Souvent cela est dû au fait que les équipements sont affectés à un objet
 qui n’est pas le fils ou l’objet lui-même du premier objet sélectionné à
 gauche dans l’arbre (vous pouvez configurer celui-ci dans votre profil).
 
-J’ai l’erreur suivante : SQLSTATE\[HY000\] \[2002\] Can’t connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' 
-====================================================================================================================================
+Tengo el siguiente error: SQLSTATE\[HY000 \]\[2002 \] No se puede conectar al servidor MySQL local a través del socket '/var/run/mysqld/mysqld.sock'
+================================================== ==================================================================================
 
 Cela est dû à MySQL qui s’est arrêté, ce n’est pas normal, les cas
 courants sont :
@@ -209,7 +209,7 @@ courants sont :
 -   Manque de place sur le système de fichiers (peut être vérifié en
     faisant la commande "df -h", en SSH)
 
--   Problème de corruption de fichier(s), ce qui arrive souvent suite à
+-   Problema de corrupción de archivo(s), que a menudo ocurre después de
     un arrêt non propre de Jeedom (coupure de courant)
 
 -   Soucis mémoire, le systeme manque de mémoire et tue le process le plus consommateur (souvent la base de données). Cela peut se voir dans l'administration de l'OS puis dmesg, vous devez voir un kill par "oom". Si c'est le cas il faut réduire la consommation de jeedom en désactivant des plugins.
@@ -279,7 +279,7 @@ Ca veut dire que Jeedom n'arrive pas a backuper la base de donnée ce qu'i peut 
 - pas assez de place sur le filesystem => regarder la page santé celle-ci peut vous l'indiquer
 
 
-Je n'arrive plus a me connecter a mon Jeedom
+No puedo conectarme mas a mi Jeedom
 =========================================
 Depuis Jeedom 3.2 il n'est plus possible de se connecter avec admin/admin à distance pour des raison evidente de sécurité. Les identifiants admin/admin ne marche plus que en local. Attention si vous passer par le DNS même en local vous êtes forcement identifié comme à distance. Autre point par defaut seul les ip sur 192.168.*.* ou 127.0.0.1 sont reconnu comme local. Cela se configure dans l'administration de Jeedom partie sécurité puis IP "blanche". Si malgrès tout ca vous n'arrivez toujours pas à vous connecter il faut utiliser la procedure de remise à zéro de mot de passe (voir dans les tuto/how to)
 
