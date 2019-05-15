@@ -1,10 +1,11 @@
-Jeedom kann von verschiedenen Standorten aus gesichert und
-wiederhergestellt werden.
+Jeedom offre la possibilité d’être sauvegardé et restauré depuis ou à partir
+de différents emplacements.
 
 Konfiguration
 =============
 
-Erreichbar unter **Verwaltung → Sicherungen**, diese Seite ermöglicht die Verwaltung von Sicherungen.
+Accessible depuis **Réglages → Système → Sauvegardes**, cette page permet la
+gestion des sauvegardes, restaurations.
 
 Auf der linken Seite befinden sich die Parameter und die Aktions Schaltflächen. Auf der rechten Seite ist der Echtzeitstatus der aktuellen Aktion (Sicherung oder Wiederherstellung), wenn Sie etwas gestartet haben.
 
@@ -86,30 +87,30 @@ Auf der linken Seite befinden sich die Parameter und die Aktions Schaltflächen.
 
 > **Tip**
 >
-> Je nachdem, was aktiviert ist, können Sie auf
-> Administration → Konfiguration → Registerkarte Updates, mehr oder
-> weniger Bereiche sehen.
+> Selon ce qui sera activé, dans la page
+> Administration→Configuration→Onglet Mises à jour, vous pouvez voir
+> plus ou moins de sections.
 
 > **Tip**
 >
-> Bei der Neuinstallation von Jeedom und der Aufnahme des Backup
-> Abonnements in die Cloud des Marktes, müssen Sie Ihr Market-Konto auf 
-> Ihrem neuen Jeedom eingeben (Administration → Konfiguration →
-> Registerkarte Updates) und dann hierher kommen, um die Wiederherstellung zu starten.
+> Lors d’une réinstallation de Jeedom et en ayant pris l’abonnement de
+> sauvegarde vers le cloud du Market, vous devez renseigner votre compte
+> Market sur votre nouveau Jeedom (Administration→Configuration→Onglet
+> Mises à jour) puis venir ici pour lancer la restauration.
 
 > **Tip**
 >
-> Bei Problemen können Sie in der Komandozeile eine Sicherungskopie
-> erstellen : `sudo php /usr/share/nginx/www/jeedom/install/backup.php`
-> oder `sudo php /var/www/html/install/backup.php` abhängig von Ihrem System.
+> Il est possible, en cas de soucis, de faire une sauvegarde en ligne de
+> commande : `sudo php /usr/share/nginx/www/jeedom/install/backup.php`
+> ou `sudo php /var/www/html/install/backup.php` selon votre système.
 
 > **Tip**
 >
-> Es ist auch möglich, eine Sicherung von der Komandozeile aus
-> wiederherzustellen (standardmäßig stellt Jeedom die letzte Sicherung im
-> Sicherungsverzeichnis wieder her) : `sudo php /usr/share/ngin
-> /www/jeedom/install/restore.php` oder `sudo php /var/www/html/instal
-> /restore.php` .
+> Il est possible aussi de restaurer une sauvegarde en ligne de
+> commandes (par défaut, Jeedom restaure la sauvegarde la plus récente
+> présente dans le répertoire de sauvegarde) :
+> `sudo php /usr/share/nginx/www/jeedom/install/restore.php` ou
+> `sudo php /var/www/html/install/restore.php`.
 
 Was wird gespeichert ?
 ==============================

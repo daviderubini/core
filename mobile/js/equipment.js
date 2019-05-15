@@ -1,6 +1,6 @@
 function initEquipment(_object_id) {
   var objectMapping = {};
-  var objectName = {};
+  var objects_info = {};
   jeedom.object.all({
     error: function (error) {
       $('#div_alert').showAlert({message: error.message, level: 'danger'});
@@ -15,7 +15,7 @@ function initEquipment(_object_id) {
           if (isset(objects[i].display) && isset(objects[i].display.icon)) {
             icon = objects[i].display.icon;
           }
-          objectName[objects[i].id] = objects[i].name;
+          objects_info[objects[i].id] = objects[i];
           if (objects[i].father_id != '' && objects[i].father_id != null) {
             if (objects[i].father_id in objectMapping) {
               objectMapping[objects[i].father_id].push(parseInt(objects[i].id));
@@ -41,54 +41,43 @@ function initEquipment(_object_id) {
     });
     summary = '';
     var childList = [_object_id];
-    var initObject = '';
     if(_object_id.indexOf(':') != -1){
       temp = _object_id.split(':');
       _object_id = temp[0];
       summary = temp[1];
     }
-    function findChildren(_object_id) {
-      if (_object_id in objectMapping){
-        initObject = _object_id;
-        for (var children in objectMapping[_object_id]){
-          var childId1 = parseInt(objectMapping[_object_id][children]);
-          childList.push(childId1);
-          findChildren(childId1);
-        }
-      }
-    }
-    if (_object_id in objectMapping){
-      findChildren(_object_id);
-      _object_id = JSON.stringify(childList);
-    }
-    
     jeedom.object.toHtml({
       id: _object_id,
       version: 'mobile',
-      summary :summary,
+      summary: summary,
       error: function (error) {
         $('#div_alert').showAlert({message: error.message, level: 'danger'});
       },
       success: function (html) {
-        if((_object_id == 'all' || _object_id == '' || initObject != '')){
+        if((_object_id == 'all' || _object_id == '')){
           var div = '';
-          var number = 0;
-          summaries= [];
-          for(var i in html){
+          summaries = [];
+          for(var i in html) {
             if($.trim(html[i]) == ''){
               continue;
             }
             var id = i.split('::')[1]
-            div += '<div class="div_displayEquipement" style="margin-top : '+(number * 10 )+'px;">';
-            div += '<legend style="margin : 0px;padding-bottom: 0px;">';
-            div += objectName[id];
+            if (!isset(objects_info[id])) {
+              continue;
+            }
+            div += '<div class="div_displayEquipement">';
+            div += '<legend>';
+            var icon = '';
+            if (isset(objects_info[id].display) && isset(objects_info[id].display.icon)) {
+              icon = objects_info[id].display.icon;
+            }
+            div += '<span>' + icon + '</span> ' + objects_info[id].name;
             div += '</legend>';
-            div += '<div class="nd2-card objectSummaryHide" style="max-width:100% !important;"><div class="card-title has-supporting-text" style="padding:4px;font-size:0.6em;"><center><span class="objectSummary'+id+'" data-version="mobile"></span></center></div></div>';
+            div += '<div class="nd2-card objectSummaryHide" style="max-width:100% !important;"><div class="card-title has-supporting-text"><center><span class="objectSummary'+id+'" data-version="mobile"></span></center></div></div>';
             div += '<div class="objectHtml">';
             div += html[i]
             div += '</div>';
             div += '</div>';
-            number = 1;
             summaries.push({object_id : id})
           }
           try {
@@ -99,33 +88,31 @@ function initEquipment(_object_id) {
           }
           setTileSize('.eqLogic');
           setTileSize('.scenario');
-          setTimeout(function () {
-            $('.div_displayEquipement .objectHtml').packery({gutter :0});
-          }, 10);
+          $('.div_displayEquipement .objectHtml').packery({gutter :0});
         } else{
-          $('#div_displayEquipement').empty().html('<div class="nd2-card objectSummaryHide" style="max-width:100% !important;"><div class="card-title has-supporting-text" style="padding:4px;font-size:0.6em;"><center><span class="objectSummary'+_object_id+'" data-version="mobile"></span></center></div></div><div class="objectHtml">'+html+'</div></div>').trigger('create');
+          $('#div_displayEquipement').empty().html('<div class="nd2-card objectSummaryHide" style="max-width:100% !important;"><div class="card-title has-supporting-text"><center><span class="objectSummary'+_object_id+'" data-version="mobile"></span></center></div></div><div class="objectHtml">'+html+'</div></div>').trigger('create');
           jeedom.object.summaryUpdate([{object_id:_object_id}]);
           setTileSize('.eqLogic');
           setTileSize('.scenario');
-          setTimeout(function () {
-            $('#div_displayEquipement > .objectHtml').packery({gutter :0});
-          }, 10);
+          $('#div_displayEquipement > .objectHtml').packery({gutter :0});
+          $('#div_displayEquipement > .objectHtml').packery({gutter :0});
         }
-        
+
       }
     });
   } else {
     $('#bottompanel').panel('open');
   }
-  
-  $(window).on("orientationchange", function (event) {
+
+  $(window).on("resize", function (event) {
     deviceInfo = getDeviceType();
     setTileSize('.eqLogic');
     setTileSize('.scenario');
     $('#div_displayEquipement > .objectHtml').packery({gutter :0});
+    $('.div_displayEquipement .objectHtml').packery({gutter :0});
   });
-  
-  
+
+
   $('#in_searchWidget').off('keyup').on('keyup',function(){
     $('.div_displayEquipement').show();
     var search = $(this).value();
@@ -177,5 +164,10 @@ function initEquipment(_object_id) {
       }
     })
   });
-  
+
+
+  $('#bt_eraseSearchInput').off('click').on('click',function(){
+    $('#in_searchWidget').val('');
+    $('#in_searchWidget').keyup();
+  })
 }

@@ -1,4 +1,3 @@
-
 /* This file is part of Jeedom.
 *
 * Jeedom is free software: you can redistribute it and/or modify
@@ -18,6 +17,12 @@
 $('.backgroundforJeedom').css('background-position','bottom right');
 $('.backgroundforJeedom').css('background-repeat','no-repeat');
 $('.backgroundforJeedom').css('background-size','auto');
+$(function(){
+  $('.packeryContainer').packery({
+    itemSelector: ".object",
+    gutter : 0}
+  );
+});
 
 $( ".eqLogicSortable" ).sortable({
   connectWith: ".eqLogicSortable",
@@ -89,6 +94,10 @@ $('.showCmd').on('click',function(){
     $(this).removeClass('fa-chevron-down').addClass('fa-chevron-right');
     $(this).closest('.eqLogic').find('.cmdSortable').hide();
   }
+  $('.packeryContainer').packery({
+    itemSelector: ".object",
+    gutter : 0}
+  );
 });
 
 $('.showEqLogic').on('click',function(){
@@ -99,6 +108,10 @@ $('.showEqLogic').on('click',function(){
     $(this).removeClass('fa-chevron-down').addClass('fa-chevron-right');
     $(this).closest('.object').find('.eqLogic').hide();
   }
+  $('.packeryContainer').packery({
+    itemSelector: ".object",
+    gutter : 0}
+  );
 });
 
 $('#cb_actifDisplay').on('change',function(){
@@ -119,32 +132,55 @@ $('.configureCmd').on('click',function(){
   $('#md_modal').load('index.php?v=d&modal=cmd.configure&cmd_id=' + $(this).closest('.cmd').attr('data-id')).dialog('open');
 });
 
+
+//searching
 $('#in_search').on('keyup',function(){
-  var search = $(this).value().toLowerCase();
-  $('.cmd').show().removeClass('alert-success').addClass('alert-warning');
-  $('.eqLogic').show();
-  $('.cmdSortable').hide();
-  if(search == ''){
-    return;
-  }
-  $('.eqLogic').each(function(){
-    var eqLogic = $(this);
-    var name = eqLogic.attr('data-name').toLowerCase();
-    var type = eqLogic.attr('data-type').toLowerCase();
-    if(name.indexOf(search) < 0 && type.indexOf(search) < 0){
-      eqLogic.hide();
+  try {
+    var search = $(this).value().toLowerCase();
+
+    $('.cmd').show().removeClass('alert-success').addClass('alert-warning');
+    $('.eqLogic').show();
+    $('.cmdSortable').hide();
+    if(search == '' || search.length < 3) {
+      $('.packeryContainer').packery();
+      return;
     }
-    $(this).find('.cmd').each(function(){
-      var cmd = $(this);
-      var name = cmd.attr('data-name').toLowerCase();
-      if(name.indexOf(search) >= 0){
-        eqLogic.show();
-        eqLogic.find('.cmdSortable').show();
-        cmd.removeClass('alert-warning').addClass('alert-success');
+
+    search = search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    $('.eqLogic').each(function(){
+      var eqLogic = $(this);
+      var name = eqLogic.attr('data-name').toLowerCase();
+      name = name.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+      var type = eqLogic.attr('data-type').toLowerCase();
+      type = type.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+      if(name.indexOf(search) < 0 && type.indexOf(search) < 0){
+        eqLogic.hide();
       }
+      $(this).find('.cmd').each(function(){
+        var cmd = $(this);
+        var name = cmd.attr('data-name').toLowerCase();
+        name = name.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        if(name.indexOf(search) >= 0){
+          eqLogic.show();
+          eqLogic.find('.cmdSortable').show();
+          cmd.removeClass('alert-warning').addClass('alert-success');
+        }
+      });
+    $('.packeryContainer').packery();
     });
-  });
+  }
+  catch(error) {
+    console.error(error);
+  }
 });
+$('#bt_resetdisplaySearch').on('click', function () {
+  $('#in_search').val('')
+  $('#in_search').keyup();
+})
+
+$('.nav-tabs a').on('shown.bs.tab', function (e) {
+  window.location.hash = e.target.hash;
+})
 
 $('.cb_selEqLogic').on('change',function(){
   var found = false;
@@ -165,7 +201,7 @@ $('.cb_selEqLogic').on('change',function(){
 });
 
 $('#bt_removeEqlogic').on('click',function(){
-  bootbox.confirm('{{Etes-vous sûr de vouloir supprimer tous ces équipements ?}}', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer tous ces équipements ?}}', function (result) {
     if (result) {
       var eqLogics = [];
       $('.cb_selEqLogic').each(function(){
@@ -227,4 +263,16 @@ $('.bt_setIsEnable').on('click',function(){
 $('#bt_removeHistory').on('click',function(){
   $('#md_modal').dialog({title: "{{Historique des suppressions}}"});
   $('#md_modal').load('index.php?v=d&modal=remove.history').dialog('open');
+});
+
+$('#bt_emptyRemoveHistory').on('click',function(){
+  jeedom.emptyRemoveHistory({
+    error: function (error) {
+      $('#div_alertRemoveHistory').showAlert({message: error.message, level: 'danger'});
+    },
+    success: function (data) {
+      $('#table_removeHistory tbody').empty();
+      $('#div_alertRemoveHistory').showAlert({message: '{{Historique vidé avec succès}}', level: 'success'});
+    }
+  });
 });

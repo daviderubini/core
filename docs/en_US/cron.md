@@ -1,13 +1,13 @@
-It informs about all Jeedom application tasks that run on the
-server. This menu is to be used knowingly, or at the
-request technical support.
+Il informe de toutes les tâches applicatives Jeedom qui tournent sur le
+serveur. Ce menu est à utiliser en connaissance de cause ou à la
+demande du support technique.
 
 > **Important**
 >
 > In case of mishandling on this page, any request for
 > support may be refused.
 
-Pour y accéder, il faut aller dans **Administration → Moteur de tâches**
+Pour y accéder, il faut aller dans **Réglages → Système → Moteur de tâches**
 :
 
 # Cron
@@ -74,4 +74,8 @@ page). Dans ce tableau, on retrouve :
 
 # Listener
 
-Les listeners sont juste visibles en lecture et permettent de voir les fonctions appelées sur un évenement (mise à jour d'une commande...)
+Les listeners sont juste visibles en lecture et permettent de voir les fonctions appelées sur un évènement (mise à jour d'une commande...)
+
+# Démons
+
+Tableau de résumé des démons avec leur état, la date de dernier lancement ainsi que la possibilité de les arrêter ou les redémarrer.

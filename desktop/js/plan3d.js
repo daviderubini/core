@@ -14,6 +14,11 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
+window.addEventListener('click', function(event) {
+  if (!event.path) {
+    return;
+  }
+});
 if (getUrlVars('fullscreen') == '1') {
   $('#div_colPlan3d').removeClass('col-lg-10').addClass('col-lg-12');
   $('#div_colMenu').remove();
@@ -464,6 +469,7 @@ jeedom3d.text.generate = function(_options,_object,_text){
     var backgroundColor = parameters.hasOwnProperty("backgroundColor") ? parameters["backgroundColor"] : { r: 255, g: 255, b: 255, a: 1.0 };
     var textColor = parameters.hasOwnProperty("textColor") ?	parameters["textColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
     var canvas = document.createElement('canvas');
+    
     var context = canvas.getContext('2d');
     context.font = "Bold " + fontsize + "px " + fontface;
     var texts = message.split('\n');
@@ -764,9 +770,6 @@ jeedom3d.text.generate = function(_options,_object,_text){
   }
   
   jeedom3d.conditionalShow.create = function(_info,_object) {
-    console.log('Conditation show create')
-    console.log(_info)
-    console.log(_object)
     for(var i in _info.additionalData.cmds){
       cmd_id = _info.additionalData.cmds[i];
       if(!CMDS[cmd_id]){

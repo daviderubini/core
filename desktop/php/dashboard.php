@@ -24,7 +24,6 @@ foreach ($allObject as $value) {
 	}
 }
 sendVarToJs('rootObjectId', $object->getId());
-include_file('desktop', 'dashboard', 'css');
 ?>
 <div class="row row-overflow">
 	<?php
@@ -36,14 +35,14 @@ include_file('desktop', 'dashboard', 'css');
 	?>
 	<div class="bs-sidebar">
 		<ul id="ul_object" class="nav nav-list bs-sidenav">
-			<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
+			<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control" placeholder="{{Rechercher}}" style="width: 100%"/></li>
 			<?php
 			foreach ($allObject as $object_li) {
 				$margin = 5 * $object_li->getConfiguration('parentNumber');
 				if ($object_li->getId() == $object->getId()) {
-					echo '<li class="cursor li_object active" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;font-size:0.85em;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
+					echo '<li class="cursor li_object active" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
 				} else {
-					echo '<li class="cursor li_object" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;font-size:0.85em;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
+					echo '<li class="cursor li_object" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
 				}
 			}
 			?>
@@ -57,24 +56,34 @@ if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1) {
 	echo '<div class="col-lg-12 col-md-12 col-sm-12" id="div_displayObject">';
 }
 ?>
-<?php
-if (init('category', 'all') == 'all') {?>
-	<a class="pull-right btn btn-default btn-sm" id="bt_editDashboardWidgetOrder" data-mode="0"><i class="fas fa-pencil-alt"></i></a>
-<?php } ?>
-<input class='form-control input-sm' id="in_searchWidget" style="width:calc(100% - 80px);display:inline-block;" placeholder="{{Rechercher}}"/>
-<a class="pull-left btn btn-default btn-sm" id="bt_displayObject" data-display='<?php echo $_SESSION['user']->getOptions('displayObjetByDefault') ?>' title="{{Afficher/Masquer les objets}}"><i class='fa fa-picture-o'></i></a>
-<br/><br/>
+
+<div class="input-group">
+	<div class="input-group-btn">
+		<a id="bt_displayObject" class="btn roundedLeft" data-display='<?php echo $_SESSION['user']->getOptions('displayObjetByDefault') ?>' title="{{Afficher/Masquer les objets}}"><i class="far fa-image"></i></a>
+	</div>
+	<input class="form-control" id="in_searchWidget" placeholder="Rechercher">
+	<div class="input-group-btn">
+		<a id="bt_resetDashboardSearch" class="btn"><i class="fas fa-times"></i></a>
+	</div>
+	<?php
+	if (init('category', 'all') == 'all') {?>
+		<div class="input-group-btn">
+			<a id="bt_editDashboardWidgetOrder" data-mode="0" class="btn roundedRight"><i class="fas fa-pencil-alt"></i></a>
+		</div>
+	<?php } ?>
+</div>
+
 <?php include_file('desktop', 'dashboard', 'js'); ?>
 <div class="row" >
 	<?php
 	if (init('object_id') != '') {
 		echo '<div class="col-md-12">';
 	} else {
-		echo '<div class="col-md-' . $object->getDisplay('dashboard::size', 12) . '">';
+		echo '<div class="col-md-12">';
 	}
 	echo '<div data-object_id="' . $object->getId() . '" data-father_id="' . $object->getFather_id() . '" class="div_object">';
-	echo '<legend style="margin-bottom : 0px;"><a class="div_object" style="text-decoration:none" href="index.php?v=d&p=object&id=' . $object->getId() . '">' . $object->getDisplay('icon') . ' ' . $object->getName() . '</a><span style="font-size : 0.6em;margin-left:10px;">' . $object->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $object->getId() . '" data-mode="0" style="margin-right : 10px; display: none;"></i> </legend>';
-	echo '<div class="div_displayEquipement" id="div_ob' . $object->getId() . '" style="width: 100%;padding-top:3px;margin-bottom : 3px;">';
+	echo '<legend><a class="div_object" href="index.php?v=d&p=object&id=' . $object->getId() . '">' . $object->getDisplay('icon') . ' ' . $object->getName() . '</a><span>' . $object->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $object->getId() . '" data-mode="0" style="display: none;"></i> </legend>';
+	echo '<div class="div_displayEquipement" id="div_ob' . $object->getId() . '">';
 	echo '<script>getObjectHtml(' . $object->getId() . ')</script>';
 	echo '</div>';
 	echo '</div>';
@@ -87,10 +96,10 @@ if (init('category', 'all') == 'all') {?>
 			if ($child->getConfiguration('hideOnDashboard', 0) == 1) {
 				continue;
 			}
-			echo '<div class="col-md-' . $child->getDisplay('dashboard::size', 12) . '">';
-			echo '<div data-object_id="' . $child->getId() . '" data-father_id="' . $child->getFather_id() . '" style="margin-bottom : 3px;" class="div_object">';
-			echo '<legend style="margin-bottom : 0px;"><a style="text-decoration:none" href="index.php?v=d&p=object&id=' . $child->getId() . '">' . $child->getDisplay('icon') . ' ' . $child->getName() . '</a><span style="font-size : 0.6em;margin-left:10px;">' . $child->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $child->getId() . '" data-mode="0" style="margin-right : 10px; display: none;"></i></legend>';
-			echo '<div class="div_displayEquipement" id="div_ob' . $child->getId() . '" style="width: 100%;padding-top:3px;margin-bottom : 3px;">';
+			echo '<div class="col-md-12">';
+			echo '<div data-object_id="' . $child->getId() . '" data-father_id="' . $child->getFather_id() . '" class="div_object">';
+			echo '<legend><a href="index.php?v=d&p=object&id=' . $child->getId() . '">' . $child->getDisplay('icon') . ' ' . $child->getName() . '</a><span>' . $child->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $child->getId() . '" data-mode="0" style="display: none;"></i></legend>';
+			echo '<div class="div_displayEquipement" id="div_ob' . $child->getId() . '">';
 			echo '<script>getObjectHtml(' . $child->getId() . ')</script>';
 			echo '</div>';
 			echo '</div>';

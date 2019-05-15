@@ -76,7 +76,7 @@ Voila une [documentation](https://www.alsacreations.com/tuto/lire/612-Premiere-c
 - Username : "jeedom", password : "Mjeedom96"
 - Ou ce que vous avez mis à l'installation si vous êtes en DIY
 
-A noter que lorsque vous ecrirez le mot de passe vous ne verrez rien s'ecrire à l'écran c'est normal.
+A noter que lorsque vous écrirez le mot de passe vous ne verrez rien s'écrire à l'écran, c'est normal.
 
 Comment remettre à plat les droits ? 
 ====================================
@@ -121,13 +121,12 @@ plateforme android pure.
 Je ne peux mettre à jour certain plugin "Echec lors du téléchargement du fichier. Veuillez réessayer plus tard (taille inférieure à 100 octets)..." ? 
 ====================================================
 
-Esto puede ser debido a varias cosas, es necesario :
+Cela peut être dû à plusieurs choses, il faut : 
 
-- Vérifier que votre Jeedom est toujours connecté au market (dans la page d'administration de jeedom, partie mise à jour vous avez un bouton de test)
-- Vérifier que le compte market à bien acheté le plugin en question
+- Vérifier que votre Jeedom est toujours connecté au market (dans la page d'administration de Jeedom, partie mise à jour vous avez un bouton de test)
+- Vérifier que le compte market a bien acheté le plugin en question
 - Vérifier que vous avez bien de la place sur Jeedom (la page santé vous l'indiquera)
 - Comprueba que tu versión de Jeedom sea compatible con el plugin
-- Vérifiez que votre Jeedom est toujours correctement connecté au market (Dans la configuration de Jeedom, onglet mise à jour)
 
 J’ai une page blanche 
 =====================
@@ -148,7 +147,7 @@ souvent, celui-ci indique le souci.
 J’ai un problème d’identifiant BDD 
 ==================================
 
-Tienes que restablecer estos :
+Il faut réinitialiser ceux-ci :
 
 ``` {.bash}
 bdd_password=$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 15)
@@ -161,7 +160,7 @@ sudo sed -i -e "s/#PASSWORD#/${bdd_password}/g" core/config/common.config.php
 sudo chown www-data:www-data core/config/common.config.php
 ```
 
-Tengo \{\{...\}\} en todas partes
+J’ai des \{\{…​\}\} partout 
 =======================
 
 La cause la plus fréquente est l’utilisation d’un plugin en version beta
@@ -181,13 +180,13 @@ Cette erreur n’est pas due à Jeedom, mais à un problème avec le système.
 Si celui-ci persiste suite à une réinstallation, il est conseillé de
 voir avec le SAV pour un souci hardware. Voici la [documentation](https://jeedom.github.io/documentation/howto/fr_FR/recovery_mode_jeedom_smart) pour la Smart
 
-Mi escenario no se detiene mas/nunca
+Mon scénario ne s’arrête plus/pas 
 =================================
 
 Il est conseillé de regarder les commandes exécutées par le scénario,
 souvent cela vient d’une commande qui ne se termine pas.
 
-Tengo inestabilidades o errores 504
+J’ai des instabilités ou des erreurs 504 
 ========================================
 
 Vérifiez si votre système de fichiers n’est pas corrompu, en SSH la
@@ -200,8 +199,8 @@ Souvent cela est dû au fait que les équipements sont affectés à un objet
 qui n’est pas le fils ou l’objet lui-même du premier objet sélectionné à
 gauche dans l’arbre (vous pouvez configurer celui-ci dans votre profil).
 
-Tengo el siguiente error: SQLSTATE\[HY000 \]\[2002 \] No se puede conectar al servidor MySQL local a través del socket '/var/run/mysqld/mysqld.sock'
-================================================== ==================================================================================
+J’ai l’erreur suivante : SQLSTATE\[HY000\] \[2002\] Can’t connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' 
+====================================================================================================================================
 
 Cela est dû à MySQL qui s’est arrêté, ce n’est pas normal, les cas
 courants sont :
@@ -209,7 +208,7 @@ courants sont :
 -   Manque de place sur le système de fichiers (peut être vérifié en
     faisant la commande "df -h", en SSH)
 
--   Problema de corrupción de archivo(s), que a menudo ocurre después de
+-   Problème de corruption de fichier(s), ce qui arrive souvent suite à
     un arrêt non propre de Jeedom (coupure de courant)
 
 -   Soucis mémoire, le systeme manque de mémoire et tue le process le plus consommateur (souvent la base de données). Cela peut se voir dans l'administration de l'OS puis dmesg, vous devez voir un kill par "oom". Si c'est le cas il faut réduire la consommation de jeedom en désactivant des plugins.
@@ -248,12 +247,12 @@ plugin. En général, une mise à jour de jeedom corrige le souci.
 J'ai un équipement en timeout mais je ne le vois pas sur le dashboard
 =========================================
 
-Les alerte sont classé par priorité, de la moins importante à la plus importante : timeout, batterie warning, batterie danger, alerte warning, alerte danger
+Les alertes sont classées par priorité, de la moins importante à la plus importante : timeout, batterie warning, batterie danger, alerte warning, alerte danger
 
 Mon Jeedom affiche en permanance "En cours de démarrage" même après 1h ? 
 =====================================
 
-Si vous etes en DIY et sous Debian 9 ou plus, vérifiez qu'il n'y a pas eu une mise à jour d'Apache et donc le retour du privateTmp (visible en faisant `ls /tmp` et voir si il y a un dossier private\*Apache). Si c'est le cas il faut faire :
+Si vous êtes en DIY et sous Debian 9 ou plus, vérifiez qu'il n'y a pas eu une mise à jour d'Apache et donc le retour du privateTmp (visible en faisant `ls /tmp` et voir si il y a un dossier private\*Apache). Si c'est le cas il faut faire :
 
 ``` 
 mkdir /etc/systemd/system/apache2.service.d
@@ -264,26 +263,26 @@ echo "PrivateTmp=no" >> /etc/systemd/system/apache2.service.d/privatetmp.conf
 J'ai un soucis d'heure sur mes historiques
 =========================================
 
-Essayez de vider le cache de chrome, l'affichage des historique est calculé par rapport à l'heure du navigateur.
+Essayez de vider le cache de chrome, l'affichage des historiques est calculé par rapport à l'heure du navigateur.
 
 J'ai l'erreur "Soucis réseaux detecté, redemarrage du réseaux"
 =========================================
 
-Jeedom ne trouve pas ou n'arrive pas a un pinguer la gateway. En général ca arrive si la box adsl redémarre (en particulier les livebox) et que Jeeodm n'a pas redemarré ou a redemarré plus vite que la box. Par sécurité il vous dit donc qu'il a trouvé un soucis et relance le processus de connection réseaux. Vous pouvez désactiver ce mécanisme en allant dans la configuration de Jeedom et en désactivant la gestion du réseaux par Jeedom.
+Jeedom ne trouve pas ou n'arrive pas a pinguer la gateway. En général ca arrive si la box adsl redémarre (en particulier les livebox) et que Jeeodm n'a pas redemarré ou a redemarré plus vite que la box. Par sécurité il vous dit donc qu'il a trouvé un soucis et relance le processus de connection réseaux. Vous pouvez désactiver ce mécanisme en allant dans la configuration de Jeedom et en désactivant la gestion du réseaux par Jeedom.
 
 J'ai le message "Echec durant la sauvegarde de la base de données. Vérifiez que mysqldump est présent."
 =========================================
-Ca veut dire que Jeedom n'arrive pas a backuper la base de donnée ce qu'i peut laisser penser a un soucis de corrumption de base de données et de filesystem. Il n'y a malheureusement pas de commande miracle pour corriger. Le mieux est de lancer un backup et d'analyser la log de celui-ci. Dans les cas connu de soucis nous avons
+Ca veut dire que Jeedom n'arrive pas a backuper la base de données ce qui peut laisser penser à un soucis de corrumption de base de données et de filesystem. Il n'y a malheureusement pas de commande miracle pour corriger. Le mieux est de lancer un backup et d'analyser le log de celui-ci. Dans les cas connus de soucis nous avons:
 
-- une table de la base corrompu => la c'est mal partie il faut voir pour essayer de réparer et si ca marche pas repartir du dernier bon backup (si vous etês sur garde SD c'est le bon moment pour la changer)
+- une table de la base corrompue => là c'est mal parti il faut voir pour essayer de réparer et si ca marche pas repartir du dernier bon backup (si vous êtes sur carte SD c'est le bon moment pour la changer)
 - pas assez de place sur le filesystem => regarder la page santé celle-ci peut vous l'indiquer
 
 
-No puedo conectarme mas a mi Jeedom
+Je n'arrive plus à me connecter à mon Jeedom
 =========================================
-Depuis Jeedom 3.2 il n'est plus possible de se connecter avec admin/admin à distance pour des raison evidente de sécurité. Les identifiants admin/admin ne marche plus que en local. Attention si vous passer par le DNS même en local vous êtes forcement identifié comme à distance. Autre point par defaut seul les ip sur 192.168.*.* ou 127.0.0.1 sont reconnu comme local. Cela se configure dans l'administration de Jeedom partie sécurité puis IP "blanche". Si malgrès tout ca vous n'arrivez toujours pas à vous connecter il faut utiliser la procedure de remise à zéro de mot de passe (voir dans les tuto/how to)
+Depuis Jeedom 3.2 il n'est plus possible de se connecter avec admin/admin à distance pour des raisons évidentes de sécurité. Les identifiants admin/admin ne marchent plus qu'en local. Attention si vous passer par le DNS même en local vous êtes forcement identifié comme à distance. Autre point par défaut seules les ip sur 192.168.*.* ou 127.0.0.1 sont reconnues comme locales. Cela se configure dans l'administration de Jeedom partie sécurité puis IP "blanche". Si malgrès tout ca vous n'arrivez toujours pas à vous connecter il faut utiliser la procédure de remise à zéro de mot de passe (voir dans les tuto/how to)
 
-J'ai des erreurs de type "Class 'eqLogic' not found", des fichiers semblent etre manquant ou j'ai une page blanche
+J'ai des erreurs de type "Class 'eqLogic' not found", des fichiers semblent être manquant ou j'ai une page blanche
 =========================================
 C'est une erreur assez grave le plus simple est de faire 
 

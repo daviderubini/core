@@ -39,18 +39,52 @@ class jeedom {
 			'theme_start_day_hour',
 			'theme_end_day_hour',
 			'theme_changeAccordingTime',
+			'mobile_theme_useAmbientLight',
 			'hideBackgroundImg',
 			'widget::step::width',
 			'widget::step::height',
-			'widget::margin'
+			'widget::margin',
+			'widget::shadow',
+			'interface::advance::enable',
+			'interface::advance::coloredIcons'
 		);
 		$return = config::byKeys($key);
-		if(date('Gi')>$return['theme_start_day_hour'] && date('Gi')<$return['theme_end_day_hour']){
-			$return['current_desktop_theme'] = $return['default_bootstrap_theme'];
-			$return['current_mobile_theme'] = $return['mobile_theme_color'];
-		}else{
+		$return['current_desktop_theme'] = $return['default_bootstrap_theme'];
+		$return['current_mobile_theme'] = $return['mobile_theme_color'];
+		if($return['theme_changeAccordingTime'] == 1 && (date('Gi')<intval(str_replace(':','',$return['theme_start_day_hour'])) || date('Gi')>intval(str_replace(':','',$return['theme_end_day_hour'])))){
 			$return['current_desktop_theme'] = $return['default_bootstrap_theme_night'];
 			$return['current_mobile_theme'] = $return['mobile_theme_color_night'];
+		}
+		$return['css'] = array();
+		if($return['interface::advance::enable'] == 1){
+			$css_convert = array(
+				'css::background-opacity' => '--opacity',
+				'css::border-radius' => '--border-radius',
+			);
+			$css = config::byKeys(array_keys($css_convert));
+			foreach ($css as $key => $value) {
+				if($value == ''){
+					continue;
+				}
+				if(isset($css_convert[$key])){
+					$return['css'][$css_convert[$key]] = $value;
+				}
+			}
+			if(count($return['css']) > 0){
+				foreach ($return['css'] as $key => &$value) {
+					switch ($key) {
+						case '--border-radius':
+						if($value == ''){
+							$value=0;
+						}
+						if($value > 1){
+							$value = 1;
+						}
+						$value.='rem';
+						break;
+					}
+				}
+			}
 		}
 		return $return;
 	}
@@ -100,12 +134,6 @@ class jeedom {
 		if ($cmd != '') {
 			if (!cmd::byId(str_replace('#', '', $cmd))) {
 				$return[] = array('detail' => 'Administration', 'help' => __('Commande retour interactions', __FILE__), 'who' => $cmd);
-			}
-		}
-		$cmd = config::byKey('emailAdmin', 'core', '');
-		if ($cmd != '') {
-			if (!cmd::byId(str_replace('#', '', $cmd))) {
-				$return[] = array('detail' => 'Administration', 'help' => __('Commande information utilisateur', __FILE__), 'who' => $cmd);
 			}
 		}
 		foreach ($JEEDOM_INTERNAL_CONFIG['alerts'] as $level => $value) {
@@ -252,7 +280,7 @@ class jeedom {
 		$value = shell_exec('sudo dmesg | grep "CRC error" | grep "mmcblk0" | grep "card status" | wc -l');
 		$value += shell_exec('sudo dmesg | grep "I/O error" | wc -l');
 		$return[] = array(
-			'name' => __('Erreur disque', __FILE__),
+			'name' => __('Erreur I/O', __FILE__),
 			'state' => ($value == 0),
 			'result' => $value,
 			'comment' => ($value == 0) ? '' : __('Il y a des erreurs disque, cela peut indiquer un soucis avec le disque ou un problème d\'alimentation', __FILE__),
@@ -542,6 +570,13 @@ class jeedom {
 			return '';
 		}
 		return $bluetoothMapping;
+	}
+	
+	public static function consistency() {
+		log::clear('consistency');
+		$cmd = __DIR__ . '/../../install/consistency.php';
+		$cmd .= ' >> ' . log::getPathToLog('consistency') . ' 2>&1 &';
+		system::php($cmd, true);
 	}
 	
 	/********************************************BACKUP*****************************************************************/
@@ -995,15 +1030,57 @@ class jeedom {
 			$datas = array_merge($datas, cmd::searchConfiguration($key));
 			$datas = array_merge($datas, eqLogic::searchConfiguration($key));
 			$datas = array_merge($datas, jeeObject::searchConfiguration($key));
-			$datas = array_merge($datas, scenario::searchByUse(array(array('action' => '#' . $key . '#'))));
+			$datas = array_merge($datas, scenario::searchByUse(array(array('action' => $key))));
 			$datas = array_merge($datas, scenarioExpression::searchExpression($key, $key, false));
 			$datas = array_merge($datas, scenarioExpression::searchExpression('variable(' . str_replace('#', '', $key) . ')'));
 			$datas = array_merge($datas, scenarioExpression::searchExpression('variable', str_replace('#', '', $key), true));
+			$datas = array_merge($datas, viewData::searchByConfiguration($key));
+			$datas = array_merge($datas, plan::searchByConfiguration($key));
+			$datas = array_merge($datas, plan3d::searchByConfiguration($key));
 		}
 		if (count($datas) > 0) {
 			foreach ($datas as $data) {
-				utils::a2o($data, json_decode(str_replace(array_keys($_replaces), $_replaces, json_encode(utils::o2a($data))), true));
-				$data->save();
+				try {
+					utils::a2o($data, json_decode(str_replace(array_keys($_replaces), $_replaces, json_encode(utils::o2a($data))), true));
+					$data->save(true);
+				} catch (\Exception $e) {
+					
+				}
+			}
+		}
+		foreach ($_replaces as $key => $value) {
+			$viewDatas = viewData::byTypeLinkId('cmd',str_replace('#', '', $key));
+			if(count($viewDatas)  > 0){
+				foreach ($viewDatas as $viewData) {
+					try {
+						$viewData->setLink_id(str_replace('#', '', $value));
+						$viewData->save();
+					} catch (\Exception $e) {
+						
+					}
+				}
+			}
+			$plans = plan::byLinkTypeLinkId('cmd',str_replace('#', '', $key));
+			if(count($plans)  > 0){
+				foreach ($plans as $plan) {
+					try {
+						$plan->setLink_id(str_replace('#', '', $value));
+						$plan->save();
+					} catch (\Exception $e) {
+						
+					}
+				}
+			}
+			$plan3ds = plan3d::byLinkTypeLinkId('cmd',str_replace('#', '', $key));
+			if(count($plan3ds)  > 0){
+				foreach ($plan3ds as $plan3d) {
+					try {
+						$plan3d->setLink_id(str_replace('#', '', $value));
+						$plan->save();
+					} catch (\Exception $e) {
+						
+					}
+				}
 			}
 		}
 	}
@@ -1021,21 +1098,13 @@ class jeedom {
 	/******************************************UTILS******************************************************/
 	
 	public static function versionAlias($_version, $_lightMode = true) {
-		if (!$_lightMode) {
-			if ($_version == 'dplan') {
-				return 'plan';
-			} else if ($_version == 'dview') {
-				return 'view';
-			} else if ($_version == 'mview') {
-				return 'view';
-			}
+		if($_version == 'mview'){
+			return 'mobile';
 		}
-		$alias = array(
-			'mview' => 'mobile',
-			'dview' => 'dashboard',
-			'dplan' => 'dashboard',
-		);
-		return (isset($alias[$_version])) ? $alias[$_version] : $_version;
+		if($_version == 'dview' || $_version == 'dplan' || $_version == 'plan' || $_version == 'view'){
+			return 'dashboard';
+		}
+		return $_version;
 	}
 	
 	public static function toHumanReadable($_input) {

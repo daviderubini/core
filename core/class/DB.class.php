@@ -20,52 +20,48 @@
 
 class DB {
 	/*     * **************  Constantes  ***************** */
-
+	
 	const FETCH_TYPE_ROW = 0;
 	const FETCH_TYPE_ALL = 1;
-
+	
 	/*     * **************  Attributs  ***************** */
-
-	private $connection;
-	private $lastConnection;
-	private static $sharedInstance;
+	
+	private static $connection = null;
+	private static $lastConnection;
 	private static $fields = array();
-
+	
 	/*     * **************  Fonctions statiques  ***************** */
-
-	private function __construct() {
+	
+	private function initConnection() {
 		global $CONFIG;
 		if(isset($CONFIG['db']['unix_socket'])) {
-			$this->connection = new PDO('mysql:unix_socket=' . $CONFIG['db']['unix_socket'] . ';dbname=' . $CONFIG['db']['dbname'], $CONFIG['db']['username'], $CONFIG['db']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_PERSISTENT => true));
+			self::$connection = new PDO('mysql:unix_socket=' . $CONFIG['db']['unix_socket'] . ';dbname=' . $CONFIG['db']['dbname'], $CONFIG['db']['username'], $CONFIG['db']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_PERSISTENT => true));
 		} else {
-			$this->connection = new PDO('mysql:host=' . $CONFIG['db']['host'] . ';port=' . $CONFIG['db']['port'] . ';dbname=' . $CONFIG['db']['dbname'], $CONFIG['db']['username'], $CONFIG['db']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_PERSISTENT => true));
+			self::$connection = new PDO('mysql:host=' . $CONFIG['db']['host'] . ';port=' . $CONFIG['db']['port'] . ';dbname=' . $CONFIG['db']['dbname'], $CONFIG['db']['username'], $CONFIG['db']['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_PERSISTENT => true));
 		}
 	}
-
+	
 	public static function getLastInsertId() {
-		if (!isset(self::$sharedInstance)) {
-			throw new Exception('DB : Aucune connection active - impossible d\'avoir le dernier ID inséré');
-		}
-		return self::$sharedInstance->connection->lastInsertId();
+		return self::getConnection()->lastInsertId();
 	}
-
+	
 	public static function getConnection() {
-		if (!isset(self::$sharedInstance)) {
-			self::$sharedInstance = new self();
-		} else if (self::$sharedInstance->lastConnection + 120 < strtotime('now')) {
+		if(self::$connection == null){
+			self::initConnection();
+		}else if (self::$lastConnection + 120 < strtotime('now')) {
 			try {
-				$result = @self::$sharedInstance->connection->query('select 1;');
+				$result = @self::$connection->query('select 1;');
 				if (!$result) {
-					self::$sharedInstance = new self();
+					self::initConnection();
 				}
 			} catch (Exception $e) {
-				self::$sharedInstance = new self();
+				self::initConnection();
 			}
 		}
-		self::$sharedInstance->lastConnection = strtotime('now');
-		return self::$sharedInstance->connection;
+		self::$lastConnection = strtotime('now');
+		return self::$connection;
 	}
-
+	
 	public static function &CallStoredProc($_procName, $_params, $_fetch_type, $_className = NULL, $_fetch_opt = NULL) {
 		$bind_params = '';
 		foreach ($_params as $value) {
@@ -79,9 +75,9 @@ class DB {
 		} else {
 			return self::Prepare("CALL $_procName($bind_params)", $_params, $_fetch_type);
 		}
-
+		
 	}
-
+	
 	public static function &Prepare($_query, $_params, $_fetchType = self::FETCH_TYPE_ROW, $_fetch_param = PDO::FETCH_ASSOC, $_fetch_opt = NULL) {
 		$stmt = self::getConnection()->prepare($_query);
 		$res = NULL;
@@ -106,11 +102,11 @@ class DB {
 		}
 		return $res;
 	}
-
+	
 	public function __clone() {
 		trigger_error('DB : Cloner cet objet n\'est pas permis', E_USER_ERROR);
 	}
-
+	
 	public static function optimize() {
 		$tables = self::Prepare("SELECT TABLE_NAME FROM information_schema.TABLES WHERE Data_Free > 0", array(), DB::FETCH_TYPE_ALL);
 		foreach ($tables as $table) {
@@ -119,19 +115,19 @@ class DB {
 			self::Prepare('OPTIMIZE TABLE `' . $table . '`', array(), DB::FETCH_TYPE_ROW);
 		}
 	}
-
+	
 	public static function beginTransaction() {
 		self::getConnection()->beginTransaction();
 	}
-
+	
 	public static function commit() {
 		self::getConnection()->commit();
 	}
-
+	
 	public static function rollBack() {
 		self::getConnection()->rollBack();
 	}
-
+	
 	/**
 	* Saves an entity inside the repository. If the entity is new a new row
 	* will be created. If the entity is not new the row will be updated.
@@ -186,7 +182,11 @@ class DB {
 				if (!$_direct && method_exists($object, 'getId')) {
 					$parameters['id'] = $object->getId(); //override if necessary
 				}
-				$sql = 'UPDATE `' . self::getTableName($object) . '` SET ' . implode(', ', $sql) . ' WHERE id = :id';
+				if ($_replace) {
+					$sql = 'REPLACE INTO `' . self::getTableName($object) . '` SET ' . implode(', ', $sql);
+				}else{
+					$sql = 'UPDATE `' . self::getTableName($object) . '` SET ' . implode(', ', $sql) . ' WHERE id = :id';
+				}
 				$res = self::Prepare($sql, $parameters, DB::FETCH_TYPE_ROW);
 			}else{
 				$res = true;
@@ -203,7 +203,7 @@ class DB {
 		}
 		return (null !== $res && false !== $res);
 	}
-
+	
 	public static function refresh($object) {
 		if (!self::getField($object, 'id')) {
 			throw new Exception('DB ne peut rafraîchir l\'objet sans son ID');
@@ -236,7 +236,7 @@ class DB {
 		}
 		return true;
 	}
-
+	
 	/**
 	* Retourne une liste d'objets ou un objet en fonction de filtres
 	* @param $_filters Filtres à appliquer
@@ -279,7 +279,7 @@ class DB {
 							$value = '%' . $value . '%';
 						}
 					}
-
+					
 					$where .= $property . ' ' . $operatorInformation['value'] . ' :' . $property . ' AND ';
 					$values[$property] = $value;
 					break;
@@ -293,7 +293,7 @@ class DB {
 		// si values contient id, on sait qu'il n'y aura au plus qu'une valeur
 		return self::Prepare($query . ';', $values, in_array('id', $values) ? self::FETCH_TYPE_ROW : self::FETCH_TYPE_ALL);
 	}
-
+	
 	/**
 	* Deletes an entity.
 	*
@@ -331,13 +331,13 @@ class DB {
 		}
 		return null !== $res && false !== $res;
 	}
-
+	
 	public static function checksum($_table) {
 		$sql = 'CHECKSUM TABLE ' . $_table;
 		$result = self::Prepare($sql, array(), DB::FETCH_TYPE_ROW);
 		return $result['Checksum'];
 	}
-
+	
 	/**
 	* Lock an entity.
 	*
@@ -366,7 +366,7 @@ class DB {
 		}
 		return null !== $res && false !== $res;
 	}
-
+	
 	/**
 	* Returns the name of the table where to save entities.
 	*
@@ -378,7 +378,7 @@ class DB {
 		}
 		return get_class($object);
 	}
-
+	
 	/**
 	*
 	*
@@ -405,7 +405,7 @@ class DB {
 		}
 		return self::$fields[$table];
 	}
-
+	
 	/**
 	* Forces the value of a field of a given object, even if this field is
 	* not accessible.
@@ -429,7 +429,7 @@ class DB {
 			$property->setAccessible(false);
 		}
 	}
-
+	
 	/**
 	* Builds the elements for an SQL query. It will return two lists, the
 	* first being the list of parts "key=:key" to inject in the SQL, the
@@ -447,7 +447,7 @@ class DB {
 		}
 		return array($sql, $parameters);
 	}
-
+	
 	/**
 	* Returns the value of a field of a given object. It'll try to use a
 	* getter first if defined. If not defined, we'll use the reflection API.
@@ -476,7 +476,7 @@ class DB {
 		}
 		return $retval;
 	}
-
+	
 	/**
 	* Returns the reflection class for the given object.
 	*
@@ -491,7 +491,7 @@ class DB {
 		}
 		return $reflections[$uuid];
 	}
-
+	
 	public static function buildField($_class, $_prefix = '') {
 		$fields = array();
 		foreach (self::getFields($_class) as $field) {
@@ -525,7 +525,7 @@ class DB {
 					$error .= $e->getMessage()."\n";
 				}
 			}
-			if(count(isset($tinfo['indexes']) && $tinfo['indexes']) > 0){
+			if(isset($tinfo['indexes']) && count($tinfo['indexes']) > 0){
 				foreach ($tinfo['indexes'] as $iname => $iinfo) {
 					if(!isset($iinfo['presql']) || trim($iinfo['presql']) == ''){
 						continue;
@@ -556,7 +556,7 @@ class DB {
 					}
 				}
 			}
-			if(count(isset($tinfo['indexes']) && $tinfo['indexes']) > 0){
+			if(isset($tinfo['indexes']) && count($tinfo['indexes']) > 0){
 				foreach ($tinfo['indexes'] as $iname => $iinfo) {
 					if(!isset($iinfo['sql']) || trim($iinfo['sql']) == ''){
 						continue;
@@ -596,8 +596,6 @@ class DB {
 		} catch (\Exception $e) {
 			$describes = array();
 		}
-		
-		
 		$return =  array($_table['name'] => array('status' => 'ok','fields' => array(),'indexes' => array(),'sql' => ''));
 		if(count($describes) == 0){
 			$return = array($_table['name'] => array(
@@ -629,6 +627,7 @@ class DB {
 			$return[$_table['name']]['sql'] = trim($return[$_table['name']]['sql'],';');
 			return $return;
 		}
+		$forceRebuildIndex = false;
 		foreach ($_table['fields'] as $field) {
 			$found = false;
 			foreach ($describes as $describe) {
@@ -636,6 +635,9 @@ class DB {
 					continue;
 				}
 				$return[$_table['name']]['fields'] = array_merge($return[$_table['name']]['fields'],self::compareField($field,$describe,$_table['name']));
+				if(isset($return[$_table['name']]['fields'][$field['name']]) && $return[$_table['name']]['fields'][$field['name']]['status'] == 'nok'){
+					$forceRebuildIndex = true;
+				}
 				$found = true;
 			}
 			if(!$found){
@@ -670,7 +672,8 @@ class DB {
 				if($showIndex['Key_name'] != $index['Key_name']){
 					continue;
 				}
-				$return[$_table['name']]['indexes'] = array_merge($return[$_table['name']]['indexes'],self::compareIndex($index,$showIndex,$_table['name']));
+				
+				$return[$_table['name']]['indexes'] = array_merge($return[$_table['name']]['indexes'],self::compareIndex($index,$showIndex,$_table['name'],$forceRebuildIndex));
 				$found = true;
 			}
 			if(!$found){
@@ -745,7 +748,7 @@ class DB {
 		return $return;
 	}
 	
-	function compareIndex($_ref_index,$_real_index,$_table_name){
+	function compareIndex($_ref_index,$_real_index,$_table_name,$_forceRebuild = false){
 		$return = array($_ref_index['Key_name'] => array('status' => 'ok','presql' => '','sql' => ''));
 		if($_ref_index['Non_unique'] != $_real_index['Non_unique']){
 			$return[$_ref_index['Key_name']]['status'] = 'nok';
@@ -754,6 +757,10 @@ class DB {
 		if($_ref_index['columns'] != $_real_index['columns']){
 			$return[$_ref_index['Key_name']]['status'] = 'nok';
 			$return[$_ref_index['Key_name']]['message'] = 'Columns nok';
+		}
+		if($_forceRebuild){
+			$return[$_ref_index['Key_name']]['status'] = 'nok';
+			$return[$_ref_index['Key_name']]['message'] = 'Force rebuild';
 		}
 		if($return[$_ref_index['Key_name']]['status'] == 'nok'){
 			$return[$_ref_index['Key_name']]['presql'] =  'ALTER TABLE `'.$_table_name.'` DROP INDEX `'.$_ref_index['Key_name'].'`;';
@@ -795,5 +802,5 @@ class DB {
 		$return .= ')';
 		return $return;
 	}
-
+	
 }

@@ -45,7 +45,15 @@ try {
 }
 try {
 	require_once __DIR__ . '/../core/php/core.inc.php';
-	
+	if(method_exists ('DB','compareAndFix')){
+		try {
+			echo "Check jeedom database...";
+			DB::compareAndFix(json_decode(file_get_contents(__DIR__.'/database.json'),true),'all',true);
+			echo "OK\n";
+		} catch (Exception $ex) {
+			echo "***ERREUR*** " . $ex->getMessage() . "\n";
+		}
+	}
 	if (config::byKey('object:summary') == '' || !is_array(config::byKey('object:summary'))) {
 		config::save('object:summary',
 		array('security' => array('key' => 'security', 'name' => 'Alerte', 'calcul' => 'sum', 'icon' => '<i class="icon jeedom-alerte2"></i>', 'unit' => '', 'count' => 'binary', 'allowDisplayZero' => false),
@@ -67,7 +75,7 @@ $crons = cron::all();
 if (is_array($crons)) {
 	if (class_exists('Cron\CronExpression')) {
 		foreach ($crons as $cron) {
-			$c = new Cron\CronExpression($cron->getSchedule(), new Cron\FieldFactory);
+			$c = new Cron\CronExpression(checkAndFixCron($cron->getSchedule()), new Cron\FieldFactory);
 			try {
 				if (!$c->isDue()) {
 					$c->getNextRunDate();
@@ -249,6 +257,18 @@ if(method_exists('utils','attrChanged')){
 	$cron->setDeamon(0);
 	$cron->save();
 	
+	$cron = cron::byClassAndFunction('plugin', 'cron10');
+	if (!is_object($cron)) {
+		echo "Create plugin::cron10\n";
+		$cron = new cron();
+	}
+	$cron->setClass('plugin');
+	$cron->setFunction('cron10');
+	$cron->setSchedule('*/10 * * * * *');
+	$cron->setTimeout(10);
+	$cron->setDeamon(0);
+	$cron->save();
+	
 	$cron = cron::byClassAndFunction('plugin', 'cron15');
 	if (!is_object($cron)) {
 		echo "Create plugin::cron15\n";
@@ -343,28 +363,46 @@ if(method_exists('utils','attrChanged')){
 	if (file_exists(__DIR__ . '/../script/ngrok')) {
 		shell_exec(system::getCmdSudo() . 'rm -rf ' . __DIR__ . '/../script/ngrok');
 	}
+	try {
+		cache::flushWidget();
+	} catch (Exception $e) {
+		
+	} catch (Error $e) {
+		
+	}
 	
-	foreach (eqLogic::all() as $eqLogic) {
+	
+	
+	foreach (jeeObject::all() as $object) {
 		try {
-			$eqLogic->emptyCacheWidget();
-		} catch (Exception $e) {
+			$object->save();
+		} catch (Exception $exc) {
 			
 		}
 	}
 	
-	try {
-		foreach (object::all() as $object) {
-			$object->save();
-		}
-	} catch (Exception $exc) {
-		
-	}
 	
 	foreach (cmd::all() as $cmd) {
-		if ($cmd->getConfiguration('jeedomCheckCmdCmdActionId') != '') {
-			$cmd->setConfiguration('jeedomCheckCmdCmdActionId', '');
+		try {
+			$changed = false;
+			if ($cmd->getConfiguration('jeedomCheckCmdCmdActionId') != '') {
+				$cmd->setConfiguration('jeedomCheckCmdCmdActionId', '');
+				$changed = true;
+			}
+			if(trim($cmd->getTemplate('dashboard')) != '' && strpos($cmd->getTemplate('dashboard'),'::') === false){
+				$cmd->setTemplate('dashboard','core::'.$cmd->getTemplate('dashboard'));
+				$changed = true;
+			}
+			if(trim($cmd->getTemplate('mobile')) != '' && strpos($cmd->getTemplate('mobile'),'::') === false){
+				$cmd->setTemplate('mobile','core::'.$cmd->getTemplate('mobile'));
+				$changed = true;
+			}
+			if($changed){
+				$cmd->save();
+			}
+		} catch (Exception $exc) {
+			
 		}
-		$cmd->save();
 	}
 }
 
@@ -373,7 +411,7 @@ if (!file_exists(__DIR__ . '/../data/php/user.function.class.php')) {
 	copy(__DIR__ . '/../data/php/user.function.class.sample.php', __DIR__ . '/../data/php/user.function.class.php');
 }
 } catch (Exception $e) {
-	echo "Error : ";
+	echo "\nError : ";
 	echo $e->getMessage();
 }
 echo "[END CONSISTENCY]\n";

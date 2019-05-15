@@ -4,7 +4,7 @@ Las especificaciones (JSON RPC 2.0) :
 
 El acceso a la API es a través de la URL: URL * \ * _JEEDOM / core / api / jeeApi.php
 
-Divers
+Diverso
 ======
 
 ping
@@ -12,7 +12,7 @@ ping
 
 Devuelve pong, para probar la comunicación con Jeedom
 
-version
+versión
 -------
 
 Devuelve la versión de Jeedom
@@ -85,19 +85,19 @@ Parámetros:
 API JSON Objet
 ==============
 
-object::all
+jeeObject::all
 -----------
 
 Devuelve una lista de todos los objetos
 
-object::full
+jeeObject::full
 ------------
 
 Devuelve una lista de todos los objetos, con cada objeto de todo
 instalaciones y equipos para cada uno de todos los mandos y la
 declaraciones de éstos (por comandos de información de tipo)
 
-object::fullById
+jeeObject::fullById
 ----------------
 
 Devuelve un objeto con todas sus instalaciones y equipos para cada
@@ -108,7 +108,7 @@ Parámetros:
 
 -   int id
 
-object::byId
+jeeObject::byId
 ------------
 
 Devuelve el objeto especificado
@@ -117,14 +117,14 @@ Parámetros:
 
 -   int id
 
-object::fullById
+jeeObject::fullById
 ----------------
 
 Devuelve un objeto, instalaciones y equipos para cada todo
 órdenes y las declaraciones de cellse que (para los comandos de tipo
 info)
 
-object::save
+jeeObject::save
 ------------
 
 Devuelve el objeto especificado
@@ -349,7 +349,7 @@ Parámetros:
 
 -   int id (vide si c’est une création)
 
--   string name
+-   string name
 
 -   string logicalId
 
@@ -420,10 +420,10 @@ Parámetros:
 
 -   int id
 
-scenario::import
+scenario::import 
 ----------------
 
-Permet d’importer un scénario.
+Permite importar un escenario.
 
 Parámetros:
 
@@ -436,7 +436,7 @@ Parámetros:
 scenario::changeState
 ---------------------
 
-Change l’état du scénario spécifié.
+Cambia el estado del escenario especificado.
 
 Parámetros:
 
@@ -450,7 +450,7 @@ API JSON Log
 log::get
 --------
 
-Permet de récuperer un log
+Permite recuperar un log
 
 Parámetros:
 
@@ -472,7 +472,7 @@ Parámetros:
 log::empty
 ----------
 
-Permet de vider un log
+Permite vaciar un registro
 
 Parámetros:
 
@@ -481,7 +481,7 @@ Parámetros:
 log::remove
 -----------
 
-Permet de supprimer un log
+Permite eliminar un registro
 
 Parámetros:
 
@@ -498,7 +498,7 @@ Récupère la valeur d’une variable stockée dans le datastore
 Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
-    c’est scenario)
+    es escenario)
 
 -   id linkId : -1 pour le global (valeur pour les scénarios par défaut,
     ou l’id du scénario)
@@ -513,7 +513,7 @@ Enregistre la valeur d’une variable dans le datastore
 Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
-    c’est scenario)
+    es escenario)
 
 -   id linkId : -1 pour le global (valeur pour les scénarios par défaut,
     ou l’id du scénario)
@@ -533,7 +533,7 @@ Retourne la liste de tous les messages
 message::removeAll
 ------------------
 
-Supprime tous les messages
+Borra todos los mensajes
 
 API JSON Interaction
 ====================
@@ -562,12 +562,12 @@ API JSON System
 jeedom::halt
 ------------
 
-Permet d’arrêter Jeedom
+Permite detener a Jeedom
 
 jeedom::reboot
 --------------
 
-Permet de redémarrer Jeedom
+Permite reiniciar a Jeedom
 
 jeedom::isok
 ------------
@@ -649,7 +649,7 @@ Parámetros:
 plugin::deamonStop
 ------------------
 
-Force l’arret du démon
+Forzar la parada del deamon
 
 Parámetros:
 
@@ -658,7 +658,7 @@ Parámetros:
 plugin::deamonChangeAutoMode
 ----------------------------
 
-Change le mode de gestion du démon
+Cambiar el modo de gestión del daemon
 
 Parámetros:
 
@@ -696,7 +696,7 @@ Force le (re)démarrage du DNS Jeedom
 network::stopDns
 ----------------
 
-Force l’arret du DNS Jeedom
+Forzar la parada del DNS Jeedom
 
 network::dnsRun
 ---------------
@@ -715,7 +715,7 @@ Récupération de la liste des objets :
 
 ``` {.php}
 $jsonrpc = new jsonrpcClient('#URL_JEEDOM#/core/api/jeeApi.php', #API_KEY#);
-if($jsonrpc->sendRequest('object::all', array())){
+if($jsonrpc->sendRequest('jeeObject::all', array())){
     print_r($jsonrpc->getResult());
 }else{
     echo $jsonrpc->getError();

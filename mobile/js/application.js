@@ -1,7 +1,4 @@
 /***************Fonction d'initialisation*********************/
-
-var JEEDOM_DATA;
-
 $(document).ajaxStart(function () {
   nbActiveAjaxRequest++;
   $.showLoading();
@@ -14,14 +11,23 @@ $(document).ajaxStop(function () {
   }
 });
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').then(function(registration) {
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
 $(function () {
   MESSAGE_NUMBER = null;
   nbActiveAjaxRequest = 0;
   utid = Date.now();
-  
   $.mobile.orientationChangeEnabled = false;
   
-  $(window).on("orientationchange", function (event) {
+  $(window).on("resize", function (event) {
     deviceInfo = getDeviceType();
   });
   
@@ -32,7 +38,6 @@ $(function () {
     panel(false);
     page($(this).attr('data-page'), $(this).attr('data-title'), $(this).attr('data-option'), $(this).attr('data-plugin'));
   });
-  
   
   $('body').on('click','.objectSummaryParent',function(){
     modal(false);
@@ -51,15 +56,22 @@ $(function () {
     page('warnme','{{Me prévenir si}}',{cmd_id : $(this).data('cmd_id')},null,true);
   });
   
-  var webappCache = window.applicationCache;
+  $('body').on('click','#bt_switchTheme',function(){
+    var theme = 'core/themes/'+userProfils.mobile_theme_color_night+'/mobile/' + userProfils.mobile_theme_color_night + '.css';
+    if($('#jQMnDColor').attr('href') == theme){
+      theme = 'core/themes/'+userProfils.mobile_theme_color+'/mobile/' + userProfils.mobile_theme_color + '.css';
+    }
+    $('#jQMnDColor').attr('href', theme);
+    $('#jQMnDColor').attr('data-nochange',1);
+  });
   
+  var webappCache = window.applicationCache;
   
   function updateCacheEvent(e) {
     if (webappCache.status == 3) {
       $('#div_updateInProgress').html('<p>Mise à jour de l\'application en cours<br/><span id="span_updateAdvancement">0</span>%</p>');
       $('#div_updateInProgress').show();
     } else if (e.type == 'updateready') {
-      webappCache.swapCache();
       window.location.reload();
     }
     if (e.type == 'progress') {
@@ -72,24 +84,28 @@ $(function () {
     }
   }
   
-  webappCache.addEventListener('cached', updateCacheEvent, false);
-  webappCache.addEventListener('checking', updateCacheEvent, false);
-  webappCache.addEventListener('downloading', updateCacheEvent, false);
-  webappCache.addEventListener('error', updateCacheEvent, false);
-  webappCache.addEventListener('noupdate', updateCacheEvent, false);
-  webappCache.addEventListener('obsolete', updateCacheEvent, false);
-  webappCache.addEventListener('progress', updateCacheEvent, false);
-  webappCache.addEventListener('updateready', updateCacheEvent, false);
-  try{
-    webappCache.update();
-  }catch (e) {
-    
+  if (webappCache != undefined) {
+    webappCache.addEventListener('cached', updateCacheEvent, false);
+    webappCache.addEventListener('checking', updateCacheEvent, false);
+    webappCache.addEventListener('downloading', updateCacheEvent, false);
+    webappCache.addEventListener('error', updateCacheEvent, false);
+    webappCache.addEventListener('noupdate', updateCacheEvent, false);
+    webappCache.addEventListener('obsolete', updateCacheEvent, false);
+    webappCache.addEventListener('progress', updateCacheEvent, false);
+    webappCache.addEventListener('updateready', updateCacheEvent, false);
+    try{
+      webappCache.update();
+    } catch(e) {
+      
+    }
   }
+  
 });
 
 
+
 function setBackgroundImage(_path){
-  if(typeof userProfils == 'undefined' || typeof userProfils.hideBackgroundImg  == 'undefined' || userProfils.hideBackgroundImg == 1){
+  if(typeof jeedom.theme == 'undefined' || typeof jeedom.theme.hideBackgroundImg  == 'undefined' || jeedom.theme.hideBackgroundImg == 1){
     return;
   }
   $('.backgroundforJeedom').css('background-image','');
@@ -129,6 +145,62 @@ function isset() {
   return!0
 }
 
+function changeThemeAuto(_ambiantLight){
+  if(typeof jeedom.theme == 'undefined'){
+    return;
+  }
+  if(typeof jeedom.theme.mobile_theme_color_night == 'undefined' || typeof jeedom.theme.mobile_theme_color == 'undefined'){
+    return;
+  }
+  if(jeedom.theme.mobile_theme_color == jeedom.theme.mobile_theme_color_night){
+    return;
+  }
+  if (jeedom.theme.mobile_theme_useAmbientLight == "1" && 'AmbientLightSensor' in window) {
+    const sensor = new AmbientLightSensor();
+    sensor.onreading = () => {
+      if($('#jQMnDColor').attr('data-nochange') == 1){
+        return;
+      }
+      if(sensor.illuminance < 200 && sensor.illuminance > 50){
+        return;
+      }
+      var theme = 'core/themes/'+jeedom.theme.mobile_theme_color+'/mobile/' + jeedom.theme.mobile_theme_color + '.css';
+      if(sensor.illuminance < 50){
+        var theme = 'core/themes/'+jeedom.theme.mobile_theme_color_night+'/mobile/' + jeedom.theme.mobile_theme_color_night + '.css';
+      }
+      if($('#jQMnDColor').attr('href') != theme){
+        setTimeout(function(){
+          if(sensor.illuminance < 100 && sensor.illuminance > 50){
+            return;
+          }
+          var theme = 'core/themes/'+jeedom.theme.mobile_theme_color+'/mobile/' + jeedom.theme.mobile_theme_color + '.css';
+          if(sensor.illuminance < 50){
+            var theme = 'core/themes/'+jeedom.theme.mobile_theme_color_night+'/mobile/' + jeedom.theme.mobile_theme_color_night + '.css';
+          }
+          if($('#jQMnDColor').attr('href') != theme){
+            $('#jQMnDColor').attr('href', theme);
+          }
+        }, 500);
+      }
+    };
+    sensor.start();
+  }else if (jeedom.theme.theme_changeAccordingTime == "1"){
+    setInterval(function () {
+      if($('#jQMnDColor').attr('data-nochange') == 1){
+        return;
+      }
+      var theme = 'core/themes/'+jeedom.theme.mobile_theme_color_night+'/mobile/' + jeedom.theme.mobile_theme_color_night + '.css';
+      var currentTime = parseInt((new Date()).getHours()*100+ (new Date()).getMinutes());
+      if(parseInt(jeedom.theme.theme_start_day_hour.replace(':','')) <  currentTime && parseInt(jeedom.theme.theme_end_day_hour.replace(':','')) >  currentTime){
+        var theme = 'core/themes/'+jeedom.theme.mobile_theme_color+'/mobile/' + jeedom.theme.mobile_theme_color + '.css';
+      }
+      if($('#jQMnDColor').attr('href') != theme){
+        $('#jQMnDColor').attr('href', theme);
+      }
+    }, 60000);
+  }
+}
+
 function initApplication(_reinit) {
   $.ajax({
     type: 'POST',
@@ -141,17 +213,18 @@ function initApplication(_reinit) {
       confirm('Erreur de communication. Etes-vous connecté à Internet ? Voulez-vous réessayer ?');
     },
     success: function (data) {
-      JEEDOM_DATA= data.result;
-      insertHeader("apple-touch-icon",JEEDOM_DATA.product_icon, "128x128");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, "256x256");
-      insertHeader("apple-touch-icon-precomposed",JEEDOM_DATA.product_icon, "256x256");
-      insertHeader("shortcut icon",JEEDOM_DATA.product_icon, "128x128");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 320px)");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 320px) and (-webkit-device-pixel-ratio: 2)");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 768px) and (orientation: portrait)");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 768px) and (orientation: landscape)");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)");
-      insertHeader("apple-touch-startup-image",JEEDOM_DATA.product_icon, null, "(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)");
+      jeedom.theme= data.result;
+      insertHeader("apple-touch-icon",jeedom.theme.product_icon, "128x128");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, "256x256");
+      insertHeader("apple-touch-icon-precomposed",jeedom.theme.product_icon, "256x256");
+      insertHeader("shortcut icon",jeedom.theme.product_icon, "128x128");
+      insertHeader("icon",jeedom.theme.product_icon, "128x128");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 320px)");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 320px) and (-webkit-device-pixel-ratio: 2)");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 768px) and (orientation: portrait)");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 768px) and (orientation: landscape)");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)");
+      insertHeader("apple-touch-startup-image",jeedom.theme.product_icon, null, "(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)");
       if (data.state != 'ok' || (isset(data.result.connected) && data.result.connected == false)) {
         modal(false);
         panel(false);
@@ -176,18 +249,27 @@ function initApplication(_reinit) {
         user_id = data.result.user_id;
         plugins = data.result.plugins;
         userProfils = data.result.userProfils;
-        widget_margin =  data.result.widget_margin;
         jeedom.init();
         var include = ['core/js/core.js'];
-        
-        if (isset(userProfils) && userProfils != null) {
-          if (isset(userProfils.mobile_theme_color) && userProfils.mobile_theme_color != '') {
-            $('#jQMnDColor').attr('href', 'core/themes/'+userProfils.mobile_theme_color+'/mobile/' + userProfils.mobile_theme_color + '.css');
-            include.push( 'core/themes/'+userProfils.mobile_theme_color+'/mobile/' + userProfils.mobile_theme_color + '.js');
+        if(typeof jeedom.theme != 'undefined' && typeof jeedom.theme.css != 'undefined' && Object.keys(jeedom.theme.css).length > 0){
+          for(var i in jeedom.theme.css){
+            document.body.style.setProperty(i,jeedom.theme.css[i]);
           }
-          if (isset(userProfils.mobile_highcharts_theme) && userProfils.mobile_highcharts_theme != '') {
-            include.push('3rdparty/highstock/themes/' + userProfils.mobile_highcharts_theme + '.js');
-          }
+        }
+        if(typeof jeedom.theme.mobile_theme_useAmbientLight == undefined){
+          jeedom.theme.mobile_theme_useAmbientLight = "0";
+        }
+        if(typeof jeedom.theme.theme_changeAccordingTime == undefined){
+          jeedom.theme.theme_changeAccordingTime = "0";
+        }
+        $('body').attr('data-coloredIcons',0);
+        if(typeof jeedom.theme['interface::advance::coloredIcons'] != 'undefined' && jeedom.theme['interface::advance::coloredIcons'] == '1'){
+          $('body').attr('data-coloredIcons',1);
+        }
+        $('#jQMnDColor').attr('href', 'core/themes/'+jeedom.theme.current_mobile_theme+'/mobile/' + jeedom.theme.current_mobile_theme + '.css');
+        changeThemeAuto();
+        if (isset(jeedom.theme.current_mobile_theme) && jeedom.theme.current_mobile_theme != '') {
+          include.push( 'core/themes/'+jeedom.theme.current_mobile_theme+'/mobile/' + jeedom.theme.current_mobile_theme + '.js');
         }
         if (isset(data.result.custom) && data.result.custom != null) {
           if (isset(data.result.custom.css) && data.result.custom.css) {
@@ -380,17 +462,17 @@ function notify(_title, _text) {
 }
 
 function setTileSize(_filter) {
-  if(typeof widget_margin == 'undefined'){
-    widget_margin = 4;
+  if(typeof jeedom.theme['widget::margin'] == 'undefined'){
+    jeedom.theme['widget::margin'] = 4;
   }
   $(_filter).each(function () {
     $(this).css('margin','0px').css('padding','0px');
     if($(this).hasClass('col2')){
       $(this).width(deviceInfo.bSize * 2);
     }else{
-      $(this).width(deviceInfo.bSize-widget_margin);
+      $(this).width(deviceInfo.bSize-jeedom.theme['widget::margin']);
     }
-    $(this).css('margin',widget_margin+'px');
+    $(this).css('margin',jeedom.theme['widget::margin']+'px');
   });
 }
 

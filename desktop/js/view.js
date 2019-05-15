@@ -15,7 +15,7 @@
 */
 
 $('#div_pageContainer').on('click','.bt_gotoViewZone',function(){
-  var top = $('.div_displayViewContainer').scrollTop()+ $('.div_viewZone[data-zone_id='+$(this).attr('data-zone_id')+']').offset().top - 60;
+  var top = $('.div_displayViewContainer').scrollTop()+ $('.lg_viewZone[data-zone_id='+$(this).attr('data-zone_id')+']').offset().top - 60;
   $('.div_displayViewContainer').animate({ scrollTop: top}, 500);
 });
 
@@ -45,7 +45,7 @@ function fullScreen(_mode) {
 if (view_id != '') {
   jeedom.view.toHtml({
     id: view_id,
-    version: 'dview',
+    version: 'dashboard',
     useCache: true,
     error: function (error) {
       $('#div_alert').showAlert({message: error.message, level: 'danger'});
@@ -67,7 +67,7 @@ if (view_id != '') {
       }
       
       try {
-        $('.div_displayView:last').empty().html(html.html);
+        $('.div_displayView').last().empty().html(html.html);
       }catch(err) {
         console.log(err);
       }

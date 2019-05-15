@@ -2,7 +2,11 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-$plan3d = plan3d::byName3dHeaderId(init('name'), init('plan3dHeader_id'));
+if(init('id') != ''){
+	$plan3d = plan3d::byId(init('id'));
+}else{
+	$plan3d = plan3d::byName3dHeaderId(init('name'), init('plan3dHeader_id'));
+}
 if (!is_object($plan3d)) {
 	$plan3d = new plan3d();
 	$plan3d->setName(init('name'));
@@ -325,7 +329,7 @@ sendVarToJS('id', $plan3d->getId());
 			div += '</div>';
 			div += '</div>';
 			$('#div_conditionColor').append(div);
-			$('#div_conditionColor .conditionalColor:last').setValues(_conditionalColor, '.conditionalColorAttr');
+			$('#div_conditionColor .conditionalColor').last().setValues(_conditionalColor, '.conditionalColorAttr');
 		}
 		
 		$("#div_conditionColor").sortable({axis: "y", cursor: "move", items: ".conditionalColor", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
@@ -373,7 +377,7 @@ sendVarToJS('id', $plan3d->getId());
 			div += '</div>';
 			div += '</div>';
 			$('#div_conditionShow').append(div);
-			$('#div_conditionShow .conditionalShow:last').setValues(_conditionalShow, '.conditionalShowAttr');
+			$('#div_conditionShow .conditionalShow').last().setValues(_conditionalShow, '.conditionalShowAttr');
 		}
 		
 		$("#div_conditionColor").sortable({axis: "y", cursor: "move", items: ".conditionalColor", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});

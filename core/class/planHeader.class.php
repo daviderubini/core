@@ -26,6 +26,7 @@ class planHeader {
 	private $name;
 	private $image;
 	private $configuration;
+	private $order;
 	private $_changed = false;
 	
 	/*     * ***********************Méthodes statiques*************************** */
@@ -42,7 +43,8 @@ class planHeader {
 	
 	public static function all() {
 		$sql = 'SELECT ' . DB::buildField(__CLASS__) . '
-		FROM planHeader';
+		FROM planHeader
+		ORDER BY `order`';
 		return DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 	}
 	/**
@@ -144,6 +146,7 @@ class planHeader {
 		$icon = findCodeIcon('fa-paint-brush');
 		$_data['node']['plan' . $this->getId()] = array(
 			'id' => 'interactDef' . $this->getId(),
+			'type' => __('Design',__FILE__),
 			'name' => substr($this->getName(), 0, 20),
 			'icon' => $icon['icon'],
 			'fontfamily' => $icon['fontfamily'],
@@ -166,6 +169,10 @@ class planHeader {
 		return $this->name;
 	}
 	
+	public function getOrder() {
+		return $this->order;
+	}
+	
 	public function setId($_id) {
 		$this->_changed = utils::attrChanged($this->_changed,$this->id,$_id);
 		$this->id = $_id;
@@ -175,6 +182,12 @@ class planHeader {
 	public function setName($_name) {
 		$this->_changed = utils::attrChanged($this->_changed,$this->name,$_name);
 		$this->name = $_name;
+		return $this;
+	}
+	
+	public function setOrder($_order) {
+		$this->_changed = utils::attrChanged($this->_changed,$this->order,$_order);
+		$this->order = $_order;
 		return $this;
 	}
 	

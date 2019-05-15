@@ -31,9 +31,15 @@ sendVarToJS('plan3dHeader', utils::o2a($plan3dHeader));
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-lg-4 control-label">{{Position}}</label>
+						<div class="col-lg-2">
+							<input type="number" class="plan3dHeaderAttr form-control" data-l1key="order" min="0" />
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-lg-4 control-label">{{Code d'accès}}</label>
 						<div class="col-lg-2">
-							<input type="password" class="plan3dHeaderAttr form-control" data-l1key="configuration" data-l2key="accessCode" />
+							<input type="password" autocomplete="new-password" class="plan3dHeaderAttr form-control" data-l1key="configuration" data-l2key="accessCode" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -53,11 +59,7 @@ sendVarToJS('plan3dHeader', utils::o2a($plan3dHeader));
 							</span>
 						</div>
 					</div>
-<<<<<<< HEAD
-						<div class="form-group">
-=======
 					<div class="form-group">
->>>>>>> 7ee1bef7eca65f5d05360651d6d31fb0eccd8789
 						<label class="col-lg-4 control-label">{{Couleur du fond}}</label>
 						<div class="col-lg-2">
 							<input type="color" class="plan3dHeaderAttr form-control" data-l1key="configuration" data-l2key="backgroundColor" />
@@ -104,6 +106,7 @@ sendVarToJS('plan3dHeader', utils::o2a($plan3dHeader));
 							echo '</td>';
 							echo '<td>';
 							echo '<a class="btn btn-danger btn-xs bt_removePlan3dComposant pull-right"><i class="fas fa-trash"></i> {{Supprimer}}</a>';
+							echo '<a class="btn btn-default btn-xs bt_configurePlan3dComposant pull-right"><i class="fas fa-gear"></i> {{Configuration}}</a>';
 							echo '</td>';
 							echo '</tr>';
 						}
@@ -128,6 +131,12 @@ $('.bt_removePlan3dComposant').off('click').on('click',function(){
 			tr.remove();
 		}
 	});
+});
+
+$('.bt_configurePlan3dComposant').off('click').on('click',function(){
+	var tr = $(this).closest('tr');
+	$('#md_modal2').dialog({title: "{{Configuration du composant}}"});
+	$('#md_modal2').load('index.php?v=d&modal=plan3d.configure&id='+tr.attr('data-id')).dialog('open');
 });
 
 $('.plan3dHeaderAttr[data-l1key=configuration][data-l2key=icon]').on('dblclick',function(){
