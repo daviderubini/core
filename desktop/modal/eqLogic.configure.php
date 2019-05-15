@@ -11,12 +11,11 @@ sendVarToJS('eqLogicInfo', utils::o2a($eqLogic));
 sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->getHumanName())));
 ?>
 <div style="display: none;" id="md_displayEqLogicConfigure"></div>
-
-<a class="btn btn-success pull-right btn-sm" id="bt_eqLogicConfigureSave"><i class="far fa-check-circle"></i> {{Enregistrer}}</a>
-<a class="btn btn-danger pull-right btn-sm" id="bt_eqLogicConfigureRemove"><i class="fas fa-times"></i> {{Supprimer}}</a>
-<a class="btn btn-default pull-right btn-sm" id="bt_eqLogicConfigureRawObject"><i class="fas fa-info"></i> {{Informations}}</a>
-<a class="btn btn-default pull-right btn-sm" id="bt_eqLogicConfigureLogRealTime"><i class="far fa-file"></i> {{Log}}</a>
-<a class="btn btn-default pull-right btn-sm" id="bt_eqLogicConfigureGraph"><i class="fas fa-object-group"></i> {{Liens}}</a>
+<div class="input-group pull-right" style="display:inline-flex">
+	<span class="input-group-btn">
+		<a class="btn btn-default roundedLeft btn-sm" id="bt_eqLogicConfigureRawObject"><i class="fas fa-info"></i> {{Informations}}</a><a class="btn btn-default btn-sm" id="bt_eqLogicConfigureLogRealTime"><i class="far fa-file"></i> {{Log}}</a><a class="btn btn-default btn-sm" id="bt_eqLogicConfigureGraph"><i class="fas fa-object-group"></i> {{Liens}}</a><a class="btn btn-success btn-sm" id="bt_eqLogicConfigureSave"><i class="far fa-check-circle"></i> {{Enregistrer}}</a><a class="btn btn-danger roundedRight btn-sm" id="bt_eqLogicConfigureRemove"><i class="fas fa-times"></i> {{Supprimer}}</a>
+	</span>
+</div>
 
 <ul class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active"><a href="#eqLogic_information" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i> {{Informations}}</a></li>
@@ -37,49 +36,49 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 	<div role="tabpanel" class="tab-pane active" id="eqLogic_information">
 		<br/>
 		<div class="row">
-			<div class="col-sm-4" >
+			<div class="col-sm-6" >
 				<form class="form-horizontal">
 					<fieldset>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{ID}}</label>
+							<label class="col-sm-7 control-label">{{ID}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="id" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="id"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Nom}}</label>
+							<label class="col-sm-7 control-label">{{Nom}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="name" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="name"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{ID logique}}</label>
+							<label class="col-sm-7 control-label">{{ID logique}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="logicalId" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="logicalId"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{ID de l'objet}}</label>
+							<label class="col-sm-7 control-label">{{ID de l'objet}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="object_id" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="object_id"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Date de création}}</label>
+							<label class="col-sm-7 control-label">{{Date de création}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="createtime" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="createtime"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Date de changement de pile(s)}}</label>
+							<label class="col-sm-7 control-label">{{Date de changement de pile(s)}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="batterytime" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="batterytime"></span>
 							</div>
 						</div>
 					</fieldset>
 				</form>
 			</div>
-			<div class="col-sm-4" >
+			<div class="col-sm-6" >
 				<form class="form-horizontal">
 					<fieldset>
 						<div class="form-group">
@@ -93,36 +92,36 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Type}}</label>
+							<label class="col-sm-6 control-label">{{Type}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="eqType_name" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="eqType_name"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Tentative échouée}}</label>
+							<label class="col-sm-6 control-label">{{Tentative échouée}}</label>
 							<div class="col-sm-4">
-								<span class="label label-primary" style="font-size : 1em;"><?php echo $eqLogic->getStatus('numberTryWithoutSuccess', 0) ?></span>
+								<span class="label label-primary"><?php echo $eqLogic->getStatus('numberTryWithoutSuccess', 0) ?></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Date de dernière communication}}</label>
+							<label class="col-sm-6 control-label">{{Date de dernière communication}}</label>
 							<div class="col-sm-4">
-								<span class="label label-primary" style="font-size : 1em;"><?php echo $eqLogic->getStatus('lastCommunication') ?></span>
+								<span class="label label-primary"><?php echo $eqLogic->getStatus('lastCommunication') ?></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Dernière mise à jour}}</label>
+							<label class="col-sm-6 control-label">{{Dernière mise à jour}}</label>
 							<div class="col-sm-4">
-								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="updatetime" style="font-size : 1em;"></span>
+								<span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="updatetime"></span>
 							</div>
 						</div>
 					</fieldset>
 				</form>
 			</div>
-			<div class="col-sm-4" >
+			<div class="col-sm-12" >
 				<div class="form-group">
-					<label class="col-sm-2 control-label">{{Tag}}</label>
-					<div class="col-sm-10">
+					<label class="col-sm-1 control-label">{{Tag(s)}}</label>
+					<div class="col-sm-11">
 						<input class="eqLogicAttr form-control" data-l1key="tags" />
 					</div>
 				</div>
@@ -156,212 +155,76 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 		?>
 		<div role="tabpanel" class="tab-pane" id="eqLogic_display">
 			<br/>
-			<legend><i class="fas fa-tint"></i> {{Widget}}</legend>
-			<table class="table table-bordered table-condensed">
-				<thead>
-					<tr>
-						<th></th>
+			<?php if(is_array($eqLogic->widgetPossibility('parameters')) && count($eqLogic->widgetPossibility('parameters')) > 0){ ?>
+				<legend><i class="fas fa-tint"></i> {{Widget}}</legend>
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th></th>
+							<?php
+							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
+								echo '<th style="width:20%">{{' . $value['name'] . '}}';
+								echo '</th>';
+							}
+							?>
+						</tr>
+					</thead>
+					<tbody>
 						<?php
-						foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-							echo '<th style="width:20%">{{' . $value['name'] . '}}';
-							if (in_array($key, array('plan', 'view'))) {
-								echo '<i class="fas fa-eye pull-right cursor bt_displayWidget" data-version="d' . $key . '" aria-hidden="true"></i>';
-							} elseif ($key == 'dashboard') {
-								echo '<i class="fas fa-eye pull-right cursor bt_displayWidget" data-version="' . $key . '" aria-hidden="true"></i>';
-							}
-							echo '</th>';
-						}
-						?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if ($eqLogic->widgetPossibility('custom::visibility')) {
-						?>
-						<tr>
-							<td>{{Visible}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
+						if (is_array($eqLogic->widgetPossibility('parameters'))) {
+							foreach ($eqLogic->widgetPossibility('parameters') as $pKey => $parameter) {
+								echo '<tr>';
 								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::visibility::' . $key)) {
-									echo '<input type="checkbox" class="eqLogicAttr" data-l1key="display" data-l2key="showOn' . $key . '" checked />';
-								}
+								echo $parameter['name'];
 								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::displayName')) {
-						?>
-						<tr>
-							<td>{{Afficher le nom}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::displayName::' . $key)) {
-									echo '<input type="checkbox" class="eqLogicAttr" data-l1key="display" data-l2key="showNameOn' . $key . '" checked />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::displayObjectName')) {
-						?>
-						<tr>
-							<td>{{Afficher le nom de l'objet}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::displayObjectName::' . $key)) {
-									echo '<input type="checkbox" class="eqLogicAttr" data-l1key="display" data-l2key="showObjectNameOn' . $key . '" />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::background-color')) {
-						?>
-						<tr>
-							<td>{{Couleur de fond}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::background-color::' . $key)) {
-									echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr background-color-default" data-l1key="display" data-l2key="background-color-default' . $key . '" checked /></label>';
-									echo '<span class="span_configureBackgroundColor" style="display:none;" >';
-									echo ' <label>{{Transparent}} <input type="checkbox" class="eqLogicAttr background-color-transparent" data-l1key="display" data-l2key="background-color-transparent' . $key . '" /></label>';
-									echo ' <input type="color" class="eqLogicAttr background-color" data-l1key="display" data-l2key="background-color' . $key . '" value="' . $eqLogic->getBackgroundColor($key) . '" />';
-									echo '</span>';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::background-opacity')) {
-						?>
-						<tr>
-							<td>{{Opacité}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::background-opacity::' . $key)) {
-									echo '<input type="numeric" class="eqLogicAttr form-control input-sm" data-l1key="display" data-l2key="background-opacity' . $key . '" placeholder="{{Entre 0 et 1}}" />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::text-color')) {
-						?>
-						<tr>
-							<td>{{Couleur du texte}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::text-color::' . $key)) {
-									echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr color-default" data-l1key="display" data-l2key="color-default' . $key . '" checked /></label>';
-									echo ' <input type="color" class="eqLogicAttr color" data-l1key="display" data-l2key="color' . $key . '" value="#ffffff" style="display:none;" />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::border')) {
-						?>
-						<tr>
-							<td>{{Bordures}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::border::' . $key)) {
-									echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr border-default" data-l1key="display" data-l2key="border-default' . $key . '" checked /></label>';
-									echo ' <input class="eqLogicAttr border form-control inline-block pull-right input-sm" data-l1key="display" data-l2key="border' . $key . '" style="display:none;width:50%" />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					?>
-					<?php if ($eqLogic->widgetPossibility('custom::border-radius')) {
-						?>
-						<tr>
-							<td>{{Arrondi des bordures (en px)}}</td>
-							<?php
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if ($eqLogic->widgetPossibility('custom::border-radius::' . $key)) {
-									echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr border-radius-default" data-l1key="display" data-l2key="border-radius-default' . $key . '" checked /></label>';
-									echo ' <input type="number" class="eqLogicAttr border-radius form-control inline-block pull-right input-sm" data-l1key="display" data-l2key="border-radius' . $key . '" style="display:none;width:50%" />';
-								}
-								echo '</td>';
-							}
-							?>
-						</tr>
-					<?php }
-					if (is_array($eqLogic->widgetPossibility('parameters'))) {
-						foreach ($eqLogic->widgetPossibility('parameters') as $pKey => $parameter) {
-							echo '<tr>';
-							echo '<td>';
-							echo $parameter['name'];
-							echo '</td>';
-							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<td>';
-								if (!isset($parameter['allow_displayType'])) {
-									continue;
-								}
-								if (!isset($parameter['type'])) {
-									continue;
-								}
-								if (is_array($parameter['allow_displayType']) && !in_array($key, $parameter['allow_displayType'])) {
-									continue;
-								}
-								if ($parameter['allow_displayType'] === false) {
-									continue;
-								}
-								$default = '';
-								$display = '';
-								if (isset($parameter['default'])) {
-									$display = 'display:none;';
-									$default = $parameter['default'];
-									echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr advanceWidgetParameterDefault" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '-default" checked /></label>';
-								}
-								switch ($parameter['type']) {
-									case 'color':
-									if ($parameter['allow_transparent']) {
-										echo '<span class="advanceWidgetParameter" style="' . $display . '">';
-										echo ' <label>{{Transparent}} <input type="checkbox" class="eqLogicAttr advanceWidgetParameterColorTransparent" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '-transparent" /></label>';
-										echo '<input type="color" class="eqLogicAttr pull-right inline-block advanceWidgetParameterColor" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" value="' . $default . '" />';
-										echo '</span>';
-									} else {
-										echo '<input type="color" class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
+								foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
+									echo '<td>';
+									if (!isset($parameter['allow_displayType'])) {
+										continue;
 									}
-									break;
-									case 'input':
-									echo '<input class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
-									break;
-									case 'number':
-									echo '<input type="number" class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
-									break;
+									if (!isset($parameter['type'])) {
+										continue;
+									}
+									if (is_array($parameter['allow_displayType']) && !in_array($key, $parameter['allow_displayType'])) {
+										continue;
+									}
+									if ($parameter['allow_displayType'] === false) {
+										continue;
+									}
+									$default = '';
+									$display = '';
+									if (isset($parameter['default'])) {
+										$display = 'display:none;';
+										$default = $parameter['default'];
+										echo '<label>{{Defaut}} <input type="checkbox" class="eqLogicAttr advanceWidgetParameterDefault" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '-default" checked /></label>';
+									}
+									switch ($parameter['type']) {
+										case 'color':
+										if ($parameter['allow_transparent']) {
+											echo '<span class="advanceWidgetParameter" style="' . $display . '">';
+											echo ' <label>{{Transparent}} <input type="checkbox" class="eqLogicAttr advanceWidgetParameterColorTransparent" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '-transparent" /></label>';
+											echo '<input type="color" class="eqLogicAttr pull-right inline-block advanceWidgetParameterColor" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" value="' . $default . '" />';
+											echo '</span>';
+										} else {
+											echo '<input type="color" class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
+										}
+										break;
+										case 'input':
+										echo '<input class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
+										break;
+										case 'number':
+										echo '<input type="number" class="eqLogicAttr pull-right advanceWidgetParameter form-control inline-block input-sm" data-l1key="display" data-l2key="advanceWidgetParameter' . $pKey . $key . '" style="width:50%;' . $display . '" value="' . $default . '" />';
+										break;
+									}
+									echo '</td>';
 								}
-								echo '</td>';
+								echo '</tr>';
 							}
-							echo '</tr>';
 						}
-					}
-					?>
-				</tbody>
-			</table>
+						?>
+					</tbody>
+				</table>
+			<?php } ?>
 			<?php
 			if ($eqLogic->widgetPossibility('custom::optionalParameters')) {
 				?>
@@ -408,8 +271,8 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 				<form class="form-horizontal">
 					<fieldset>
 						<div class="form-group">
-							<label class="col-sm-4 control-label">{{Type de batterie}}</label>
-							<div class="col-sm-3">
+							<label class="col-sm-3 control-label">{{Type}}</label>
+							<div class="col-sm-6">
 								<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_type"></input>
 							</div>
 							<div class="col-sm-3">
@@ -424,24 +287,24 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="form-group">
-					<label class="col-xs-3 eqLogicAttr label label-danger" style="font-size : 1.8em;line-height: 34px">{{Danger}}</label>
+					<label class="col-xs-3 eqLogicAttr label label-danger">{{Danger}}</label>
 					<div class="col-xs-2">
 						<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_danger_threshold" />
 					</input>
 				</div>
-				<label class="col-xs-3 label label-warning" style="font-size : 1.8em;line-height: 34px">{{Warning}}</label>
+				<label class="col-xs-3 eqLogicAttr label label-warning">{{Warning}}</label>
 				<div class="col-xs-2">
 					<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_warning_threshold" />
 				</div>
-				<label class="col-xs-2 label label-success" style="font-size : 1.8em;line-height: 34px">{{Ok}}</label>
+				<label class="col-xs-2 eqLogicAttr label label-success">{{Ok}}</label>
 			</div>
 		</div>
 	</div>
-	<legend><i class="fas fa-clock-o"></i> {{Alertes Communications}}</legend>
+	<legend><i class="far fa-clock"></i> {{Alertes Communications}}</legend>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="form-group">
-				<label class="col-xs-3 eqLogicAttr label label-danger" style="font-size : 1.8em;line-height: 34px">{{Danger (en minutes)}}</label>
+				<label class="col-xs-3 eqLogicAttr label label-danger">{{Danger (en minutes)}}</label>
 				<div class="col-xs-2">
 					<input class="eqLogicAttr form-control" data-l1key="timeout" />
 				</div>
@@ -490,7 +353,7 @@ sendVarToJS('eqLogicInfoSearchString', urlencode(str_replace('#', '', $eqLogic->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">{{Style général des cases (CSS)}}</label>
 					<div class="col-sm-10">
-						<input class="eqLogicAttr form-control input-sm" data-l1key="display" data-l2key="layout::dashboard::table::parameters" data-l3key="styletd" />
+						<input class="eqLogicAttr form-control" data-l1key="display" data-l2key="layout::dashboard::table::parameters" data-l3key="styletd" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -694,7 +557,7 @@ $('#bt_eqLogicConfigureSave').on('click', function () {
 });
 
 $('#bt_eqLogicConfigureRemove').on('click',function(){
-	bootbox.confirm('{{Etes-vous sûr de vouloir supprimer cet équipement ?}}', function (result) {
+	bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer cet équipement ?}}', function (result) {
 		if (result) {
 			var eqLogic = $('#div_displayEqLogicConfigure').getValues('.eqLogicAttr')[0];
 			jeedom.eqLogic.remove({
@@ -748,6 +611,7 @@ $('#bt_resetbattery').on('click',function(){
 				},
 				success: function (data) {
 					$('#md_displayEqLogicConfigure').showAlert({message: '{{Changement de pile(s) pris en compte}}', level: 'success'});
+					$('.eqLogicAttr[data-l1key=configuration][data-l2key=batterytime]').value(yyyy+'-'+mm+'-'+dd+' '+hh+':'+MM+':'+ss);
 				}
 			});
 		}

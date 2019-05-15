@@ -1,5 +1,5 @@
-El análisis de la página de equipos le permite ver muchas informaciones
-relativa a los equipos en el centro:
+La page Analyse d’équipements accessible depuis le menu Analyse → Equipements vous permet de voir de nombreuses infos
+relatives aux équipements de manière centralisée :
 
 -   el estado de la batería
 

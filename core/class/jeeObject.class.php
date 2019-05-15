@@ -32,6 +32,10 @@ class jeeObject {
 	protected $image;
 	protected $_child = array();
 	protected $_changed = false;
+<<<<<<< HEAD
+=======
+	protected $_summaryChanged = false;
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	
 	/*     * ***********************Méthodes statiques*************************** */
 	
@@ -78,9 +82,30 @@ class jeeObject {
 		$sql .= ' ORDER BY position';
 		if ($_all === false) {
 			$sql .= ' LIMIT 1';
-			return DB::Prepare($sql, array(), DB::FETCH_TYPE_ROW, PDO::FETCH_CLASS, __CLASS__);
+			$result = DB::Prepare($sql, array(), DB::FETCH_TYPE_ROW, PDO::FETCH_CLASS, __CLASS__);
+			if(!is_object($result)){
+				$sql = 'SELECT ' . DB::buildField(__CLASS__) . '
+				FROM object';
+				if ($_onlyVisible) {
+					$sql .= ' WHERE isVisible = 1';
+				}
+				$sql .= ' ORDER BY position';
+				$sql .= ' LIMIT 1';
+				$result = DB::Prepare($sql, array(), DB::FETCH_TYPE_ROW, PDO::FETCH_CLASS, __CLASS__);
+			}
+			return $result;
 		}
-		return DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
+		$result = DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
+		if(count($result) == 0){
+			$sql = 'SELECT ' . DB::buildField(__CLASS__) . '
+			FROM object';
+			if ($_onlyVisible) {
+				$sql .= ' WHERE isVisible = 1';
+			}
+			$sql .= ' ORDER BY position';
+			$result = DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
+		}
+		return $result;
 	}
 	
 	public static function buildTree($_object = null, $_visible = true) {
@@ -140,7 +165,11 @@ class jeeObject {
 	public static function deadCmd() {
 		$return = array();
 		foreach (jeeObject::all() as $object) {
-			foreach ($object->getConfiguration('summary', '') as $key => $summary) {
+			$sumaries = $object->getConfiguration('summary');
+			if(!is_array($sumaries) || count($sumaries) < 1){
+				continue;
+			}
+			foreach ($sumaries as $key => $summary) {
 				foreach ($summary as $cmdInfo) {
 					if (!cmd::byId(str_replace('#', '', $cmdInfo['cmd']))) {
 						$return[] = array('detail' => 'Résumé ' . $object->getName(), 'help' => config::byKey('object:summary')[$key]['name'], 'who' => $cmdInfo['cmd']);
@@ -184,7 +213,7 @@ class jeeObject {
 		if (count($toRefreshCmd) > 0) {
 			foreach ($toRefreshCmd as $value) {
 				try {
-					$value['object']->setCache('summaryHtmldesktop', '');
+					$value['object']->setCache('summaryHtmldashboard', '');
 					$value['object']->setCache('summaryHtmlmobile', '');
 					if ($value['object']->getConfiguration('summary_virtual_id') == '') {
 						continue;
@@ -206,7 +235,7 @@ class jeeObject {
 			}
 		}
 		if (count($global) > 0) {
-			cache::set('globalSummaryHtmldesktop', '');
+			cache::set('globalSummaryHtmldashboard', '');
 			cache::set('globalSummaryHtmlmobile', '');
 			$event = array('object_id' => 'global', 'keys' => array());
 			foreach ($global as $key => $value) {
@@ -262,7 +291,7 @@ class jeeObject {
 		return round(jeedom::calculStat($def[$_key]['calcul'], $value), 1);
 	}
 	
-	public static function getGlobalHtmlSummary($_version = 'desktop') {
+	public static function getGlobalHtmlSummary($_version = 'dashboard') {
 		$cache = cache::byKey('globalSummaryHtml' . $_version);
 		if ($cache->getValue() != '') {
 			return $cache->getValue();
@@ -286,7 +315,7 @@ class jeeObject {
 				$values[$key] = array_merge($values[$key], $result);
 			}
 		}
-		$margin = ($_version == 'desktop') ? 4 : 2;
+		$margin = ($_version == 'dashboard') ? 4 : 2;
 		
 		foreach ($values as $key => $value) {
 			if (count($value) == 0) {
@@ -299,7 +328,6 @@ class jeeObject {
 				$allowDisplayZero = 1;
 			} else {
 				$result = round(jeedom::calculStat($def[$key]['calcul'], $value), 1);
-				
 			}
 			if ($allowDisplayZero == 0 && $result == 0) {
 				$style = 'display:none;';
@@ -459,15 +487,19 @@ class jeeObject {
 		if ($this->getConfiguration('tagTextColor') == '') {
 			$this->setConfiguration('tagTextColor', '#FFFFFF');
 		}
-		if ($this->getConfiguration('desktop::summaryTextColor') == '') {
-			$this->setConfiguration('desktop::summaryTextColor', '');
-		}
 		if ($this->getConfiguration('mobile::summaryTextColor') == '') {
 			$this->setConfiguration('mobile::summaryTextColor', '');
 		}
 	}
 	
 	public function save() {
+		if($this->_changed){
+			log::add('debug','debug','object change : '.$this->getName());
+			cache::set('globalSummaryHtmldashboard', '');
+			cache::set('globalSummaryHtmlmobile', '');
+			$this->setCache('summaryHtmldashboard', '');
+			$this->setCache('summaryHtmlmobile', '');
+		}
 		DB::save($this);
 		return true;
 	}
@@ -581,16 +613,16 @@ class jeeObject {
 	public function getHumanName($_tag = false, $_prettify = false) {
 		if ($_tag) {
 			if ($_prettify) {
-				if ($this->getDisplay('tagColor') != '') {
-					return '<span class="label" style="text-shadow : none;background-color:' . $this->getDisplay('tagColor') . ' !important;color:' . $this->getDisplay('tagTextColor', 'white') . ' !important">' . $this->getDisplay('icon') . ' ' . $this->getName() . '</span>';
-				} else {
-					return '<span class="label label-primary" style="text-shadow : none;">' . $this->getDisplay('icon') . ' ' . $this->getName() . '</span>';
+				if ($this->getConfiguration('useCustomColor') == 1) {
+					return '<span class="label" style="background-color:' . $this->getDisplay('tagColor') . ' ;color:' . $this->getDisplay('tagTextColor', 'white') . '">' . $this->getDisplay('icon') . ' ' . $this->getName() . '</span>';
+				}else{
+					return '<span class="label labelObjectHuman">' . $this->getDisplay('icon') . ' ' . $this->getName() . '</span>';
 				}
 			} else {
 				return $this->getDisplay('icon') . ' ' . $this->getName();
 			}
 		} else {
-			return $this->getName();
+			return '['. $this->getName().']';
 		}
 	}
 	
@@ -629,7 +661,7 @@ class jeeObject {
 		return round(jeedom::calculStat($def[$_key]['calcul'], $values), 1);
 	}
 	
-	public function getHtmlSummary($_version = 'desktop') {
+	public function getHtmlSummary($_version = 'dashboard') {
 		if (trim($this->getCache('summaryHtml' . $_version)) != '') {
 			return $this->getCache('summaryHtml' . $_version);
 		}
@@ -642,9 +674,6 @@ class jeeObject {
 			$result = $this->getSummary($key);
 			if ($result !== null) {
 				$style = '';
-				if ($_version == 'desktop') {
-					$style = 'color:' . $this->getDisplay($_version . '::summaryTextColor', '#000000') . ';';
-				}
 				$allowDisplayZero = $value['allowDisplayZero'];
 				if ($value['calcul'] == 'text') {
 					$allowDisplayZero = 1;
@@ -652,7 +681,7 @@ class jeeObject {
 				if ($allowDisplayZero == 0 && $result == 0) {
 					$style = 'display:none;';
 				}
-				$return .= '<span style="margin-right:5px;' . $style . '" class="objectSummaryParent cursor" data-summary="' . $key . '" data-object_id="' . $this->getId() . '" data-displayZeroValue="' . $allowDisplayZero . '">' . $value['icon'] . ' <sup><span class="objectSummary' . $key . '">' . $result . '</span> ' . $value['unit'] . '</span></sup>';
+				$return .= '<span style="margin-right:5px;'.$style.'" class="objectSummaryParent cursor" data-summary="' . $key . '" data-object_id="' . $this->getId() . '" data-displayZeroValue="' . $allowDisplayZero . '">' . $value['icon'] . ' <sup><span class="objectSummary' . $key . '">' . $result . '</span> ' . $value['unit'] . '</span></sup>';
 			}
 		}
 		$return = trim($return) . '</span>';
@@ -674,6 +703,7 @@ class jeeObject {
 		$icon = findCodeIcon($this->getDisplay('icon'));
 		$_data['node']['object' . $this->getId()] = array(
 			'id' => 'object' . $this->getId(),
+			'type' => __('Objet',__FILE__),
 			'name' => $this->getName(),
 			'icon' => $icon['icon'],
 			'fontfamily' => $icon['fontfamily'],
@@ -745,7 +775,7 @@ class jeeObject {
 	}
 	
 	public function setName($_name) {
-		$_name = str_replace(array('&', '#', ']', '[', '%'), '', $_name);
+		$_name = cleanComponanteName($_name);
 		$this->_changed = utils::attrChanged($this->_changed,$this->name,$_name);
 		$this->name = $_name;
 		return $this;

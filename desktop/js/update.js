@@ -14,7 +14,8 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+var hasUpdate = false;
+var hasUpdateOther = false;
 printUpdate();
 
 $("#md_specifyUpdate").dialog({
@@ -31,11 +32,12 @@ $("#md_specifyUpdate").dialog({
   }
 });
 
+$('#pre_updateInfo').parent().height($(window).outerHeight() - $('header').outerHeight() - 160);
+
 $('#bt_updateJeedom').off('click').on('click', function () {
   $('#md_specifyUpdate').dialog({title: "{{Options}}"});
   $("#md_specifyUpdate").dialog('open');
 });
-
 
 $('.updateOption[data-l1key=force]').off('click').on('click',function(){
   if($(this).value() == 1){
@@ -45,7 +47,6 @@ $('.updateOption[data-l1key=force]').off('click').on('click',function(){
     $('.updateOption[data-l1key="backup::before"]').attr('disabled',false);
   }
 });
-
 
 $('#bt_doUpdate').off('click').on('click', function () {
   $("#md_specifyUpdate").dialog('close');
@@ -64,6 +65,7 @@ $('#bt_doUpdate').off('click').on('click', function () {
 });
 
 $('#bt_checkAllUpdate').off('click').on('click', function () {
+  if ($('a[href="#log"]').parent().hasClass('active')) $('a[href="#coreplugin"]').trigger('click')
   $.hideAlert();
   jeedom.update.checkAll({
     error: function (error) {
@@ -75,10 +77,9 @@ $('#bt_checkAllUpdate').off('click').on('click', function () {
   });
 });
 
-
 $('#table_update,#table_updateOther').delegate('.update', 'click', function () {
   var id = $(this).closest('tr').attr('data-id');
-  bootbox.confirm('{{Etes vous sur de vouloir mettre à jour cet objet ?}}', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir mettre à jour cet objet ?}}', function (result) {
     if (result) {
       $.hideAlert();
       jeedom.update.do({
@@ -97,7 +98,7 @@ $('#table_update,#table_updateOther').delegate('.update', 'click', function () {
 
 $('#table_update,#table_updateOther').delegate('.remove', 'click', function () {
   var id = $(this).closest('tr').attr('data-id');
-  bootbox.confirm('{{Etes vous sur de vouloir supprimer cet objet ?}}', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer cet objet ?}}', function (result) {
     if (result) {
       $.hideAlert();
       jeedom.update.remove({
@@ -125,7 +126,18 @@ $('#table_update,#table_updateOther').delegate('.checkUpdate', 'click', function
       printUpdate();
     }
   });
-  
+});
+
+$('#bt_saveUpdate').on('click',function(){
+  jeedom.update.saves({
+    updates : $('tbody tr').getValues('.updateAttr'),
+    error: function (error) {
+      $('#div_alert').showAlert({message: error.message, level: 'danger'});
+    },
+    success: function (data) {
+      loadPage('index.php?v=d&p=update&saveSuccessFull=1');
+    }
+  });
 });
 
 function getJeedomLog(_autoUpdate, _log) {
@@ -186,15 +198,24 @@ function printUpdate() {
       $('#div_alert').showAlert({message: error.message, level: 'danger'});
     },
     success: function (data) {
-      $('#table_update tbody').empty();
-      $('#table_updateOther tbody').empty();
+      var tr_update = []
+      var tr_update_other = [];
       for (var i in data) {
-        addUpdate(data[i]);
+        if (!isset(data[i].status)) continue
+        if (data[i].type == 'core' || data[i].type == 'plugin') {
+          tr_update.push(addUpdate(data[i]));
+        } else {
+          tr_update_other.push(addUpdate(data[i]));
+        }
       }
-      $('#table_update').trigger('update');
-      $('#table_updateOther').trigger('update');
+      $('#table_update tbody').empty().append(tr_update).trigger('update');
+      $('#table_updateOther tbody').empty().append(tr_update_other).trigger('update');
+      if (hasUpdate) $('li a[href="#coreplugin"] i').style('color', 'var(--al-warning-color)');
+      if (hasUpdateOther) $('li a[href="#other"] i').style('color', 'var(--al-warning-color)');
+      if (!hasUpdate && hasUpdateOther) $('li a[href="#other"]').trigger('click');
     }
   });
+
   jeedom.config.load({
     configuration: {"update::lastCheck":0,"update::lastDateCore": 0},
     error: function (error) {
@@ -208,68 +229,67 @@ function printUpdate() {
 }
 
 function addUpdate(_update) {
+  if (init(_update.status) == '') {
+    _update.status = 'OK';
+  }
+  _update.status = _update.status.toUpperCase();
   var labelClass = 'label-success';
-  if(init(_update.status) == ''){
-    _update.status = 'ok';
-  }
-  if (_update.status == 'update'){
+  if (_update.status == 'UPDATE') {
     labelClass = 'label-warning';
+    if (_update.type == 'core' || _update.type == 'plugin') {
+      if (!_update.configuration.hasOwnProperty('doNotUpdate') || _update.configuration.doNotUpdate == '0') hasUpdate = true;
+    } else {
+      if (!_update.configuration.hasOwnProperty('doNotUpdate') || _update.configuration.doNotUpdate == '0') hasUpdateOther = true;
+    }
   }
+
   var tr = '<tr data-id="' + init(_update.id) + '" data-logicalId="' + init(_update.logicalId) + '" data-type="' + init(_update.type) + '">';
-  tr += '<td style="width:40px;cursor:default;"><span class="updateAttr label ' + labelClass +'" data-l1key="status" style="font-size:0.8em;text-transform: uppercase;"></span>';
+  tr += '<td style="width:40px"><span class="updateAttr label ' + labelClass +'" data-l1key="status"></span>';
   tr += '</td>';
-  tr += '<td style="cursor:default;"><span class="updateAttr" data-l1key="id" style="display:none;"></span><span class="updateAttr" data-l1key="source"></span> / <span class="updateAttr" data-l1key="type"></span> : <span class="updateAttr label label-info" data-l1key="name" style="font-size:0.8em;"></span>';
+  tr += '<td><span class="hidden">' + _update.name + '</span><span class="updateAttr" data-l1key="id" style="display:none;"></span>';
+  tr += '<span class="updateAttr" data-l1key="source"></span> / <span class="updateAttr" data-l1key="type"></span> : <span class="updateAttr label label-info" data-l1key="name"></span>';
   if(_update.configuration && _update.configuration.version){
-    tr += ' <span class="label label-warning">'+_update.configuration.version+'</span>';
+    updClass = 'label-warning';
+    if (_update.configuration.version.toLowerCase() == 'stable') updClass = 'label-success';
+    if (_update.configuration.version.toLowerCase() != 'stable' && _update.configuration.version.toLowerCase() != 'beta') updClass = 'label-danger';
+    tr += ' <span class="label ' + updClass + '">' + _update.configuration.version + '</span>';
   }
+
+  _localVersion = _update.localVersion
+  if (_localVersion !== null && _localVersion.length > 19) _localVersion = _localVersion.substring(0,16) + '...'
+  _remoteVersion = _update.remoteVersion
+  if (_remoteVersion !== null && _remoteVersion.length > 19) _remoteVersion = _remoteVersion.substring(0,16) + '...'
+
   tr += '</td>';
-  tr += '<td style="width:250px;"><span class="updateAttr label label-primary" data-l1key="localVersion" style="font-size:0.8em;cursor:default;"></span></td>';
-  tr += '<td style="width:250px;"><span class="updateAttr label label-primary" data-l1key="remoteVersion" style="font-size:0.8em;cursor:default;"></span></td>';
-  tr += '<td style="width:180px;cursor:default;">';
+  tr += '<td style="width:160px;"><span class="label label-primary" data-l1key="localVersion">'+_localVersion+'</span></td>';
+  tr += '<td style="width:160px;"><span class="label label-primary" data-l1key="remoteVersion">'+_remoteVersion+'</span></td>';
+  tr += '<td style="width:180px;">';
   if (_update.type != 'core') {
-    tr += '<input type="checkbox" class="updateAttr" data-l1key="configuration" data-l2key="doNotUpdate"><span style="font-size:0.9em;">{{Ne pas mettre à jour}}</span>';
+    tr += '<input type="checkbox" class="updateAttr" data-l1key="configuration" data-l2key="doNotUpdate"><span>{{Ne pas mettre à jour}}</span>';
   }
   tr += '</td>';
-  tr += '<td>';
+  tr += '<td style="width:350px;">';
   if (_update.type != 'core') {
     if (isset(_update.plugin) && isset(_update.plugin.changelog) && _update.plugin.changelog != '') {
-      tr += '<a class="btn btn-default btn-xs cursor" target="_blank" href="'+_update.plugin.changelog+'" style="margin-bottom : 5px;"><i class="fas fa-book"></i> {{Changelog}}</a> ';
+      tr += '<a class="btn btn-xs cursor" target="_blank" href="'+_update.plugin.changelog+'"><i class="fas fa-book"></i> {{Changelog}}</a> ';
     }
-  }else{
-    tr += '<a class="btn btn-default btn-xs" href="https://jeedom.github.io/core/fr_FR/changelog" target="_blank" style="margin-bottom : 5px;"><i class="fas fa-book"></i> {{Changelog}}</a> ';
+  } else {
+    tr += '<a class="btn btn-xs" href="https://jeedom.github.io/core/fr_FR/changelog" target="_blank"><i class="fas fa-book"></i> {{Changelog}}</a> ';
   }
   if (_update.type != 'core') {
-    if (_update.status == 'update') {
-      tr += '<a class="btn btn-info btn-xs update" style="margin-bottom : 5px;" title="{{Mettre à jour}}"><i class="fas fa-refresh"></i> {{Mettre à jour}}</a> ';
-    }else if (_update.type != 'core') {
-      tr += '<a class="btn btn-info btn-xs update" style="margin-bottom : 5px;" title="{{Re-installer}}"><i class="fas fa-refresh"></i> {{Reinstaller}}</a> ';
+    if (_update.status == 'UPDATE') {
+      tr += '<a class="btn btn-warning btn-xs update" title="{{Mettre à jour}}"><i class="fas fa-sync"></i> {{Mettre à jour}}</a> ';
+    } else if (_update.type != 'core') {
+      tr += '<a class="btn btn-warning btn-xs update" title="{{Réinstaller}}"><i class="fas fa-sync"></i> {{Réinstaller}}</a> ';
     }
   }
-  tr += '<a class="btn btn-info btn-xs pull-right checkUpdate" style="margin-bottom : 5px;" ><i class="fas fa-check"></i> {{Vérifier}}</a>';
   if (_update.type != 'core') {
-    tr += '<a class="btn btn-danger btn-xs pull-right remove" style="margin-bottom : 5px;" ><i class="far fa-trash-alt"></i> {{Supprimer}}</a>';
+    tr += '<a class="btn btn-danger btn-xs remove"><i class="far fa-trash-alt"></i> {{Supprimer}}</a> ';
   }
+  tr += '<a class="btn btn-info btn-xs checkUpdate"><i class="fas fa-check"></i> {{Vérifier}}</a>';
   tr += '</td>';
   tr += '</tr>';
-  
-  if(_update.type == 'core' || _update.type == 'plugin'){
-    $('#table_update').append(tr);
-    $('#table_update tbody tr:last').setValues(_update, '.updateAttr');
-  }else{
-    $('#table_updateOther').append(tr);
-    $('#table_updateOther tbody tr:last').setValues(_update, '.updateAttr');
-  }
+  var html = $(tr);
+  html.setValues(_update, '.updateAttr');
+  return html;
 }
-
-$('#bt_saveUpdate').on('click',function(){
-  jeedom.update.saves({
-    updates : $('#table_update tbody tr').getValues('.updateAttr'),
-    error: function (error) {
-      $('#div_alert').showAlert({message: error.message, level: 'danger'});
-    },
-    success: function (data) {
-      $('#div_alert').showAlert({message: '{{Sauvegarde effectuée}}', level: 'success'});
-      printUpdate();
-    }
-  });
-});

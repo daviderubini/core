@@ -1,5 +1,9 @@
 La page Profil vous permet de configurer certains comportements de
+<<<<<<< HEAD
 Jeedom spécifiques à l’utilisateur : page d’accueil, thème de la
+=======
+Jeedom spécifiques à l’utilisateur : page d’accueil, thèmes de la
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 version desktop, de la version mobile, des graphiques…​ Elle permet
 aussi de changer votre mot de passe.
 
@@ -11,7 +15,11 @@ temas
 
 El panel de temas le permite ajustar los parámetros de la interfaz:
 
+<<<<<<< HEAD
 -   **Desktop** : thème à utiliser en mode desktop, attention seul le
+=======
+-   **Desktop** : thèmes à utiliser en mode desktop, attention seul le
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
     tema por defecto es apoyado oficialmente por Jeedom
 
 -   ** ** móvil de color: elegir el color de la interfaz
@@ -44,7 +52,12 @@ Se puede definir ciertos comportamientos de la interfaz:
 
     -   ** ** Muestra los menús dice panel de visualización Jeedom
         la izquierda, en su caso, para devolver este panel es
+<<<<<<< HEAD
         disponible sur la page de certains plugins​.
+=======
+        disponible sur la plupart des pages des plugins, ainsi que la
+        page des scénarii, des interactions, des objets…​.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Page par défaut** : page par défaut à afficher lors de la
     connexion en desktop/mobile
@@ -53,7 +66,11 @@ Se puede definir ciertos comportamientos de la interfaz:
     lors de l’arrivée sur le dashboard/mobile
 
 -   **Vue par défaut** : vue à afficher par défaut lors de l’arrivée sur
+<<<<<<< HEAD
     el dashboard/movil
+=======
+    le dashboard/mobile
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Design par défaut** : design à afficher par défaut lors de
     l’arrivée sur le dashboard/mobile
@@ -63,6 +80,7 @@ Se puede definir ciertos comportamientos de la interfaz:
 
 -   **Dashboard**
 
+<<<<<<< HEAD
     -   **Déplier le panneau des objets** : permet de rendre visible par
         défaut le menu des objets (à gauche) sur le dashboard
 
@@ -71,13 +89,30 @@ Se puede definir ciertos comportamientos de la interfaz:
     -   **Déplier le panneau des vues** : permet de rendre visible par
         défaut le menu des vues (à gauche) sur les vues
 
+=======
+    -   **Déplier le panneau des scénarii** : permet de rendre visible
+        par défaut le menu des scénarii (à droite) sur le dashboard
+
+    -   **Déplier le panneau des objets** : permet de rendre visible par
+        défaut le menu des objets (à gauche) sur le dashboard
+
+-   **Vue**
+
+    -   **Déplier le panneau des vues** : permet de rendre visible par
+        défaut le menu des vues (à gauche) sur les vues
+
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 Sécurité 
 --------
 
 -   **Authentification en 2 étapes** : permet de configurer
     l’authentification en 2 étapes (pour rappel, c’est un code changeant
     toutes les X secondes qui s’affiche sur une application mobile, type
+<<<<<<< HEAD
     google authentificator). A noter que la double authentification ne sera demandée que pour les connexions externes. Pour les connexions locales le code ne sera donc pas demandé.
+=======
+    google authentificator). A noter que la double authentification ne sera demandée que pour les connexions externe. Pour les connexion local le code ne sera donc pas demandé.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Mot de passe** : permet de changer votre mot de passe (ne pas
     oublier de le retaper en dessous)
@@ -86,6 +121,7 @@ Sécurité
 
 ### Sessions actives 
 
+<<<<<<< HEAD
 Vous avez ici la liste de vos sessions actuellement connectées, leur ID,
 leur IP ainsi que la date de dernière communication. En cliquant sur
 "Déconnecter" cela déconnectera l’utilisateur. Attention si il est sur
@@ -97,6 +133,19 @@ Vous retrouvez ici la liste de tous les péripheriques enregistrés (qui se
 connectent sans authentification) à votre Jeedom ainsi que la date de
 dernière utilisation. Vous pouvez ici supprimer l’enregistrement d’un
 périphérique. Attention cela ne le déconnecte pas mais empêchera juste
+=======
+Vous avez ici la liste de vos sessions actuellement connecté, leur ID,
+leur IP ainsi que la date de derniere communication. En cliquant sur
+"Déconnecter" cela déconnectera l’utilisateur. Attention si il est sur
+un péripherique enregistré cela supprimera églagement l’enregistrement.
+
+### Péripherique enregistrés 
+
+Vous retrouvez ici la liste de tous les péripheriques enregistré (qui se
+connecte sans authentification) à votre Jeedom ainsi que la date de
+derniere utilisation. Vous pouvez ici supprimer l’enregistrement d’un
+peripherique. Attention cela ne le deconnecte pas mais empechera juste
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 sa reconnection automatique.
 
 Notifications 

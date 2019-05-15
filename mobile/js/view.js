@@ -21,7 +21,7 @@ function initView(_view_id) {
     jeedom.history.chart = [];
     jeedom.view.toHtml({
       id: _view_id,
-      version: 'mview',
+      version: 'mobile',
       error: function (error) {
         $('#div_alert').showAlert({message: error.message, level: 'danger'});
       },
@@ -33,15 +33,28 @@ function initView(_view_id) {
     $('#bottompanel').panel('open');
   }
   
-  $(window).on("orientationchange", function (event) {
-    if (deviceInfo.type == 'phone') {
-      $('.chartContainer').width((deviceInfo.width - 20));
-    } else {
-      $('.chartContainer').width(((deviceInfo.width / 2) - 20));
-    }
-    setTileSize('.eqLogic');
-    setTileSize('.scenario');
-    $('.eqLogicZone').packery({gutter : 0});
+  $(window).on("resize", function (event) {
+    setTimeout(function(){
+      if (deviceInfo.type == 'phone') {
+        $('.chartContainer').width((deviceInfo.width - 20));
+      } else {
+        $('.chartContainer').width(((deviceInfo.width / 2) - 20));
+      }
+      setTileSize('.eqLogic');
+      setTileSize('.scenario');
+      $('.eqLogicZone').packery({gutter : 0});
+      var screenWidth = $(window).width() - 8;
+      $('.div_viewZone .table-responsive').each(function(){
+        $(this).width('auto')
+        $(this).css('max-width','none');
+        if($(this).width() < screenWidth){
+          $(this).width(screenWidth);
+        }else{
+          $(this).css('overflow','scroll');
+          $(this).css('max-width',screenWidth+'px');
+        }
+      });
+    }, 50);
   });
 }
 
@@ -63,5 +76,17 @@ function displayView(html) {
   }
   setTileSize('.eqLogic');
   $('.eqLogicZone').packery({gutter : 0});
+  setTimeout(function(){
+    $('.eqLogicZone').packery({gutter : 0});
+  }, 50);
   $('#div_displayView .ui-table-columntoggle-btn').remove();
+  var screenWidth = $(window).width() - 8;
+  $('.div_viewZone .table-responsive').each(function(){
+    if($(this).width() < screenWidth){
+      $(this).width(screenWidth);
+    }else{
+      $(this).css('overflow','scroll');
+      $(this).css('max-width',screenWidth+'px');
+    }
+  });
 }

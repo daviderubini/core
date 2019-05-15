@@ -26,7 +26,7 @@ Hier ist die URL =
 [http://\#IP\_JEEDOM\#/core/api/jeeApi.php?apikey=\#APIKEY\#&type=scenario&id=\#ID\#&action=\#ACTION\#](http://#IP_JEEDOM#/core/api/jeeApi.php?apikey=#APIKEY#&type=scenario&id=#ID#&action=#ACTION#)
 
 -   **id** : Entspricht der ID Ihres Szenarios. Die ID befindet sich auf der
-    entsprechenden Szenarioseite unter "Werkzeuge" → "Szenarien", sobald das 
+    page du scénario concerné, dans "Outils" → "Scénarios", une fois le
     Szenario ausgewählt wurde, neben dem Namen der Registerkarte "Allgemein".
     Eine andere Möglichkeit, sie zu finden ist : Klicken Sie in "Werkzeuge" → 
     "Szenarien" auf "Übersicht".
@@ -37,7 +37,7 @@ Hier ist die URL =
     zu aktivieren.
 
 -   **tags** [optional] : Wenn die Aktion "Start" ist, können Sie Tags an das 
-    Szenario übergeben (siehe Dokumentation zu den Szenarien) in dem
+    des tags au scénario (voir la documentation sur les scénarios) sous
     Format tags=toto%3D1%20tata%3D2 (beachten Sie, dass %20 einem 
     Leerzeichen und %3D einem = entspricht)
 

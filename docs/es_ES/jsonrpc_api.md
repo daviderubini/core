@@ -85,19 +85,31 @@ Parámetros:
 API JSON Objet
 ==============
 
+<<<<<<< HEAD
 object::all
+=======
+jeeObject::all
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 -----------
 
 Devuelve una lista de todos los objetos
 
+<<<<<<< HEAD
 object::full
+=======
+jeeObject::full
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Devuelve una lista de todos los objetos, con cada objeto de todo
 instalaciones y equipos para cada uno de todos los mandos y la
 declaraciones de éstos (por comandos de información de tipo)
 
+<<<<<<< HEAD
 object::fullById
+=======
+jeeObject::fullById
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ----------------
 
 Devuelve un objeto con todas sus instalaciones y equipos para cada
@@ -108,7 +120,11 @@ Parámetros:
 
 -   int id
 
+<<<<<<< HEAD
 object::byId
+=======
+jeeObject::byId
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Devuelve el objeto especificado
@@ -117,14 +133,22 @@ Parámetros:
 
 -   int id
 
+<<<<<<< HEAD
 object::fullById
+=======
+jeeObject::fullById
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ----------------
 
 Devuelve un objeto, instalaciones y equipos para cada todo
 órdenes y las declaraciones de cellse que (para los comandos de tipo
 info)
 
+<<<<<<< HEAD
 object::save
+=======
+jeeObject::save
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Devuelve el objeto especificado
@@ -349,7 +373,11 @@ Parámetros:
 
 -   int id (vide si c’est une création)
 
+<<<<<<< HEAD
 -   string name
+=======
+-   string name
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   string logicalId
 
@@ -420,10 +448,17 @@ Parámetros:
 
 -   int id
 
+<<<<<<< HEAD
 scenario::import
 ----------------
 
 Permet d’importer un scénario.
+=======
+scenario::import 
+----------------
+
+Permite importar un escenario.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -436,7 +471,11 @@ Parámetros:
 scenario::changeState
 ---------------------
 
+<<<<<<< HEAD
 Change l’état du scénario spécifié.
+=======
+Cambia el estado del escenario especificado.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -450,7 +489,11 @@ API JSON Log
 log::get
 --------
 
+<<<<<<< HEAD
 Permet de récuperer un log
+=======
+Permite recuperar un log
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -472,7 +515,11 @@ Parámetros:
 log::empty
 ----------
 
+<<<<<<< HEAD
 Permet de vider un log
+=======
+Permite vaciar un registro
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -481,7 +528,11 @@ Parámetros:
 log::remove
 -----------
 
+<<<<<<< HEAD
 Permet de supprimer un log
+=======
+Permite eliminar un registro
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -498,7 +549,11 @@ Récupère la valeur d’une variable stockée dans le datastore
 Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
+<<<<<<< HEAD
     c’est scenario)
+=======
+    es escenario)
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   id linkId : -1 pour le global (valeur pour les scénarios par défaut,
     ou l’id du scénario)
@@ -513,7 +568,11 @@ Enregistre la valeur d’une variable dans le datastore
 Parámetros:
 
 -   string type : type de la valeur stockée (pour les scénarios
+<<<<<<< HEAD
     c’est scenario)
+=======
+    es escenario)
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   id linkId : -1 pour le global (valeur pour les scénarios par défaut,
     ou l’id du scénario)
@@ -533,7 +592,11 @@ Retourne la liste de tous les messages
 message::removeAll
 ------------------
 
+<<<<<<< HEAD
 Supprime tous les messages
+=======
+Borra todos los mensajes
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 API JSON Interaction
 ====================
@@ -562,12 +625,20 @@ API JSON System
 jeedom::halt
 ------------
 
+<<<<<<< HEAD
 Permet d’arrêter Jeedom
+=======
+Permite detener a Jeedom
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 jeedom::reboot
 --------------
 
+<<<<<<< HEAD
 Permet de redémarrer Jeedom
+=======
+Permite reiniciar a Jeedom
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 jeedom::isok
 ------------
@@ -649,7 +720,11 @@ Parámetros:
 plugin::deamonStop
 ------------------
 
+<<<<<<< HEAD
 Force l’arret du démon
+=======
+Forzar la parada del deamon
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -658,7 +733,11 @@ Parámetros:
 plugin::deamonChangeAutoMode
 ----------------------------
 
+<<<<<<< HEAD
 Change le mode de gestion du démon
+=======
+Cambiar el modo de gestión del daemon
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Parámetros:
 
@@ -696,7 +775,11 @@ Force le (re)démarrage du DNS Jeedom
 network::stopDns
 ----------------
 
+<<<<<<< HEAD
 Force l’arret du DNS Jeedom
+=======
+Forzar la parada del DNS Jeedom
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 network::dnsRun
 ---------------
@@ -715,7 +798,7 @@ Récupération de la liste des objets :
 
 ``` {.php}
 $jsonrpc = new jsonrpcClient('#URL_JEEDOM#/core/api/jeeApi.php', #API_KEY#);
-if($jsonrpc->sendRequest('object::all', array())){
+if($jsonrpc->sendRequest('jeeObject::all', array())){
     print_r($jsonrpc->getResult());
 }else{
     echo $jsonrpc->getError();

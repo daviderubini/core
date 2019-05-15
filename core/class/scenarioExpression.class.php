@@ -130,11 +130,29 @@ class scenarioExpression {
 				$name = $scenario->getName();
 			}
 			$action = $_action['options']['action'];
-			$return .= __('Scénario : ', __FILE__) . $name . ' <i class="fa fa-arrow-right"></i> ' . $action;
+			$return .= __('Scénario : ', __FILE__) . $name . ' <i class="fas fa-arrow-right"></i> ' . $action;
 		} elseif ($_action['cmd'] == 'variable') {
 			$name = $_action['options']['name'];
 			$value = $_action['options']['value'];
-			$return .= __('Variable : ', __FILE__) . $name . ' <i class="fa fa-arrow-right"></i> ' . $value;
+			$return .= __('Variable : ', __FILE__) . $name . ' <i class="fas fa-arrow-right"></i> ' . $value;
+		} elseif ($_action['cmd'] == 'equipement') {
+			$name = eqLogic::toHumanReadable($_action['options']['eqLogic']);
+			$action = $_action['options']['action'];
+			switch ($_action['options']['action']) {
+				case 'activate':
+				$action = __('Activation de',__FILE__);
+				break;
+				case 'deactivate':
+				$action = __('Désactivation de',__FILE__);
+				break;
+				case 'hide':
+				$action = __('Masquage de',__FILE__);
+				break;
+				case 'show':
+				$action = __('Affichage de',__FILE__);
+				break;
+			}
+			$return .= $action.' : ' . $name;
 		} elseif (is_object(cmd::byId(str_replace('#', '', $_action['cmd'])))) {
 			$cmd = cmd::byId(str_replace('#', '', $_action['cmd']));
 			$eqLogic = $cmd->getEqLogic();
@@ -801,13 +819,14 @@ class scenarioExpression {
 		} catch (Exception $e) {
 			$result = $_value;
 		}
-		if ($_decimal == 0) {
-			return ceil(floatval(str_replace(',', '.', $result)));
-		} else {
-			return round(floatval(str_replace(',', '.', $result)), $_decimal);
-		}
+		return round(floatval(str_replace(',', '.', $result)), $_decimal);
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	public static function time_op($_time, $_value = 0 ) {
 		$_time = self::setTags($_time);
 		$_value = self::setTags($_value);
@@ -832,7 +851,12 @@ class scenarioExpression {
 		}
 		return $date->format('Gi');
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	public static function time_between($_time, $_start, $_end) {
 		$_time = self::setTags($_time);
 		$_start = self::setTags($_start);
@@ -1255,6 +1279,9 @@ class scenarioExpression {
 					event::add('jeedom::alertPopup', $options['message']);
 					$this->setLog($scenario, __('Affichage du popup : ', __FILE__) . $options['message']);
 					return;
+				}elseif ($this->getExpression() == 'setColoredIcon') {
+					config::save('interface::advance::coloredIcons',$options['state']);
+					event::add('jeedom::coloredIcons', $options['state']);
 				} elseif ($this->getExpression() == 'equipment' || $this->getExpression() == 'equipement') {
 					$eqLogic = eqLogic::byId(str_replace(array('#eqLogic', '#'), '', $this->getOptions('eqLogic')));
 					if (!is_object($eqLogic)) {
@@ -1522,7 +1549,11 @@ class scenarioExpression {
 						$cmd->execCmd($cmd_parameters);
 					}
 				} elseif ($this->getExpression() == 'tag') {
+<<<<<<< HEAD
 						$tags = $scenario->getTags();
+=======
+					$tags = $scenario->getTags();
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 					$options['value'] = self::setTags($options['value'], $scenario);
 					try {
 						$result = evaluate($options['value']);

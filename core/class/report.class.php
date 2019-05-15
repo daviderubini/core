@@ -1,27 +1,27 @@
 <?php
 
 /* This file is part of Jeedom.
- *
- * Jeedom is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Jeedom is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
+*
+* Jeedom is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Jeedom is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /* * ***************************Includes********************************* */
 require_once __DIR__ . '/../../core/php/core.inc.php';
 
 class report {
 	/*     * *************************Attributs****************************** */
-
+	
 	/*     * ***********************Methode static*************************** */
 	public static function clean() {
 		if (!file_exists(__DIR__ . '/../../data/report')) {
@@ -29,7 +29,11 @@ class report {
 		}
 		shell_exec('find ' . __DIR__ . '/../../data/report -type f -mtime +' . config::byKey('report::maxdays') . ' -delete');
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	public static function generate($_url, $_type, $_name, $_format = 'png', $_parameter = array()) {
 		if(!is_string($_format)){
 			$_format = 'png';
@@ -52,5 +56,9 @@ class report {
 		com_shell::execute($cmd);
 		return $out;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 }

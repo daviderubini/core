@@ -6,10 +6,14 @@ The page is accessible by Analysis → Health
 
 > **Note**
 >
-> Click on the icon on the right to access the benchmark of your
+> Un clic sur l’icône en haut à droite permet d’accéder au benchmark de votre
 > Jeedom.
 
+<<<<<<< HEAD
 La page santé de Jeedom se présente sous la forme d’un tableau. La 1ere
+=======
+La page santé de Jeedom se présente sous la forme d’un tableau. La 1ère
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 colonne vous donne une description de ce que Jeedom vérifie et dont le statut
 est affiché dans la 2ème colonne. Enfin la dernière colonne peut vous
 donner des conseils de résolution si la vérification n’est pas OK.

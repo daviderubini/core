@@ -76,7 +76,11 @@ Voila une [documentation](https://www.alsacreations.com/tuto/lire/612-Premiere-c
 - Username : "jeedom", password : "Mjeedom96"
 - Ou ce que vous avez mis à l'installation si vous êtes en DIY
 
+<<<<<<< HEAD
 A noter que lorsque vous ecrirez le mot de passe vous ne verrez rien s'ecrire à l'écran c'est normal.
+=======
+A noter que lorsque vous écrirez le mot de passe vous ne verrez rien s'écrire à l'écran, c'est normal.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Comment remettre à plat les droits ? 
 ====================================
@@ -121,6 +125,7 @@ plateforme android pure.
 Je ne peux mettre à jour certain plugin "Echec lors du téléchargement du fichier. Veuillez réessayer plus tard (taille inférieure à 100 octets)..." ? 
 ====================================================
 
+<<<<<<< HEAD
 Esto puede ser debido a varias cosas, es necesario :
 
 - Vérifier que votre Jeedom est toujours connecté au market (dans la page d'administration de jeedom, partie mise à jour vous avez un bouton de test)
@@ -128,6 +133,14 @@ Esto puede ser debido a varias cosas, es necesario :
 - Vérifier que vous avez bien de la place sur Jeedom (la page santé vous l'indiquera)
 - Comprueba que tu versión de Jeedom sea compatible con el plugin
 - Vérifiez que votre Jeedom est toujours correctement connecté au market (Dans la configuration de Jeedom, onglet mise à jour)
+=======
+Cela peut être dû à plusieurs choses, il faut : 
+
+- Vérifier que votre Jeedom est toujours connecté au market (dans la page d'administration de Jeedom, partie mise à jour vous avez un bouton de test)
+- Vérifier que le compte market a bien acheté le plugin en question
+- Vérifier que vous avez bien de la place sur Jeedom (la page santé vous l'indiquera)
+- Comprueba que tu versión de Jeedom sea compatible con el plugin
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 J’ai une page blanche 
 =====================
@@ -148,7 +161,11 @@ souvent, celui-ci indique le souci.
 J’ai un problème d’identifiant BDD 
 ==================================
 
+<<<<<<< HEAD
 Tienes que restablecer estos :
+=======
+Il faut réinitialiser ceux-ci :
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 ``` {.bash}
 bdd_password=$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 15)
@@ -161,7 +178,11 @@ sudo sed -i -e "s/#PASSWORD#/${bdd_password}/g" core/config/common.config.php
 sudo chown www-data:www-data core/config/common.config.php
 ```
 
+<<<<<<< HEAD
 Tengo \{\{...\}\} en todas partes
+=======
+J’ai des \{\{…​\}\} partout 
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 =======================
 
 La cause la plus fréquente est l’utilisation d’un plugin en version beta
@@ -248,12 +269,20 @@ plugin. En général, une mise à jour de jeedom corrige le souci.
 J'ai un équipement en timeout mais je ne le vois pas sur le dashboard
 =========================================
 
+<<<<<<< HEAD
 Les alerte sont classé par priorité, de la moins importante à la plus importante : timeout, batterie warning, batterie danger, alerte warning, alerte danger
+=======
+Les alertes sont classées par priorité, de la moins importante à la plus importante : timeout, batterie warning, batterie danger, alerte warning, alerte danger
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Mon Jeedom affiche en permanance "En cours de démarrage" même après 1h ? 
 =====================================
 
+<<<<<<< HEAD
 Si vous etes en DIY et sous Debian 9 ou plus, vérifiez qu'il n'y a pas eu une mise à jour d'Apache et donc le retour du privateTmp (visible en faisant `ls /tmp` et voir si il y a un dossier private\*Apache). Si c'est le cas il faut faire :
+=======
+Si vous êtes en DIY et sous Debian 9 ou plus, vérifiez qu'il n'y a pas eu une mise à jour d'Apache et donc le retour du privateTmp (visible en faisant `ls /tmp` et voir si il y a un dossier private\*Apache). Si c'est le cas il faut faire :
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 ``` 
 mkdir /etc/systemd/system/apache2.service.d
@@ -264,11 +293,16 @@ echo "PrivateTmp=no" >> /etc/systemd/system/apache2.service.d/privatetmp.conf
 J'ai un soucis d'heure sur mes historiques
 =========================================
 
+<<<<<<< HEAD
 Essayez de vider le cache de chrome, l'affichage des historique est calculé par rapport à l'heure du navigateur.
+=======
+Essayez de vider le cache de chrome, l'affichage des historiques est calculé par rapport à l'heure du navigateur.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 J'ai l'erreur "Soucis réseaux detecté, redemarrage du réseaux"
 =========================================
 
+<<<<<<< HEAD
 Jeedom ne trouve pas ou n'arrive pas a un pinguer la gateway. En général ca arrive si la box adsl redémarre (en particulier les livebox) et que Jeeodm n'a pas redemarré ou a redemarré plus vite que la box. Par sécurité il vous dit donc qu'il a trouvé un soucis et relance le processus de connection réseaux. Vous pouvez désactiver ce mécanisme en allant dans la configuration de Jeedom et en désactivant la gestion du réseaux par Jeedom.
 
 J'ai le message "Echec durant la sauvegarde de la base de données. Vérifiez que mysqldump est présent."
@@ -284,6 +318,23 @@ No puedo conectarme mas a mi Jeedom
 Depuis Jeedom 3.2 il n'est plus possible de se connecter avec admin/admin à distance pour des raison evidente de sécurité. Les identifiants admin/admin ne marche plus que en local. Attention si vous passer par le DNS même en local vous êtes forcement identifié comme à distance. Autre point par defaut seul les ip sur 192.168.*.* ou 127.0.0.1 sont reconnu comme local. Cela se configure dans l'administration de Jeedom partie sécurité puis IP "blanche". Si malgrès tout ca vous n'arrivez toujours pas à vous connecter il faut utiliser la procedure de remise à zéro de mot de passe (voir dans les tuto/how to)
 
 J'ai des erreurs de type "Class 'eqLogic' not found", des fichiers semblent etre manquant ou j'ai une page blanche
+=======
+Jeedom ne trouve pas ou n'arrive pas a pinguer la gateway. En général ca arrive si la box adsl redémarre (en particulier les livebox) et que Jeeodm n'a pas redemarré ou a redemarré plus vite que la box. Par sécurité il vous dit donc qu'il a trouvé un soucis et relance le processus de connection réseaux. Vous pouvez désactiver ce mécanisme en allant dans la configuration de Jeedom et en désactivant la gestion du réseaux par Jeedom.
+
+J'ai le message "Echec durant la sauvegarde de la base de données. Vérifiez que mysqldump est présent."
+=========================================
+Ca veut dire que Jeedom n'arrive pas a backuper la base de données ce qui peut laisser penser à un soucis de corrumption de base de données et de filesystem. Il n'y a malheureusement pas de commande miracle pour corriger. Le mieux est de lancer un backup et d'analyser le log de celui-ci. Dans les cas connus de soucis nous avons:
+
+- une table de la base corrompue => là c'est mal parti il faut voir pour essayer de réparer et si ca marche pas repartir du dernier bon backup (si vous êtes sur carte SD c'est le bon moment pour la changer)
+- pas assez de place sur le filesystem => regarder la page santé celle-ci peut vous l'indiquer
+
+
+Je n'arrive plus à me connecter à mon Jeedom
+=========================================
+Depuis Jeedom 3.2 il n'est plus possible de se connecter avec admin/admin à distance pour des raisons évidentes de sécurité. Les identifiants admin/admin ne marchent plus qu'en local. Attention si vous passer par le DNS même en local vous êtes forcement identifié comme à distance. Autre point par défaut seules les ip sur 192.168.*.* ou 127.0.0.1 sont reconnues comme locales. Cela se configure dans l'administration de Jeedom partie sécurité puis IP "blanche". Si malgrès tout ca vous n'arrivez toujours pas à vous connecter il faut utiliser la procédure de remise à zéro de mot de passe (voir dans les tuto/how to)
+
+J'ai des erreurs de type "Class 'eqLogic' not found", des fichiers semblent être manquant ou j'ai une page blanche
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 =========================================
 C'est une erreur assez grave le plus simple est de faire 
 
@@ -294,4 +345,8 @@ wget https://github.com/jeedom/core/archive/master.zip
 unzip master.zip
 cp -R /root/tmp/core-master/* /var/www/html
 rm -rf /root/tmp/core-master
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7

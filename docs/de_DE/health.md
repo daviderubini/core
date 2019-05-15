@@ -4,12 +4,16 @@ l’utilisent) l’état de santé par plugin.
 
 Die Seite ist über Analyse → Gesundheit erreichbar.
 
-> **Hinweis**
+> **Note**
 >
-> Das klicken auf das Symbol oben rechts, ermöglicht einen Benchmark
-> Ihres Jeedom zu starten. 
+> Un clic sur l’icône en haut à droite permet d’accéder au benchmark de votre
+> Jeedom.
 
+<<<<<<< HEAD
 La page santé de Jeedom se présente sous la forme d’un tableau. La 1ere
+=======
+La page santé de Jeedom se présente sous la forme d’un tableau. La 1ère
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 colonne vous donne une description de ce que Jeedom vérifie et dont le statut
 est affiché dans la 2ème colonne. Enfin la dernière colonne peut vous
 donner des conseils de résolution si la vérification n’est pas OK.

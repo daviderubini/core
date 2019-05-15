@@ -55,13 +55,19 @@ class plugin {
 			return self::$_cache[$_id];
 		}
 		if (!file_exists($_id) || strpos($_id, '/') === false) {
-			$_id = self::getPathById($_id);
+			$path = self::getPathById($_id);
+		}else{
+			$path = $_id;
 		}
+<<<<<<< HEAD
 		if (!file_exists($_id)) {
+=======
+		if (!file_exists($path)) {
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 			self::forceDisablePlugin($_id);
 			throw new Exception('Plugin introuvable : ' . $_id);
 		}
-		$data = json_decode(file_get_contents($_id), true);
+		$data = json_decode(file_get_contents($path), true);
 		if (!is_array($data)) {
 			self::forceDisablePlugin($_id);
 			throw new Exception('Plugin introuvable (json invalide) : ' . $_id . ' => ' . print_r($data, true));
@@ -80,7 +86,7 @@ class plugin {
 		$plugin->eventjs = (isset($data['eventjs'])) ? $data['eventjs'] : 0;
 		$plugin->require = (isset($data['require'])) ? $data['require'] : '';
 		$plugin->category = (isset($data['category'])) ? $data['category'] : '';
-		$plugin->filepath = $_id;
+		$plugin->filepath = $path;
 		$plugin->index = (isset($data['index'])) ? $data['index'] : $data['id'];
 		$plugin->display = (isset($data['display'])) ? $data['display'] : '';
 		$plugin->issue = (isset($data['issue'])) ? $data['issue'] : '';
@@ -104,6 +110,7 @@ class plugin {
 		$plugin->functionality['interact'] = array('exists' => method_exists($plugin->getId(), 'interact'), 'controlable' => 1);
 		$plugin->functionality['cron'] = array('exists' => method_exists($plugin->getId(), 'cron'), 'controlable' => 1);
 		$plugin->functionality['cron5'] = array('exists' => method_exists($plugin->getId(), 'cron5'), 'controlable' => 1);
+		$plugin->functionality['cron10'] = array('exists' => method_exists($plugin->getId(), 'cron10'), 'controlable' => 1);
 		$plugin->functionality['cron15'] = array('exists' => method_exists($plugin->getId(), 'cron15'), 'controlable' => 1);
 		$plugin->functionality['cron30'] = array('exists' => method_exists($plugin->getId(), 'cron30'), 'controlable' => 1);
 		$plugin->functionality['cronHourly'] = array('exists' => method_exists($plugin->getId(), 'cronHourly'), 'controlable' => 1);
@@ -123,6 +130,17 @@ class plugin {
 		}
 		self::$_cache[$plugin->id] = $plugin;
 		return $plugin;
+	}
+	
+	public static function forceDisablePlugin($_id){
+		config::save('active', 0, $_id);
+		$values = array(
+			'eqType_name' => $_id,
+		);
+		$sql = 'UPDATE eqLogic
+		SET isEnable=0
+		WHERE eqType_name=:eqType_name';
+		DB::Prepare($sql, $values);
 	}
 	
 	public static function getPathById($_id) {
@@ -331,6 +349,31 @@ class plugin {
 			}
 		}
 		cache::set('plugin::cron5::inprogress', 0);
+	}
+	
+	public static function cron10() {
+		$cache = cache::byKey('plugin::cron10::inprogress');
+		if ($cache->getValue(0) > 3) {
+			message::add('core', __('La tache plugin::cron10 n\'arrive pas à finir à cause du plugin : ', __FILE__) . cache::byKey('plugin::cron10::last')->getValue() . __(' nous vous conseillons de désactiver le plugin et de contacter l\'auteur', __FILE__));
+		}
+		cache::set('plugin::cron10::inprogress', $cache->getValue(0) + 1);
+		foreach (self::listPlugin(true) as $plugin) {
+			if (method_exists($plugin->getId(), 'cron10')) {
+				if (config::byKey('functionality::cron10::enable', $plugin->getId(), 1) == 0) {
+					continue;
+				}
+				$plugin_id = $plugin->getId();
+				cache::set('plugin::cron10::last', $plugin_id);
+				try {
+					$plugin_id::cron10();
+				} catch (Exception $e) {
+					log::add($plugin_id, 'error', __('Erreur sur la fonction cron10 du plugin : ', __FILE__) . $e->getMessage());
+				} catch (Error $e) {
+					log::add($plugin_id, 'error', __('Erreur sur la fonction cron10 du plugin : ', __FILE__) . $e->getMessage());
+				}
+			}
+		}
+		cache::set('plugin::cron10::inprogress', 0);
 	}
 	
 	public static function cron15() {
@@ -806,7 +849,7 @@ class plugin {
 				
 				$deamon_info = $this->deamon_info();
 				sleep(1);
-				log::add($this->getId(), 'info', 'Info sur le démon : ' . print_r($deamon_info, true));
+				log::add($this->getId(), 'info', 'Info sur le démon : ' . json_encode($deamon_info));
 				if ($deamon_info['state'] == 'ok') {
 					$this->deamon_stop();
 				}

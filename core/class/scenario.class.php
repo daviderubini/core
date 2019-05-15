@@ -38,7 +38,6 @@ class scenario {
 	private $order = 9999;
 	private $description;
 	private $configuration;
-	private $type = 'expert';
 	private static $_templateArray;
 	private $_elements = array();
 	private $_changeState = false;
@@ -77,41 +76,29 @@ class scenario {
 	* Renvoie tous les objets scenario
 	* @return [] scenario object scenario
 	*/
-	public static function all($_group = '', $_type = null) {
+	public static function all($_group = '') {
 		$values = array();
 		if ($_group === '') {
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
-			INNER JOIN object ob ON s.object_id=ob.id';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' WHERE `type`=:type';
-			}
-			$sql .= ' ORDER BY ob.name,s.group, s.name';
+			INNER JOIN object ob ON s.object_id=ob.id
+			ORDER BY ob.name,s.group, s.name';
 			$result1 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			if (!is_array($result1)) {
 				$result1 = array();
 			}
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
-			WHERE s.object_id IS NULL';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' AND `type`=:type';
-			}
-			$sql .= ' ORDER BY s.group, s.name';
+			WHERE s.object_id IS NULL
+			ORDER BY s.group, s.name';
 			$result2 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			return array_merge($result1, $result2);
 		} elseif ($_group === null) {
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
 			INNER JOIN object ob ON s.object_id=ob.id
-			WHERE (`group` IS NULL OR `group` = "")';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' AND `type`=:type';
-			}
-			$sql .= ' ORDER BY s.group, s.name';
+			WHERE (`group` IS NULL OR `group` = "")
+			ORDER BY s.group, s.name';
 			$result1 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			if (!is_array($result1)) {
 				$result1 = array();
@@ -119,12 +106,8 @@ class scenario {
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
 			WHERE (`group` IS NULL OR `group` = "")
-			AND s.object_id IS NULL';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' AND `type`=:type';
-			}
-			$sql .= ' ORDER BY  s.name';
+			AND s.object_id IS NULL
+			ORDER BY  s.name';
 			$result2 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			return array_merge($result1, $result2);
 		} else {
@@ -134,22 +117,14 @@ class scenario {
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
 			INNER JOIN object ob ON s.object_id=ob.id
-			WHERE `group`=:group';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' AND `type`=:type';
-			}
-			$sql .= ' ORDER BY ob.name,s.group, s.name';
+			WHERE `group`=:group
+			ORDER BY ob.name,s.group, s.name';
 			$result1 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			$sql = 'SELECT ' . DB::buildField(__CLASS__, 's') . '
 			FROM scenario s
 			WHERE `group`=:group
-			AND s.object_id IS NULL';
-			if ($_type !== null) {
-				$values['type'] = $_type;
-				$sql .= ' AND `type`=:type';
-			}
-			$sql .= ' ORDER BY s.group, s.name';
+			AND s.object_id IS NULL
+			ORDER BY s.group, s.name';
 			$result2 = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 			return array_merge($result1, $result2);
 		}
@@ -162,6 +137,8 @@ class scenario {
 		$sql = 'SELECT ' . DB::buildField(__CLASS__) . '
 		FROM scenario
 		WHERE `mode` != "provoke"
+		AND `mode` != ""
+		AND `schedule` != ""
 		AND isActive=1';
 		return DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__);
 	}
@@ -271,11 +248,9 @@ class scenario {
 			$trigger = 'schedule';
 			if (jeedom::isDateOk()) {
 				foreach ($scenarios as $key => &$scenario) {
-					if ($scenario->getState() != 'in progress' || $scenario->getConfiguration('allowMultiInstance',0) == 1) {
-						if (!$scenario->isDue()) {
-							unset($scenarios[$key]);
-						}
-					} else {
+					if ($scenario->getState() == 'in progress' && $scenario->getConfiguration('allowMultiInstance',0) == 0) {
+						unset($scenarios[$key]);
+					}else if (!$scenario->isDue()) {
 						unset($scenarios[$key]);
 					}
 				}
@@ -329,6 +304,8 @@ class scenario {
 			$scenario->setLog(__('Tags : ', __FILE__) . json_encode($scenario->getTags()));
 		}
 		if (!is_object($scenarioElement) || !is_object($scenario)) {
+			$scenario->setLog(__('Eléments à lancer on trouvé', __FILE__));
+			$scenario->persistLog();
 			return;
 		}
 		if (is_numeric($_options['second']) && $_options['second'] > intval(date('s'))) {
@@ -616,58 +593,9 @@ class scenario {
 				* @param type $_template
 				* @return type
 				*/
-				public static function getTemplate($_template = '') {
+				public static function getTemplate() {
 					$path = __DIR__ . '/../config/scenario';
-					if (isset($_template) && $_template != '') {
-						
-					}
 					return ls($path, '*.json', false, array('files', 'quiet'));
-				}
-				
-				/*     * *************************MARKET**************************************** */
-				
-				public static function shareOnMarket(&$market) {
-					$moduleFile = __DIR__ . '/../config/scenario/' . $market->getLogicalId() . '.json';
-					if (!file_exists($moduleFile)) {
-						throw new Exception('Impossible de trouver le fichier de configuration ' . $moduleFile);
-					}
-					$tmp = jeedom::getTmpFolder('market') . '/' . $market->getLogicalId() . '.zip';
-					if (file_exists($tmp)) {
-						if (!unlink($tmp)) {
-							throw new Exception(__('Impossible de supprimer : ', __FILE__) . $tmp . __('. Vérifiez les droits', __FILE__));
-						}
-					}
-					if (!create_zip($moduleFile, $tmp)) {
-						throw new Exception(__('Echec de création du zip. Répertoire source : ', __FILE__) . $moduleFile . __(' / Répertoire cible : ', __FILE__) . $tmp);
-					}
-					return $tmp;
-				}
-				/**
-				*
-				* @param type $market
-				* @param type $_path
-				* @throws Exception
-				*/
-				public static function getFromMarket(&$market, $_path) {
-					$cibDir = __DIR__ . '/../config/scenario/';
-					if (!file_exists($cibDir)) {
-						mkdir($cibDir);
-					}
-					$zip = new ZipArchive;
-					if ($zip->open($_path) === true) {
-						$zip->extractTo($cibDir . '/');
-						$zip->close();
-					} else {
-						throw new Exception('Impossible de décompresser l\'archive zip : ' . $_path);
-					}
-				}
-				
-				public static function removeFromMarket(&$market) {
-					trigger_error('This method is deprecated', E_USER_DEPRECATED);
-				}
-				
-				public static function listMarketObject() {
-					return array();
 				}
 				
 				public static function timelineDisplay($_event) {
@@ -681,10 +609,13 @@ class scenario {
 					}
 					$object = $scenario->getObject();
 					$return['object'] = is_object($object) ? $object->getId() : 'aucun';
-					$return['html'] = '<div class="scenario" data-id="' . $_event['id'] . '">'
-					. '<div style="background-color:#e7e7e7;padding:1px;font-size:0.9em;font-weight: bold;cursor:help;">' . $_event['name'] . ' <i class="fa fa-file-text-o pull-right cursor bt_scenarioLog"></i> <i class="fa fa-share pull-right cursor bt_gotoScenario"></i></div>'
-					. '<div style="background-color:white;padding:1px;font-size:0.8em;cursor:default;">Déclenché par ' . $_event['trigger'] . '<div/>'
-					. '</div>';
+					$return['html'] = '<div class="scenario" data-id="' . $_event['id'] . '">';
+					$return['html'] .= '<div>' . $_event['name'];
+					$return['html'] .= ' <span class="label-sm label-info" title="{{Déclanché par}}">' . $_event['trigger'] . '</span>';
+					$return['html'] .= ' <i class="fas fa-file-alt pull-right cursor bt_scenarioLog">';
+					$return['html'] .= ' <i class="fas fa-share pull-right cursor bt_gotoScenario">';
+					$return['html'] .= '</div>';
+					$return['html'] .= '</div>';
 					return $return;
 				}
 				
@@ -768,11 +699,15 @@ class scenario {
 					}
 					if ($this->getIsActive() != 1) {
 						$this->setLog(__('Impossible d\'exécuter le scénario : ', __FILE__) . $this->getHumanName() . __(' sur : ', __FILE__) . $_message . __(' car il est désactivé', __FILE__));
+						$this->setState('stop');
+						$this->setPID();
 						$this->persistLog();
 						return;
 					}
 					if ($this->getConfiguration('timeDependency', 0) == 1 && !jeedom::isDateOk()) {
 						$this->setLog(__('Lancement du scénario : ', __FILE__) . $this->getHumanName() . __(' annulé car il utilise une condition de type temporelle et que la date système n\'est pas OK', __FILE__));
+						$this->setState('stop');
+						$this->setPID();
 						$this->persistLog();
 						return;
 					}
@@ -843,20 +778,20 @@ class scenario {
 					if (!$this->hasRight('r')) {
 						return '';
 					}
-					$mc = cache::byKey('scenarioHtml' . $_version . $this->getId());
-					if ($mc->getValue() != '') {
-						return $mc->getValue();
+					if(config::byKey('widget::disableCache','core',0) == 0){
+						$mc = cache::byKey('scenarioHtml' . $_version . $this->getId());
+						if ($mc->getValue() != '') {
+							return $mc->getValue();
+						}
 					}
 					$version = jeedom::versionAlias($_version);
+					$name = ($this->getDisplay('name') != '') ? $this->getDisplay('name') : $this->getName();
 					$replace = array(
 						'#id#' => $this->getId(),
 						'#state#' => $this->getState(),
 						'#isActive#' => $this->getIsActive(),
-						'#name#' => ($this->getDisplay('name') != '') ? $this->getDisplay('name') : $this->getHumanName(),
-						'#shortname#' => ($this->getDisplay('name') != '') ? $this->getDisplay('name') : $this->getName(),
-						'#treename#' => $this->getHumanName(false, false, false, false, true),
+						'#name#' => (strlen($name) <25) ?$name : substr($name,0,25)."...",
 						'#icon#' => $this->getIcon(),
-						'#lastLaunch#' => $this->getLastLaunch(),
 						'#lastLaunch#' => $this->getLastLaunch(),
 						'#scenarioLink#' => $this->getLinkToConfiguration(),
 						'#version#' => $_version,
@@ -869,8 +804,13 @@ class scenario {
 					if (!isset(self::$_templateArray[$version])) {
 						self::$_templateArray[$version] = getTemplate('core', $version, 'scenario');
 					}
+					if (config::byKey('interface::advance::vertCentering','core',0) == 1) {
+						$replace['#isVerticalAlign#'] = 'verticalAlign';
+					}
 					$html = template_replace($replace, self::$_templateArray[$version]);
-					cache::set('scenarioHtml' . $version . $this->getId(), $html);
+					if(config::byKey('widget::disableCache','core',0) == 0){
+						cache::set('scenarioHtml' . $version . $this->getId(), $html);
+					}
 					return $html;
 				}
 				/**
@@ -880,10 +820,6 @@ class scenario {
 					$mc = cache::byKey('scenarioHtmldashboard' . $this->getId());
 					$mc->remove();
 					$mc = cache::byKey('scenarioHtmlmobile' . $this->getId());
-					$mc->remove();
-					$mc = cache::byKey('scenarioHtmlmview' . $this->getId());
-					$mc->remove();
-					$mc = cache::byKey('scenarioHtmldview' . $this->getId());
 					$mc->remove();
 				}
 				/**
@@ -897,31 +833,31 @@ class scenario {
 							case 'starting':
 							return 'fas fa-hourglass-start';
 							case 'in progress':
-							return 'fa fa-spinner fa-spin';
+							return 'fas fa-spinner fa-spin';
 							case 'error':
-							return 'fa fa-exclamation-triangle';
+							return 'fas fa-exclamation-triangle';
 							default:
 							if (strpos($this->getDisplay('icon'), '<i') === 0) {
 								return str_replace(array('<i', 'class=', '"', '/>'), '', $this->getDisplay('icon'));
 							}
-							return 'fa fa-check';
+							return 'fas fa-check';
 						}
-						return 'fa fa-times';
+						return 'fas fa-times';
 					}
 					switch ($this->getState()) {
 						case 'starting':
 						return '	<i class="fas fa-hourglass-start"></i>';
 						case 'in progress':
-						return '<i class="fa fa-spinner fa-spin"></i>';
+						return '<i class="fas fa-spinner fa-spin"></i>';
 						case 'error':
-						return '<i class="fa fa-exclamation-triangle"></i>';
+						return '<i class="fas fa-exclamation-triangle"></i>';
 						default:
 						if ($this->getDisplay('icon') != '') {
 							return $this->getDisplay('icon');
 						}
-						return '<i class="fa fa-check"></i>';
+						return '<i class="fas fa-check"></i>';
 					}
-					return '<i class="fa fa-times"></i>';
+					return '<i class="fas fa-times"></i>';
 				}
 				/**
 				*
@@ -1057,7 +993,7 @@ class scenario {
 						$calculatedDate_tmp = array('prevDate' => '', 'nextDate' => '');
 						foreach ($this->getSchedule() as $schedule) {
 							try {
-								$c = new Cron\CronExpression($schedule, new Cron\FieldFactory);
+								$c = new Cron\CronExpression(checkAndFixCron($schedule), new Cron\FieldFactory);
 								$calculatedDate_tmp['prevDate'] = $c->getPreviousRunDate()->format('Y-m-d H:i:s');
 								$calculatedDate_tmp['nextDate'] = $c->getNextRunDate()->format('Y-m-d H:i:s');
 							} catch (Exception $exc) {
@@ -1074,7 +1010,7 @@ class scenario {
 						}
 					} else {
 						try {
-							$c = new Cron\CronExpression($this->getSchedule(), new Cron\FieldFactory);
+							$c = new Cron\CronExpression(checkAndFixCron($this->getSchedule()), new Cron\FieldFactory);
 							$calculatedDate['prevDate'] = $c->getPreviousRunDate()->format('Y-m-d H:i:s');
 							$calculatedDate['nextDate'] = $c->getNextRunDate()->format('Y-m-d H:i:s');
 						} catch (Exception $exc) {
@@ -1100,7 +1036,7 @@ class scenario {
 					if (is_array($this->getSchedule())) {
 						foreach ($this->getSchedule() as $schedule) {
 							try {
-								$c = new Cron\CronExpression($schedule, new Cron\FieldFactory);
+								$c = new Cron\CronExpression(checkAndFixCron($schedule), new Cron\FieldFactory);
 								try {
 									if ($c->isDue()) {
 										return true;
@@ -1130,7 +1066,7 @@ class scenario {
 						}
 					} else {
 						try {
-							$c = new Cron\CronExpression($this->getSchedule(), new Cron\FieldFactory);
+							$c = new Cron\CronExpression(checkAndFixCron($this->getSchedule()), new Cron\FieldFactory);
 							try {
 								if ($c->isDue()) {
 									return true;
@@ -1358,10 +1294,10 @@ class scenario {
 					if ($_object_name && is_numeric($this->getObject_id()) && is_object($this->getObject())) {
 						$object = $this->getObject();
 						if ($_tag) {
-							if ($object->getDisplay('tagColor') != '') {
-								$name .= '<span class="label" style="text-shadow : none;background-color:' . $object->getDisplay('tagColor') . ' !important;color:' . $object->getDisplay('tagTextColor', 'white') . ' !important">' . $object->getName() . '</span>';
+							if ($object->getConfiguration('useCustomColor') == 1) {
+								$name .= '<span class="label" style="background-color:' . $object->getDisplay('tagColor') . ' ;color:' . $object->getDisplay('tagTextColor', 'white') . '">' . $object->getName() . '</span>';
 							} else {
-								$name .= '<span class="label label-primary" style="text-shadow : none;">' . $object->getName() . '</span>';
+								$name .= '<span class="label labelObjectHuman">' . $object->getName() . '</span>';
 							}
 						} else {
 							$name .= '[' . $object->getName() . ']';
@@ -1369,7 +1305,7 @@ class scenario {
 					} else {
 						if ($_complete) {
 							if ($_tag) {
-								$name .= '<span class="label label-default" style="text-shadow : none;">' . __('Aucun', __FILE__) . '</span>';
+								$name .= '<span class="label label-default">' . __('Aucun', __FILE__) . '</span>';
 							} else {
 								$name .= '[' . __('Aucun', __FILE__) . ']';
 							}
@@ -1470,7 +1406,7 @@ class scenario {
 					if (isset($_data['node']['scenario' . $this->getId()])) {
 						return;
 					}
-					if ($_level > 1) {
+					if ($_level > 2) {
 						return $_data;
 					}
 					$_level++;
@@ -1480,6 +1416,7 @@ class scenario {
 					$_data['node']['scenario' . $this->getId()] = array(
 						'id' => 'scenario' . $this->getId(),
 						'name' => $this->getName(),
+						'type' => __('Scénario',__FILE__),
 						'fontweight' => ($_level == 1) ? 'bold' : 'normal',
 						'shape' => 'rect',
 						'width' => 40,
@@ -1608,6 +1545,7 @@ class scenario {
 				* @return $this
 				*/
 				public function setName($_name) {
+					$_name = cleanComponanteName($_name);
 					if ($_name != $this->getName()) {
 						$this->_changeState = true;
 						$this->_changed = true;
@@ -1659,27 +1597,7 @@ class scenario {
 				public function setLastLaunch($lastLaunch) {
 					$this->setCache('lastLaunch', $lastLaunch);
 				}
-				/**
-				*
-				* @return type
-				*/
-				public function getType() {
-					return $this->type;
-				}
-				/**
-				*
-				* @param type $type
-				* @return $this
-				*/
-				public function setType($_type) {
-					$this->_changed = utils::attrChanged($this->_changed,$this->type,$_type);
-					$this->type = $_type;
-					return $this;
-				}
-				/**
-				*
-				* @return type
-				*/
+				
 				public function getMode() {
 					return $this->mode;
 				}

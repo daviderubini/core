@@ -28,7 +28,7 @@ Here is the URL =
 [Http: // \ #IP \ _JEEDOM \ # / core / api / jeeApi.php apikey = \ #APIKEY \ # & type = scenario & id = \ #ID \ # & action = \ #ACTION \ #?] (Http: // # # IP_JEEDOM / core / api / jeeApi.php? apikey aPIKEY = # # & type = scenario & id = # ID # & action = ACTION # #)
 
 -   **id**: corresponds to the id of your scenario. The ID is on the
-    page of the scenario concerned, in "tools" → "Scenarios", once the
+    page du scénario concerné, dans "Outils" → "Scénarios", une fois le
     selected scenario, next to the name of the "General" tab. Other
     way to find it: in "Tools" → "Scenarios", click on
     "Overview".
@@ -39,7 +39,7 @@ Here is the URL =
     activate the scenario.
 
 -   **tags** \ [optional]: if the action is "start", you can pass
-    tags to the scenario (see the documentation on the scenarios) under
+    des tags au scénario (voir la documentation sur les scénarios) sous
     the form tags = foo% 3D1%20tata% 3D2 (note that% 20 corresponds to a
     space and% 3D to =)
 
