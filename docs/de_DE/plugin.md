@@ -54,6 +54,7 @@ En dessous à gauche, on retrouve une zone état avec :
 -   **Licence** : Indique la licence du plugin qui sera généralement
     AGPL
 
+<<<<<<< HEAD
 A droite, on retrouve la zone Log et surveillance qui permet de définir 
 
 -   le niveau de logs spécifique au plugin (on retrouve cette même possibilité dans
@@ -65,6 +66,19 @@ Administation → Configuration sur l’onglet logs, en bas de page)
 
 -   Redémarrer démon : si le Heartbeat tombe en erreur alors Jeedom va redémarrer le démon
 
+=======
+A droite, on retrouve la zone Log qui permet de définir 
+
+-   le niveau de logs spécifique au plugin (on retrouve cette même possibilité dans
+Administation → Configuration sur l’onglet logs, en bas de page)
+
+-   de voir les logs du plugin
+
+-   Heartbeat : toute les 5 mins, Jeedom regarde si au moins un équipement du plugin a communiqué dans les X dernières minutes (si vous voulez désactiver la fonctionnalité, il suffit de mettre 0)
+
+-   Redemarrer démon : si le hertbeat tombe en erreur alors Jeedom va redémarrer le démon
+
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 Si le plugin possède des dépendances et/ou un démon, ces zones
 supplémentaires s’affichent sous les zones citées ci-dessus.
 

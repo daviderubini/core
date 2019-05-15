@@ -83,27 +83,33 @@ general
 -   ** ** Solicitud generador de frases (obligatorio).
 
 -   **Synonyme** : permet de définir des synonymes sur les noms
+<<<<<<< HEAD
     des commandes.
 
 -   **Réponse** : la réponse à fournir.
+=======
+    los comandos.
+
+-   **Respuesta** : la respuesta a proporcionar.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Attendre avant de répondre (s)** : permet d'ajouter un délai de X secondes avant de générer la réponse. Ca permet par exemple d'attendre que le retour d'état d'une lampe se fasse avant de répondre.
 
 -   **Conversion binaire** : permet de convertir les valeurs binaires en
     ouvert/fermé par exemple (uniquement pour les commandes de type
-    info binaire).
+    información binaria).
 
 -   **Utilisateurs autorisés** : limite l’interaction à certains
-    utilisateurs (les logins séparés par des |).
+    usuarios (los logins separados por los |).
 
-Filtres 
+Filtros 
 =======
 
 -   **Limiter aux commandes de type** : permet de n’utiliser que les
     types actions, infos ou les 2 types.
 
 -   **Limiter aux commandes ayant pour sous-type** : permet de limiter
-    la génération à un ou plusieurs sous-types.
+    la generación a uno o más subtipos.
 
 -   **Limiter aux commandes ayant pour unité** : permet de limiter la
     génération à une ou plusieurs unités (Jeedom crée la liste
@@ -115,16 +121,16 @@ Filtres
 
 -   **Limiter au plugin** : permet de limiter la génération à un ou
     plusieurs plugins (Jeedom crée la liste automatiquement à partir des
-    plugins installés).
+    plugins instalados).
 
 -   **Limiter à la catégorie** : permet de limiter la génération à une
-    ou plusieurs catégories.
+    o varias categorías.
 
 -   **Limiter à l’équipement** : permet de limiter la génération à un
     seul équipement/module (Jeedom crée la liste automatiquement à
     partir des équipements/modules que vous avez).
 
-Action 
+Acción
 ======
 
 A utiliser si vous voulez cibler une ou plusieurs commandes spécifiques
@@ -137,7 +143,7 @@ Exemples
 >
 > Les captures d’écran peuvent être différentes au vue des évolutions.
 
-Interaction simple 
+Interacción simple
 ------------------
 
 La façon la plus simple de configurer une interaction, c’est de lui
@@ -275,7 +281,7 @@ une température, un nombre de personnes, etc.
 
 ![interact012](../images/interact012.png)
 
-Conversion binaire 
+Conversión binaria
 ------------------
 
 Les conversions binaires s’appliquent aux commandes de type info dont le
@@ -303,14 +309,14 @@ un peu plus longue.
 >
 > Les tags ne fonctionnent pas dans les conversions binaires.
 
-Utilisateurs autorisés 
+Usuarios autorizados
 ----------------------
 
 Le champ "Utilisateurs autorisés" permet de n’autoriser que certaines
 personnes à exécuter la commande, vous pouvez mettre plusieurs profils
 en les séparant par un "|".
 
-Exemple : personne1|personne2
+Ejemplo: persona1|persona2
 
 On peut imaginer qu’une alarme peut être activée ou désactivée par un
 enfant ou un voisin qui viendrait arroser les plantes en votre absence.
@@ -331,7 +337,7 @@ On a 2 endroits pour appliquer une Regexp :
 -   dans l’interaction même dans le champ "Regexp d’exclusion".
 
 -   Dans le menu Administration→Configuration→Interactions→champ "Regexp
-    général d’exclusion pour les interactions".
+    general de exclusión para las interacciones".
 
 Pour le champ "Regex général d’exclusion pour les interactions", cette
 règle sera appliquée à toutes les interactions, qui seront créées ou
@@ -367,14 +373,18 @@ reste plus que 71 phrases, les 5 avec un "Julie" ont été supprimées.
 Une expression régulière se compose comme suit :
 
 -   En premier, un délimiteur, ici c’est une barre oblique "/" placée en
+<<<<<<< HEAD
     début et fin d’expression.
+=======
+    principio y fin de la expresión.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   Le point qui suit la barre oblique représente n’importe quel
-    caractère, espace ou nombre.
+    carácter, espacio o número.
 
 -   Le "\*" quant à lui indique qu’il peut y avoir 0 ou plusieurs fois
     le caractère qui le précède, ici un point, donc en bon français
-    n’importe quel élément.
+    cualquier elemento.
 
 -   Puis Julie, qui est le mot à rechercher (mot ou autre schéma
     d’expression), suivi à nouveau d’un point puis barre oblique.
@@ -416,7 +426,7 @@ c’est lui qui m’a appris à comprendre les Regexp et même à coder. Donc
 s’il m’a aidé, il peut aussi vous aider si vous y mettez de la bonne
 volonté.
 
-Liens utiles :
+Enlaces útiles :
 
 -   <http://www.commentcamarche.net/contents/585-javascript-l-objet-regexp>
 
@@ -440,7 +450,7 @@ seule fois.
 Y a-t-il quelqu’un dans la chambre ? 
 ------------------------------------
 
-### Version basique 
+### Version basica
 
 -   La question est donc "y’a-t-il quelqu’un dans la chambre"
 
@@ -457,19 +467,19 @@ d’avoir une réponse personnalisée. On pourrait donc imaginer remplacer
 la réponse de l’exemple par "non il n’y a personne dans la chambre de
 *julie*|oui il y a quelqu’un dans la chambre de *julie*"
 
-### Evolution 
+### Evolución
 
 -   La question est donc "\#commande\# \[dans la |dans le\] \#objet\#"
 
--   La réponse sera "non il n’y a personne dans la pièce" ou "oui il y a
-    quelqu’un dans la pièce"
+-   La respuesta será "no, no hay nadie en la habitación" o "sí, hay
+    alguien en la habitación"
 
 -   Il n’y a pas de commande qui réponde à ça dans la partie Action vu
     que c’est une interaction Multiple commandes
 
 -   En ajoutant une expression régulière, on peut nettoyer les commandes
     que l’on ne veut pas voir pour n’avoir que les phrases sur les
-    commandes "Présence".
+    Comandos "Presencia".
 
 ![interact018](../images/interact018.png)
 
@@ -483,7 +493,7 @@ ne faudra pas oublier de modifier la regexp.
 Connaître la température/humidité/luminosité 
 --------------------------------------------
 
-### Version basique 
+### Version basica
 
 On pourrait écrire la phrase en dur comme par exemple "quelle est la
 température du salon", mais il faudrait en faire une pour chaque capteur
@@ -551,7 +561,7 @@ mots dans leur phrase
 Piloter un dimmer ou un thermostat (slider) 
 -------------------------------------------
 
-### Version basique 
+### Version basica
 
 Il est possible de piloter une lampe en pourcentage (variateur) ou un
 thermostat avec les interactions. Voici un exemple pour piloter son
@@ -576,7 +586,7 @@ la valeur on lui passe notre tag *consigne*.
 > scénarios lancés par l’interaction (il faut toutefois que le scénario
 > soit en "Exécuter en avant plan").
 
-### Evolution 
+### Evolución
 
 On peut vouloir piloter toutes les commandes de type curseur avec une
 seule interaction. Avec l’exemple qui suit, on va donc pouvoir commander
@@ -595,7 +605,7 @@ demande. La majorité des tags disponibles dans les scénarios sont
 disponibles aussi dans les interactions et donc peuvent être utilisés
 dans une réponse.
 
-Résultat de l’interaction :
+Resultado de la interacción :
 
 ![interact034](../images/interact034.png)
 
@@ -636,7 +646,7 @@ rechercher dans la demande une couleur et l’appliquer à la commande.
 Utilisation couplée à un scénario 
 ---------------------------------
 
-### Version basique 
+### Version basica
 
 Il est possible de coupler une interaction à un scénario afin de
 réaliser des actions un peu plus complexes que l’exécution d’une simple

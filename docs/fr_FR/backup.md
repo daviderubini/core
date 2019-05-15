@@ -1,11 +1,11 @@
-Jeedom a la possibilité d’être sauvegardé et restauré depuis ou à partir
+Jeedom offre la possibilité d’être sauvegardé et restauré depuis ou à partir
 de différents emplacements.
 
 Configuration 
 =============
 
-Accessible depuis **Administration → Sauvegardes**, cette page permet la
-gestion des sauvegardes.
+Accessible depuis **Réglages → Système → Sauvegardes**, cette page permet la
+gestion des sauvegardes, restaurations.
 
 Vous y trouvez, à gauche, les paramètres et les boutons d’action. Sur la
 droite, c’est le statut en temps réel de l’action en cours (sauvegarde
@@ -96,7 +96,7 @@ ou restauration), si vous en avez lancé une.
 > **Tip**
 >
 > Lors d’une réinstallation de Jeedom et en ayant pris l’abonnement de
-> sauvegarde vers le cloud du market, vous devez renseigner votre compte
+> sauvegarde vers le cloud du Market, vous devez renseigner votre compte
 > Market sur votre nouveau Jeedom (Administration→Configuration→Onglet
 > Mises à jour) puis venir ici pour lancer la restauration.
 

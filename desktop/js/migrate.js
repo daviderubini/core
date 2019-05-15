@@ -86,21 +86,21 @@ function testUsb(){
 	        		alert('{{Pas de clé USB branchée}}');
 	        	break;
 	        	case 'sdaSup' :
-	        		alert('{{Merci de branché qu\'une seul clé USB}}');
+	        		alert('{{Merci de ne brancher qu\'une seule clé USB}}');
 	        	break;
 	        	case 'sdaNumNull' :
-	        		alert('{{Merci de formaté correctement votre clé USB}}');
+	        		alert('{{Votre clé USB doit être formatée en FAT32}}');
 	        	break;
 	        	case 'sdaNumSup' :
-	        		alert('{{Merci de mettre une seul partition sur votre clé USB}}');
+	        		alert('{{Il ne doit y avoir qu\'une seule partition sur votre clé USB}}');
 	        	break;
 	        	case 'space' :
-	        		alert('{{votre clé USB à un espace trop petit }}('+result.result.space+' Mo) {{il faut un minimum de}} '+result.result.minSpace+' {{Mo}}. <br />{{Merci}}');
+	        		alert('{{L\'espace libre sur votre clé USB est trop petit }}('+result.result.space+' Mo) {{il faut un minimum de}} '+result.result.minSpace+' {{Mo}}. {{Merci}}');
 	        	break;
 	        	case 'ok' :
 	        		$('.debut').hide();
 					$('.usb').show();
-	        		$('.usb').append('<span id="contenuTextSpan">{{Clé USB vérifié passage à l\'étape 2 en cours}}<br /><i class="next fa fa-refresh" id="bt_next"></i></span>');
+	        		$('.usb').append('<span id="contenuTextSpan">{{Clé USB vérifiée passage à l\'étape 2 en cours}}<br /><i class="next fa fa-refresh" id="bt_next"></i></span>');
 	        		setTimeout(function(){
 	        			$('#step1').hide();
 	        			$('#step2').show();
@@ -174,7 +174,11 @@ function getJeedomLog(_autoUpdate, _log) {
 	                }
                     }else{
 	                if(data.result[i].indexOf('[END BACKUP SUCCESS]') != -1){
+<<<<<<< HEAD
 	                    $('.TextBackup').text('{{Backup Fini, copie en cours sur la clé USB, ne pas debrancher celle-ci...}}');
+=======
+	                    $('.TextBackup').text('{{Backup Fini, copie en cours sur la clé USB, ne pas débrancher celle-ci...}}');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	                    $('.progress-bar').width('75%');
 		            $('.progress-bar').text('75%');
 			    backupToUsb();
@@ -186,7 +190,11 @@ function getJeedomLog(_autoUpdate, _log) {
 	                        $('.progress-bar').width('50%');
 		                $('.progress-bar').text('50%');
 			    }else{
+<<<<<<< HEAD
 				 $('.TextFinalisation').text('{{Mise à jour de votre Jeedom réussi}}');
+=======
+				 $('.TextFinalisation').text('{{Mise à jour de votre Jeedom réussie}}');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 				 var textProgress = $('.progress-bar').text();
 	                         $('.progress-bar').width('70%');
 		                 $('.progress-bar').text('70%');
@@ -222,7 +230,11 @@ function getJeedomLog(_autoUpdate, _log) {
 		            if(data.result[i].indexOf("Téléchargement") != -1 || data.result[i].indexOf("Download url") != -1){
 		                if(telechargement == 0){
 		                    telechargement = 1;
+<<<<<<< HEAD
 			            $('.TextFinalisation').text('{{Téléchargement de la mise à jours}}');
+=======
+			            $('.TextFinalisation').text('{{Téléchargement de la mise à jour}}');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 				    $('.progress-bar').width('15%');
 				    $('.progress-bar').text('15%');
 		                }
@@ -237,7 +249,11 @@ function getJeedomLog(_autoUpdate, _log) {
 			    if(data.result[i].indexOf("Check update") != -1){
 			    	if(Cleaning == 0){
 				    Cleaning = 1;
+<<<<<<< HEAD
 				    $('.TextFinalisation').text('{{Verification de la mise à jours.}}');
+=======
+				    $('.TextFinalisation').text('{{Vérification de la mise à jour.}}');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 				    $('.progress-bar').width('30%');
 				    $('.progress-bar').text('30%');
 				}
@@ -284,7 +300,11 @@ function getJeedomLog(_autoUpdate, _log) {
 				     }	
 			         }else if(data.result[i].indexOf("Downloaded: 1 files") != -1){
 				     _autoUpdate = 0;
+<<<<<<< HEAD
 				     $('.TextImage').text('{{Image Téléchargé et validé !}}');
+=======
+				     $('.TextImage').text('{{Image Téléchargée et validée !}}');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 				     var filterVal = 'blur(0)';
 			             console.log(filterVal);
 				     $('.imageUpBlur').css({
@@ -330,7 +350,7 @@ function backupToUsb(){
         	var backupToUsbResult = result.result;
         	switch(backupToUsbResult){
 	        	case 'nok' :
-	        		alert('{{Le backup n\a pas été copié}}');
+	        		alert('{{Le backup n\'a pas été copié}}');
 	        	break;
 	        	case 'ok' :
 	        		$('.TextBackup').text('{{Backup Copié...}}');
@@ -687,7 +707,7 @@ function refresh() {
 function page_rebootjs(){
 	refresh();
 	if(rebooti == '1'){
-		$('.TextMigrate').text('{{Votre Jeedom viens de redémarrer, Merci de patienter le premier redemarrage peux prendre jusqu\'à 5 minutes}}');
+		$('.TextMigrate').text('{{Votre Jeedom vient de redémarrer, Merci de patienter le premier redémarrage peut prendre jusqu\'à 5 minutes}}');
 		$('.progress-bar').width('90%');
 		$('.progress-bar').text('90%');
 		setTimeout(function(){
@@ -714,7 +734,11 @@ function reboot_jeedom(){
 	$('.progress-bar').text('5%');
 	pourcentageBar = 5;
 	page_rebootjs();
+<<<<<<< HEAD
 	console.log('reboot de la Jeedom supression des cookies');
+=======
+	console.log('reboot de la Jeedom suppression des cookies');
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 	setcookie('jeedom_token', '', time() - 365 * 24 * 3600, "/", '', false, true);
 	setcookie('PHPSESSID', '', time() - 365 * 24 * 3600, "/", '', false, true);
 	setcookie('sess_id', '', time() - 365 * 24 * 3600, "/", '', false, true);

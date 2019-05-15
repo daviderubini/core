@@ -1,4 +1,3 @@
-
 /* This file is part of Jeedom.
 *
 * Jeedom is free software: you can redistribute it and/or modify
@@ -18,13 +17,73 @@ $('.backgroundforJeedom').css('background-position','bottom right');
 $('.backgroundforJeedom').css('background-repeat','no-repeat');
 $('.backgroundforJeedom').css('background-size','auto');
 
-if (getUrlVars('saveSuccessFull') == 1) {
-  $('#div_alert').showAlert({message: '{{Sauvegarde effectuée avec succès}}', level: 'success'});
-}
+//searching
+$('#in_searchObject').keyup(function () {
+  var search = $(this).value();
+  if(search == ''){
+    $('.objectDisplayCard').show();
+    $('.objectListContainer').packery();
+    return;
+  }
+  search = search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+  
+  $('.objectDisplayCard').hide();
+  $('.objectDisplayCard .name').each(function(){
+    var text = $(this).text().toLowerCase();
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+    if(text.indexOf(search.toLowerCase()) >= 0){
+      $(this).closest('.objectDisplayCard').show();
+    }
+  });
+  $('.objectListContainer').packery();
+});
 
-if (getUrlVars('removeSuccessFull') == 1) {
-  $('#div_alert').showAlert({message: '{{Suppression effectuée avec succès}}', level: 'success'});
-}
+$('#bt_resetObjectSearch').on('click', function () {
+  $('#in_searchObject').val('')
+  $('#in_searchObject').keyup();
+})
+
+$('.nav-tabs a').on('shown.bs.tab', function (e) {
+  window.location.hash = e.target.hash;
+})
+
+$(function(){
+  try{
+    $.contextMenu('destroy', $('.nav.nav-tabs'));
+    jeedom.object.all({
+      error: function (error) {
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function (_objects) {
+        if(_objects.length == 0){
+          return;
+        }
+        var contextmenuitems = {}
+        for(i=0; i<_objects.length; i++)
+        {
+          ob = _objects[i]
+          contextmenuitems[ob.id] = {'name': ob.name}
+        }
+        
+        $('.nav.nav-tabs').contextMenu({
+          selector: 'li',
+          autoHide: true,
+          zIndex: 9999,
+          className: 'object-context-menu',
+          callback: function(key, options) {
+            url = 'index.php?v=d&p=object&id=' + key;
+            if (document.location.toString().match('#')) {
+              url += '#' + document.location.toString().split('#')[1];
+            }
+            loadPage(url);
+          },
+          items: contextmenuitems
+        })
+      }
+    })
+  }
+  catch(err) {}
+})
 
 $('#bt_graphObject').on('click', function () {
   $('#md_modal').dialog({title: "{{Graphique des liens}}"});
@@ -50,26 +109,6 @@ $(".objectDisplayCard").on('click', function (event) {
   return false;
 });
 
-$('#in_searchObject').keyup(function () {
-  var search = $(this).value();
-  if(search == ''){
-    $('.objectDisplayCard').show();
-    $('.objectListContainer').packery();
-    return;
-  }
-  $('.objectDisplayCard').hide();
-  $('.objectDisplayCard .name').each(function(){
-    var text = $(this).text().toLowerCase();
-    if(text.indexOf(search.toLowerCase()) >= 0){
-      $(this)
-      $(this).closest('.objectDisplayCard').show();
-    }
-  });
-  $('.objectListContainer').packery();
-});
-
-
-
 $('#bt_removeBackgroundImage').off('click').on('click', function () {
   jeedom.object.removeImage({
     id: $('.objectAttr[data-l1key=id]').value(),
@@ -77,6 +116,7 @@ $('#bt_removeBackgroundImage').off('click').on('click', function () {
       $('#div_alert').showAlert({message: error.message, level: 'danger'});
     },
     success: function () {
+      $('.objectImg img').hide()
       $('#div_alert').showAlert({message: '{{Image supprimée}}', level: 'success'});
     },
   });
@@ -86,7 +126,7 @@ function loadObjectConfiguration(_id){
   try {
     $('#bt_uploadImage').fileupload('destroy');
     $('#bt_uploadImage').parent().html('<i class="fas fa-cloud-upload-alt"></i> {{Envoyer}}<input  id="bt_uploadImage" type="file" name="file" style="display: inline-block;">');
-  }catch(error) {
+  } catch(error) {
     
   }
   $('#bt_uploadImage').fileupload({
@@ -98,6 +138,14 @@ function loadObjectConfiguration(_id){
         $('#div_alert').showAlert({message: data.result.result, level: 'danger'});
         return;
       }
+      if (isset(data.result.result.filepath)) {
+        filePath = data.result.result.filepath
+        filePath = '/data/object/' + filePath.split('/data/object/')[1]
+        $('.objectImg img').attr('src',filePath);
+        $('.objectImg img').show()
+      } else {
+        $('.objectImg img').hide()
+      }
       $('#div_alert').showAlert({message: '{{Image ajoutée}}', level: 'success'});
     }
   });
@@ -105,7 +153,6 @@ function loadObjectConfiguration(_id){
   $('.objectDisplayCard[data-object_id='+_id+']').addClass('active');
   $('#div_conf').show();
   $('#div_resumeObjectList').hide();
-  $(this).addClass('active');
   jeedom.object.byId({
     id: _id,
     cache: false,
@@ -117,13 +164,45 @@ function loadObjectConfiguration(_id){
       $('.objectAttr[data-l1key=father_id] option').show();
       $('#summarytab input[type=checkbox]').value(0);
       $('.object').setValues(data, '.objectAttr');
-      if(data['display'] == ''){
-        $('.objectAttr[data-l1key=display][data-l2key=tagColor]').value('#9b59b6');
-        $('.objectAttr[data-l1key=display][data-l2key=tagTextColor]').value('#ffffff');
+      
+      if (!isset(data.configuration.useCustomColor) || data.configuration.useCustomColor == "0") {
+        bodyStyles = window.getComputedStyle(document.body);
+        objectBkgdColor = bodyStyles.getPropertyValue('--objectBkgd-color')
+        objectTxtColor = bodyStyles.getPropertyValue('--objectTxt-color')
+        
+        if (!objectBkgdColor === undefined){
+          objectBkgdColor = rgbToHex(objectBkgdColor)
+        } else {
+          objectBkgdColor = '#696969'
+        }
+        if (!objectTxtColor === undefined) {
+          objectTxtColor = rgbToHex(objectTxtColor)
+        } else {
+          objectTxtColor = '#ebebeb'
+        }
+        
+        $('.objectAttr[data-l1key=display][data-l2key=tagColor]').value(objectBkgdColor);
+        $('.objectAttr[data-l1key=display][data-l2key=tagTextColor]').value(objectTxtColor);
+        
+        $('.objectAttr[data-l1key=display][data-l2key=tagColor]').click(function () {
+          $('input[data-l2key="useCustomColor"').prop('checked', true)
+        })
+        $('.objectAttr[data-l1key=display][data-l2key=tagTextColor]').click(function () {
+          $('input[data-l2key="useCustomColor"').prop('checked', true)
+        })
       }
+      
       $('.objectAttr[data-l1key=father_id] option[value=' + data.id + ']').hide();
       $('.div_summary').empty();
       $('.tabnumber').empty();
+      
+      if (isset(data.img)) {
+        $('.objectImg img').attr('src',data.img);
+        $('.objectImg img').show()
+      } else {
+        $('.objectImg img').hide()
+      }
+      
       if (isset(data.configuration) && isset(data.configuration.summary)) {
         for(var i in data.configuration.summary){
           var el = $('.type'+i);
@@ -138,7 +217,11 @@ function loadObjectConfiguration(_id){
           
         }
       }
+      addOrUpdateUrl('id',data.id);
       modifyWithoutSave = false;
+      setTimeout(function(){
+        modifyWithoutSave = false;
+      },1000)
     }
   });
 }
@@ -202,7 +285,7 @@ $("#bt_saveObject").on('click', function (event) {
 
 $("#bt_removeObject").on('click', function (event) {
   $.hideAlert();
-  bootbox.confirm('{{Etes-vous sûr de vouloir supprimer l\'objet}} <span style="font-weight: bold ;">' + $('.objectDisplayCard.active .name').text() + '</span> ?', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer l\'objet}} <span style="font-weight: bold ;">' + $('.objectDisplayCard.active .name').text() + '</span> ?', function (result) {
     if (result) {
       jeedom.object.remove({
         id: $('.objectDisplayCard.active').attr('data-object_id'),
@@ -221,16 +304,21 @@ $("#bt_removeObject").on('click', function (event) {
 
 
 $('#bt_chooseIcon').on('click', function () {
+  var _icon = false
+  if ( $('div[data-l2key="icon"] > i').length ) {
+    _icon = $('div[data-l2key="icon"] > i').attr('class')
+    _icon = '.' + _icon.replace(' ', '.')
+  }
   chooseIcon(function (_icon) {
     $('.objectAttr[data-l1key=display][data-l2key=icon]').empty().append(_icon);
-  });
+  },{icon:_icon});
 });
 
 if (is_numeric(getUrlVars('id'))) {
   if ($('.objectDisplayCard[data-object_id=' + getUrlVars('id') + ']').length != 0) {
     $('.objectDisplayCard[data-object_id=' + getUrlVars('id') + ']').click();
   } else {
-    $('.objectDisplayCard:first').click();
+    $('.objectDisplayCard').first().click();
   }
 }
 
@@ -266,12 +354,12 @@ function addSummaryInfo(_el, _summary) {
   div += '<div class="col-sm-4 has-success">';
   div += '<div class="input-group">';
   div += '<span class="input-group-btn">';
-  div += '<input type="checkbox" class="summaryAttr checkbox-inline" data-l1key="enable" checked title="{{Activer}}" />';
+  div += '<input type="checkbox" class="summaryAttr checkbox-inline roundedLeft" data-l1key="enable" checked title="{{Activer}}" />';
   div += '<a class="btn btn-default bt_removeSummary btn-sm"><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
   div += '<input class="summaryAttr form-control input-sm" data-l1key="cmd" />';
   div += '<span class="input-group-btn">';
-  div += '<a class="btn btn-sm listCmdInfo btn-success"><i class="fas fa-list-alt"></i></a>';
+  div += '<a class="btn btn-sm listCmdInfo btn-success roundedRight"><i class="fas fa-list-alt"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
@@ -280,7 +368,7 @@ function addSummaryInfo(_el, _summary) {
   div += '</div>';
   div += '</div>';
   _el.find('.div_summary').append(div);
-  _el.find('.summary:last').setValues(_summary, '.summaryAttr');
+  _el.find('.summary').last().setValues(_summary, '.summaryAttr');
 }
 
 $('.bt_showObjectSummary').off('click').on('click', function () {

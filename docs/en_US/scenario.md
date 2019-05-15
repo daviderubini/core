@@ -25,7 +25,7 @@ It's easy to reach it, simply go to Tools -> Scenarios. You will find the list o
     Vous pouvez également accéder aux logs de chaque scénario et les
     démarrer individuellement.
 
--   **Testeur d’expression** : Permet d’executer un test sur une
+-   **Testeur d’expression** : Permet d’exécuter un test sur une
     expression de votre choix et d’en afficher le résultat.
 
 My scenarios
@@ -37,17 +37,14 @@ définis pour chacun d’eux. Chaque scénario est affiché avec son **nom**
 et son **objet parent**. Les **scénarios grisés** sont ceux qui sont
 désactivés.
 
-Comme dans de nombreuses pages de Jeedom, mettre la souris à gauche de
-l’écran permet de faire apparaître un menu d’accès rapide (à partir de
-votre profil, vous pouvez le laisser toujours visible). Vous pourrez
-alors **chercher**votre scénario, mais aussi en**ajouter** un par ce
-menu.
+La nouvelle barre de recherche vous permet de trouver facilement un scénario
+ou un ensemble de scénario commençant par les même lettres.
 
 Edition of scenario
 ================
 
 Après avoir cliqué sur **Ajouter**, vous devez choisir le nom de votre
-scénario et vous êtes redirigés vers la page de ses paramètres généraux.
+scénario et vous êtes redirigé vers la page de ses paramètres généraux.
 En haut, on retrouve quelques fonctions utiles pour gérer notre scénario
 :
 
@@ -109,8 +106,9 @@ notre scénario :
 
 -   **Log** : Le type de log souhaité pour le scénario.
 
--   **Suivre dans la timeline** : Permet de garder un suivi du scénario
-    dans la timeline.
+-   **Timeline** : Permet de garder un suivi du scénario dans la timeline.
+
+-   **Icone** : Permet de choisir une icone pour le scénario en lieu et place de l'icone standard.
 
 -   **Description** : Permet d’écrire un petit texte pour décrire
     votre scénario.
@@ -118,6 +116,10 @@ notre scénario :
 -   **Mode du scénario** : Le scénario peut être programmé, déclenché ou
     les deux à la fois. Vous aurez ensuite le choix d’indiquer le(s)
     déclencheur(s) (attention, il y a une limite au nombre de déclencheurs possibles par scénario de 15) et la/les programmation(s).
+<<<<<<< HEAD
+=======
+    En mode déclenché, des conditions peuvent à présent être saisies.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 > **Tip**
 >
@@ -727,6 +729,11 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 
 -   **Tag** (tag) : Permet d'ajouter/modifier un tag (le tag n'existe que pendant l'exécution en cours du scénario à la difference des variables qui survivent à la fin du scénario)
 
+<<<<<<< HEAD
+=======
+- **Coloration des icones du dashboard** (setColoredIcon) : permet d'activer ou non la coloration des icones sur le dashboard
+
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 Template de scénario
 ====================
 

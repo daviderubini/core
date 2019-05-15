@@ -83,19 +83,31 @@ Parameter :
 API JSON Objet
 ==============
 
+<<<<<<< HEAD
 object::all
+=======
+jeeObject::all
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 -----------
 
 Gibt die Liste aller Objekte zurück 
 
+<<<<<<< HEAD
 object::full
+=======
+jeeObject::full
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Liefert eine Liste aller Objekte, mit allen Geräten für jedes Objekt und alle
 Befehle von jedem Gerät, sowie die Zustände von diesem
 (für Befehle des Typs Info)
 
+<<<<<<< HEAD
 object::fullById
+=======
+jeeObject::fullById
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ----------------
 
 Gibt ein Objekt mit allen seinen Geräten und für jedes Gerät alle seine
@@ -105,7 +117,11 @@ Parameter :
 
 -   int id
 
+<<<<<<< HEAD
 object::byId
+=======
+jeeObject::byId
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Gibt das angegebenen Objekt zurück
@@ -114,13 +130,21 @@ Parameter :
 
 -   int id
 
+<<<<<<< HEAD
 object::fullById
+=======
+jeeObject::fullById
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ----------------
 
 Gibt ein Objekt, seine Ausrüstung und für jedes Gerät alle seine Befehle
 sowie die Zustände dieses Objekts zurück (für Befehle des Typs Info)
 
+<<<<<<< HEAD
 object::save
+=======
+jeeObject::save
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ------------
 
 Gibt das angegebenen Objekt zurück
@@ -710,7 +734,7 @@ Récupération de la liste des objets :
 
 ``` {.php}
 $jsonrpc = new jsonrpcClient('#URL_JEEDOM#/core/api/jeeApi.php', #API_KEY#);
-if($jsonrpc->sendRequest('object::all', array())){
+if($jsonrpc->sendRequest('jeeObject::all', array())){
     print_r($jsonrpc->getResult());
 }else{
     echo $jsonrpc->getError();

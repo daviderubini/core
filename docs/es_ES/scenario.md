@@ -28,7 +28,7 @@ que des fonctions pour les gérer au mieux :
     Vous pouvez également accéder aux logs de chaque scénario et les
     comenzar individualmente.
 
--   **Testeur d’expression** : Permet d’executer un test sur une
+-   **Testeur d’expression** : Permet d’exécuter un test sur une
     expression de votre choix et d’en afficher le résultat.
 
 Mes scénarios
@@ -40,16 +40,13 @@ définis pour chacun d’eux. Chaque scénario est affiché avec son **nom**
 et son **objet parent**. Les **scénarios grisés** sont ceux qui sont
 désactivés.
 
-Comme dans de nombreuses pages de Jeedom, mettre la souris à gauche de
-l’écran permet de faire apparaître un menu d’accès rapide (à partir de
-votre profil, vous pouvez le laisser toujours visible). Vous pourrez
-alors **chercher**votre scénario, mais aussi en**ajouter** un par ce
-menu.
+La nouvelle barre de recherche vous permet de trouver facilement un scénario
+ou un ensemble de scénario commençant par les même lettres.
 
 Edición de un escenario 
 
 Après avoir cliqué sur **Ajouter**, vous devez choisir le nom de votre
-scénario et vous êtes redirigés vers la page de ses paramètres généraux.
+scénario et vous êtes redirigé vers la page de ses paramètres généraux.
 En haut, on retrouve quelques fonctions utiles pour gérer notre scénario
 :
 
@@ -63,7 +60,7 @@ En haut, on retrouve quelques fonctions utiles pour gérer notre scénario
 
 -   **Exécuter** : Permet de lancer le scénario manuellement (N’oubliez
     pas de sauvegarder au préalable !). Les déclencheurs ne sont donc
-    pas pris en compte.
+    no se tiene en cuenta.
 
 -   **Supprimer** : Permet de supprimer le scénario.
 
@@ -110,8 +107,14 @@ notre scénario :
 
 -   **Log** : Le type de log souhaité pour le scénario.
 
+<<<<<<< HEAD
 -   **Suivre dans la timeline** : Permet de garder un suivi du scénario
     en la timeline.
+=======
+-   **Timeline** : Permet de garder un suivi du scénario dans la timeline.
+
+-   **Icone** : Permet de choisir une icone pour le scénario en lieu et place de l'icone standard.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Description** : Permet d’écrire un petit texte pour décrire
     tu escenario.
@@ -119,6 +122,10 @@ notre scénario :
 -   **Mode du scénario** : Le scénario peut être programmé, déclenché ou
     les deux à la fois. Vous aurez ensuite le choix d’indiquer le(s)
     déclencheur(s) (attention, il y a une limite au nombre de déclencheurs possibles par scénario de 15) et la/les programmation(s).
+<<<<<<< HEAD
+=======
+    En mode déclenché, des conditions peuvent à présent être saisies.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 > **Tip**
 >
@@ -217,7 +224,11 @@ Une fois la condition renseignée, vous devez utiliser le bouton
 >
 > Il ne faut SURTOUT PAS utiliser des [ ] dans les tests de condition, seule les parentheses () sont possible
 
+<<<<<<< HEAD
 #### Bloque de Código
+=======
+#### Bloc Code
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 > **Important**
 >
@@ -258,7 +269,11 @@ Escenario :
 -   $scenario->setLog($message); : Ecrit un message dans le log du scénario.
 -   $scenario->persistLog(); : Force l’écriture du log (sinon il est écrit seulement à la fin du scénario). Attention, ceci peut un peu ralentir le scénario.
 
+<<<<<<< HEAD
 ### Las acciones
+=======
+### Les Actions
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Les actions ajoutées dans les blocs ont plusieurs options. Dans l’ordre :
 
@@ -346,7 +361,12 @@ suivants :
 
 -   \|^ / XOR / xor : o exclusivo.
 
+<<<<<<< HEAD
 Las etiquetas
+=======
+Les tags
+--------
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Un tag est remplacé lors de l’exécution du scénario par sa valeur. Vous
 pouvez utiliser les tags suivants :
@@ -392,7 +412,11 @@ pouvez utiliser les tags suivants :
 
 -   #smois# : Nom du mois (ex : Janvier),
 
+<<<<<<< HEAD
 -   #IP# : IP interna de Jeedom,
+=======
+-   #IP# : IP interne de Jeedom,
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   #hostname# : Nom de la machine Jeedom,
 
@@ -411,7 +435,12 @@ déclenché par une interaction :
 > Lorsqu’un scénario est déclenché par une interaction, celui-ci est
 > forcément exécuté en mode rapide.
 
+<<<<<<< HEAD
 Las funciones de cálculo
+=======
+Les fonctions de calcul
+-----------------------
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Plusieurs fonctions sont disponibles pour les équipements :
 
@@ -509,14 +538,22 @@ Plusieurs fonctions sont disponibles pour les équipements :
     permet de spécifier le format de retour (détails
     [ici](http://php.net/manual/fr/function.date.php)). Un retour de -1
     signifie que la commande est introuvable et -2 que la commande n’est
+<<<<<<< HEAD
     no de tipo info
+=======
+    pas de type info
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   valueDate(cmd,[format]) : Renvoie la date de la dernière donnée
     pour la commande donnée en paramètre, le 2ème paramètre optionnel
     permet de spécifier le format de retour (détails
     [Aquí] (http://php.net/manual/fr/function.date.php)). Un retorno de -1
     signifie que la commande est introuvable et -2 que la commande n’est
+<<<<<<< HEAD
     no de tipo info
+=======
+    pas de type info
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   eqEnable(equipement) : Renvoie l’état de l’équipement. -2 si
     l’équipement est introuvable, 1 si l’équipement est actif et 0 s’il
@@ -567,9 +604,15 @@ ces différentes fonctions :
 | averageBetween(\#[Salle de bain][Hydrometrie][Humidité]\#,2015-01-01 00:00:00,2015-01-15 00:00:00) | Renvoie la moyenne de la commande entre le 1 janvier 2015 et le 15 janvier 2015                         |
 | min(prise,période)                 | Renvoie 0 : la prise a bien été éteinte dans la période              |
 | minBetween(\#[Salle de bain][Hydrometrie][Humidité]\#,2015-01-01 00:00:00,2015-01-15 00:00:00) | Renvoie le minimum de la commande entre le 1 janvier 2015 et le 15 janvier 2015                         |
+<<<<<<< HEAD
 | max(decisión, período)                 | Renvoie 1 : la prise a bien été allumée dans la période              |
 | maxBetween(\#[Salle de bain][Hydrometrie][Humidité]\#,2015-01-01 00:00:00,2015-01-15 00:00:00) | Renvoie le maximum de la commande entre le 1 janvier 2015 et le 15 janvier 2015                         |
 | duración (enchufe, 1, período)          | Renvoie 60 : la prise était allumée (à 1) pendant 60 minutes dans la période                              |
+=======
+| max(prise,période)                 | Renvoie 1 : la prise a bien été allumée dans la période              |
+| maxBetween(\#[Salle de bain][Hydrometrie][Humidité]\#,2015-01-01 00:00:00,2015-01-15 00:00:00) | Renvoie le maximum de la commande entre le 1 janvier 2015 et le 15 janvier 2015                         |
+| duration(prise,1,période)          | Renvoie 60 : la prise était allumée (à 1) pendant 60 minutes dans la période                              |
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 | durationBetween(\#[Salon][Prise][Etat]\#,0,Last Monday,Now)   | Renvoie la durée en minutes pendant laquelle la prise était éteinte depuis lundi dernier.                |
 | statistics(prise,count,période)    | Renvoie 8 : il y a eu 8 remontées d’état dans la période               |
 | tendance(prise,période,0.1)        | Renvoie -1 : tendance à la baisse    |
@@ -581,6 +624,7 @@ ces différentes fonctions :
 | stateChanges(enchufe,periodo)        | Renvoie 3 : la prise a changé 3 fois d’état pendant la période            |
 | stateChanges(prise,0,période)      | Renvoie 2 : la prise s’est éteinte (passage à 0) deux fois pendant la période                              |
 | stateChanges(prise,1,période)      | Renvoie 1 : la prise s’est allumée (passage à 1) une fois pendant la  période                              |
+<<<<<<< HEAD
 | lastBetween(\#[Cuarto de baño][Hidrometría][Humedad]\#,Ayer,Hoy) | Renvoie la dernière température enregistrée hier.                    |
 | variable(plop,10)                  | Renvoie la valeur de la variable plop ou 10 si elle est vide ou n’existe pas                         |
 | scenario(\#[Salle de bain][Lumière][Auto]\#) | Renvoie 1 en cours, 0 si arreté et -1 si desactivé, -2 si le scénario n’existe pas et -3 si l’état n’est pas cohérent                         |
@@ -592,6 +636,19 @@ ces différentes fonctions :
 | name(eqLogic,\#[Salle de bain][Hydrometrie][Humidité]\#)     | Devuelve Hidrometría                  |
 
 Las funciones matematicas
+=======
+| lastBetween(\#[Salle de bain][Hydrometrie][Humidité]\#,Yesterday,Today) | Renvoie la dernière température enregistrée hier.                    |
+| variable(plop,10)                  | Renvoie la valeur de la variable plop ou 10 si elle est vide ou n’existe pas                         |
+| scenario(\#[Salle de bain][Lumière][Auto]\#) | Renvoie 1 en cours, 0 si arreté et -1 si desactivé, -2 si le scénario n’existe pas et -3 si l’état n’est pas cohérent                         |
+| lastScenarioExecution(\#[Salle de bain][Lumière][Auto]\#)   | Renvoie 300 si le scénario s’est lancé pour la dernière fois il y a 5 min                                  |
+| collectDate(\#[Salle de bain][Hydrometrie][Humidité]\#)     | Renvoie 2015-01-01 17:45:12          |
+| valueDate(\#[Salle de bain][Hydrometrie][Humidité]\#) | Renvoie 2015-01-01 17:50:12          |
+| eqEnable(\#[Aucun][Basilique]\#)       | Renvoie -2 si l’équipement est introuvable, 1 si l’équipement est actif et 0 s’il est inactif          |
+| tag(montag,toto)                   | Renvoie la valeur de "montag" si il existe sinon renvoie la valeur "toto"                               |
+| name(eqLogic,\#[Salle de bain][Hydrometrie][Humidité]\#)     | Renvoie Hydrometrie                  |
+
+Les fonctions mathématiques
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ---------------------------
 
 Une boîte à outils de fonctions génériques peut également servir à
@@ -668,6 +725,8 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 
 -   **Supprimer variable** (delete_variable) : Permet de supprimer une variable
 
+-   **Supprimer variable** (delete_variable) : Permet de supprimer une variable
+
 -   **Scénario** (scenario) : Permet de contrôler des scénarios. La partie tags
     permet d’envoyer des tags au scénario, ex : montag=2 (attention il
     ne faut utiliser que des lettre de a à z. Pas de majuscules, pas
@@ -685,7 +744,11 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 -   **Ajouter un log** (log) : Permet de rajouter un message dans les logs.
 
 -   **Créer un message** (message) : Permet d’ajouter un message dans le centre
+<<<<<<< HEAD
     de mensajes.
+=======
+    de messages.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 -   **Activer/Désactiver Masquer/afficher un équipement** (equipement) : Permet de
     modifier les propriétés d’un équipement
@@ -703,7 +766,7 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 -   **Redémarrer Jeedom** (jeedom_reboot) : Demande à Jeedom de redémarrer.
 
 -   **Retourner un texte/une donnée** (scenario_return) : Retourne un texte ou une valeur
-    pour une interaction par exemple.
+    para una interacción por ejemplo.
 
 -   **Icône** (icon) : Permet de changer l’icône de représentation du scénario.
 
@@ -726,7 +789,13 @@ En plus des commandes domotiques, vous avez accès aux actions suivantes :
 
 -   **Tag** (tag) : Permet d'ajouter/modifier un tag (le tag n'existe que pendant l'exécution en cours du scénario à la difference des variables qui survivent à la fin du scénario)
 
+<<<<<<< HEAD
 Plantilla del escenario
+=======
+- **Coloration des icones du dashboard** (setColoredIcon) : permet d'activer ou non la coloration des icones sur le dashboard
+
+Template de scénario
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 ====================
 
 Cette fonctionalité permet de transformer un scénario en template pour

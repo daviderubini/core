@@ -1,4 +1,3 @@
-
 /* This file is part of Jeedom.
 *
 * Jeedom is free software: you can redistribute it and/or modify
@@ -14,14 +13,8 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
-if($('#md_modal').is(':visible')){
-  $('#bt_returnToThumbnailDisplay').hide();
-  $('#div_confPlugin').addClass('col-lg-12').removeClass('col-md-9 col-sm-8');
-  alert_div_plugin_configuration = $('#div_alertPluginConfiguration');
-}else{
-  alert_div_plugin_configuration = $('#div_alert');
-}
 
+//searching
 $('#in_searchPlugin').off('keyup').keyup(function () {
   var search = $(this).value();
   if(search == ''){
@@ -29,9 +22,12 @@ $('#in_searchPlugin').off('keyup').keyup(function () {
     $('.pluginListContainer').packery();
     return;
   }
+  search = search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+  
   $('.pluginDisplayCard').hide();
   $('.pluginDisplayCard .name').each(function(){
     var text = $(this).text().toLowerCase();
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
     if(text.indexOf(search.toLowerCase()) >= 0){
       $(this)
       $(this).closest('.pluginDisplayCard').show();
@@ -40,50 +36,23 @@ $('#in_searchPlugin').off('keyup').keyup(function () {
   $('.pluginListContainer').packery();
 });
 
+$('#bt_resetPluginSearch').on('click', function () {
+  $('#in_searchPlugin').val('')
+  $('#in_searchPlugin').keyup();
+})
+
+if($('#md_modal').is(':visible')){
+  $('#bt_returnToThumbnailDisplay').hide();
+  $('#div_confPlugin').addClass('col-lg-12').removeClass('col-md-9 col-sm-8');
+  alert_div_plugin_configuration = $('#div_alertPluginConfiguration');
+}else{
+  alert_div_plugin_configuration = $('#div_alert');
+}
 
 setTimeout(function(){
-  
   $('.pluginListContainer').packery();
 },100);
 
-if(!$('#md_modal').is(':visible')){
-  if((isset(userProfils.doNotAutoHideMenu) && userProfils.doNotAutoHideMenu == 1) || jQuery.support.touch){
-    $('#sd_pluginList').show();
-    setTimeout(function(){
-      $('.pluginListContainer').packery();
-    },100);
-  }
-  if((!isset(userProfils.doNotAutoHideMenu) || userProfils.doNotAutoHideMenu != 1) && !jQuery.support.touch){
-    $('#div_resumePluginList').addClass('col-lg-12').removeClass('col-md-9 col-sm-8');
-    $('#div_confPlugin').addClass('col-lg-12').removeClass('col-md-9 col-sm-8');
-    $('#bt_displayPluginList').on('mouseenter',function(){
-      var timer = setTimeout(function(){
-        $('#bt_displayPluginList').find('i').hide();
-        $('#div_resumePluginList').addClass('col-md-9 col-sm-8').removeClass('col-lg-12');
-        $('#div_confPlugin').addClass('col-md-9 col-sm-8').removeClass('col-lg-12');
-        $('#sd_pluginList').show();
-        $('.pluginListContainer').packery();
-      }, 100);
-      $(this).data('timerMouseleave', timer)
-    }).on("mouseleave", function(){
-      clearTimeout($(this).data('timerMouseleave'));
-    });
-    
-    $('#sd_pluginList').on('mouseleave',function(){
-      var timer = setTimeout(function(){
-        $('#sd_pluginList').hide();
-        $('#bt_displayPluginList').find('i').show();
-        $('#div_resumePluginList').removeClass('col-md-9 col-sm-8').addClass('col-lg-12');
-        $('#div_confPlugin').removeClass('col-md-9 col-sm-8').addClass('col-lg-12');
-        $('.pluginListContainer').packery();
-      }, 300);
-      $(this).data('timerMouseleave', timer);
-    }).on("mouseenter", function(){
-      clearTimeout($(this).data('timerMouseleave'));
-    });
-    
-  }
-}
 
 $('body').off('click','.bt_refreshPluginInfo').on('click','.bt_refreshPluginInfo',function(){
   $('.pluginDisplayCard[data-plugin_id='+$('#span_plugin_id').text()+']').click();
@@ -104,7 +73,9 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
       $('#span_plugin_id').html(data.id);
       $('#span_plugin_name').html(data.name);
       if(isset(data.update) && isset(data.update.localVersion)){
-        $('#span_plugin_install_date').html(data.update.localVersion);
+        localVer = data.update.localVersion
+        if (localVer.length > 20) localVer = localVer.substring(0,20) + '...'
+        $('#span_plugin_install_date').html(localVer);
       }else{
         $('#span_plugin_install_date').html('');
       }
@@ -140,29 +111,26 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
         $('#div_plugin_deamon').closest('.panel').show();
         $("#div_plugin_deamon").load('index.php?v=d&modal=plugin.deamon&plugin_id='+data.id);
       }
-      
-      $('#span_plugin_market').empty();
+      $('#span_right_button').empty();
+      $('#span_right_button').append('<a class="btn btn-sm roundedLeft bt_refreshPluginInfo"><i class="fas fa-sync"></i> {{Rafraichir}}</a>');
       if (isset(data.status) && isset(data.status.owner)) {
         for(var i in data.status.owner){
           if(data.status.owner[i] != 1){
             continue;
           }
-          $('#span_plugin_market').append('<a class="btn btn-warning btn-xs sendPluginTo" data-repo="'+i+'" data-logicalId="' + data.id + '"><i class="fas fa-cloud-upload-alt"></i> {{Envoyer sur le}} '+i+'</a> ');
+          $('#span_right_button').append('<a class="btn btn-warning btn-sm sendPluginTo" data-repo="'+i+'" data-logicalId="' + data.id + '"><i class="fas fa-cloud-upload-alt"></i> {{Envoyer sur le}} '+i+'</a>');
         }
       }
-      $('#span_plugin_delete').empty().append('<a class="btn btn-danger btn-xs removePlugin" data-market_logicalId="' + data.id + '"><i class="fas fa-trash"></i> {{Supprimer}}</a> ');
-      $('#span_plugin_doc').empty();
-      $('#span_plugin_doc').append('<a class="btn btn-default btn-xs bt_refreshPluginInfo"><i class="fas fa-refresh"></i> {{Rafraichir}}</a> ');
       if(isset(data.documentation) && data.documentation != ''){
-        $('#span_plugin_doc').append('<a class="btn btn-primary btn-xs" target="_blank" href="'+data.documentation+'"><i class="fas fa-book"></i> {{Documentation}}</a> ');
+        $('#span_right_button').append('<a class="btn btn-primary btn-sm" target="_blank" href="'+data.documentation+'"><i class="fas fa-book"></i> {{Documentation}}</a>');
       }
       if(isset(data.changelog) && data.changelog != ''){
-        $('#span_plugin_doc').append('<a class="btn btn-primary btn-xs" target="_blank" href="'+data.changelog+'"><i class="fas fa-book"></i> {{Changelog}}</a> ');
+        $('#span_right_button').append('<a class="btn btn-primary btn-sm" target="_blank" href="'+data.changelog+'"><i class="fas fa-book"></i> {{Changelog}}</a>');
       }
       if(isset(data.info.display) && data.info.display != ''){
-        $('#span_plugin_doc').append('<a class="btn btn-primary btn-xs" target="_blank" href="'+data.info.display+'"><i class="fas fa-book"></i> {{Détails}}</a> ');
+        $('#span_right_button').append('<a class="btn btn-primary btn-sm" target="_blank" href="'+data.info.display+'"><i class="fas fa-book"></i> {{Détails}}</a>');
       }
-      
+      $('#span_right_button').append('<a class="btn btn-danger btn-sm removePlugin roundedRight" data-market_logicalId="' + data.id + '"><i class="fas fa-trash"></i> {{Supprimer}}</a>');
       if (data.checkVersion != -1) {
         $('#span_plugin_require').html('<span>' + data.require + '</span>');
       } else {
@@ -200,19 +168,19 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
       for(var i in data.functionality){
         config_panel_html += '<div class="form-group">';
         config_panel_html += '<label class="col-lg-3 col-md-4 col-sm-4 col-xs-6 control-label">'+i+'</label>';
-        config_panel_html += '<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">';
+        config_panel_html += '<label class="col-lg-2 col-md-2 col-sm-3 col-xs-6">';
         if(data.functionality[i].exists){
           config_panel_html += '<span class="label label-success">{{Oui}}</span>';
-          config_panel_html += '</div>';
+          config_panel_html += '</label>';
           if(data.functionality[i].controlable){
             config_panel_html += '<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Activer}}</label>';
-            config_panel_html += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">';
+            config_panel_html += '<label class="col-lg-2 col-md-2 col-sm-2 col-xs-6">';
             config_panel_html += '<input type="checkbox" class="configKey tooltips" data-l1key="functionality::'+i+'::enable" checked/>';
-            config_panel_html += '</div>';
+            config_panel_html += '</label>';
           }
         }else{
           config_panel_html += '<span class="label label-danger">{{Non}}</span>';
-          config_panel_html += '</div>';
+          config_panel_html += '</label>';
         }
         config_panel_html += '</div>';
         count++;
@@ -227,16 +195,16 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
       
       $('#div_plugin_toggleState').empty();
       if (data.checkVersion != -1) {
-        var html = '<form class="form-horizontal">';
+        var html = '<form class="form-horizontal"><fieldset>';
         html += '<div class="form-group">';
         html += '<label class="col-sm-2 control-label">{{Statut}}</label>';
         html += '<div class="col-sm-4">';
         if (data.activate == 1) {
           $('#div_plugin_toggleState').closest('.panel').removeClass('panel-default panel-danger').addClass('panel-success');
-          html += '<span class="label label-success" style="font-size:1em;position:relative;top:7px;">{{Actif}}</span>';
+          html += '<span class="label label-success">{{Actif}}</span>';
         }else{
           $('#div_plugin_toggleState').closest('.panel').removeClass('panel-default panel-success').addClass('panel-danger');
-          html += '<span class="label label-danger" style="font-size:1em;position:relative;top:7px;">{{Inactif}}</span>';
+          html += '<span class="label label-danger">{{Inactif}}</span>';
         }
         html += '</div>';
         html += '<label class="col-sm-2 control-label">{{Action}}</label>';
@@ -248,7 +216,7 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
         }
         html += '</div>';
         html += '</div>';
-        html += '</form>';
+        html += '</fieldset></form>';
         $('#div_plugin_toggleState').html(html);
       }else{
         $('#div_plugin_toggleState').closest('.panel').removeClass('panel-default panel-success').addClass('panel-danger');
@@ -358,14 +326,17 @@ $(".li_plugin,.pluginDisplayCard").on('click', function () {
       }
       $('#div_confPlugin').show();
       modifyWithoutSave = false;
+      
+      __pluginPageTitle = document.title
+      document.title = data.name + ' - ' + JEEDOM_PRODUCT_NAME
     }
   });
   return false;
 });
 
-$('#span_plugin_delete').delegate('.removePlugin','click',function(){
+$('#span_right_button').delegate('.removePlugin','click',function(){
   var _el = $(this);
-  bootbox.confirm('{{Etes-vous sûr de vouloir supprimer ce plugin ?}}', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer ce plugin ?}}', function (result) {
     if (result) {
       $.hideAlert();
       jeedom.update.remove({
@@ -400,10 +371,10 @@ $("#div_plugin_toggleState").delegate(".togglePlugin", 'click', function () {
 });
 
 if (sel_plugin_id != -1) {
-  if ($('#ul_plugin .li_plugin[data-plugin_id=' + sel_plugin_id + ']').length != 0) {
-    $('#ul_plugin .li_plugin[data-plugin_id=' + sel_plugin_id + ']').click();
+  if ($('.pluginDisplayCard[data-plugin_id=' + sel_plugin_id + ']').length != 0) {
+    $('.pluginDisplayCard[data-plugin_id=' + sel_plugin_id + ']').click();
   } else {
-    $('#ul_plugin .li_plugin:first').click();
+    $('.pluginDisplayCard').first().click();
   }
 }
 
@@ -411,6 +382,7 @@ $('#bt_returnToThumbnailDisplay').on('click',function(){
   $('#div_resumePluginList').show();
   $('#div_confPlugin').hide();
   $('.pluginListContainer').packery();
+  document.title = __pluginPageTitle
 });
 
 jwerty.key('ctrl+s/⌘+s', function (e) {
@@ -496,16 +468,22 @@ function savePluginConfig(_param) {
       alert_div_plugin_configuration.showAlert({message: error.message, level: 'danger'});
     },
     success: function () {
+      if (!isset(_param)){
+        _param = {};
+      }
       alert_div_plugin_configuration.showAlert({message: '{{Sauvegarde effectuée}}', level: 'success'});
       modifyWithoutSave = false;
       var postSave = $('#span_plugin_id').text()+'_postSaveConfiguration';
       if (typeof window[postSave] == 'function'){
         window[postSave]();
       }
-      if (isset(_param) && typeof _param.success == 'function'){
+      if (typeof _param.success == 'function'){
         _param.success(0);
       }
-      if(!isset(_param) || !isset(_param.relaunchDeamon) || _param.relaunchDeamon){
+      if($('#div_plugin_configuration .saveParam[data-l1key=relaunchDeamon]').html() != undefined){
+        _param.relaunchDeamon = $('#div_plugin_configuration .saveParam[data-l1key=relaunchDeamon]').value();
+      }
+      if(!isset(_param.relaunchDeamon) || _param.relaunchDeamon != '0'){
         jeedom.plugin.deamonStart({
           id : $('#span_plugin_id').text(),
           slave_id: 0,

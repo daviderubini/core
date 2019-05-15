@@ -1,0 +1,23 @@
+<div style="width:100px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="binary" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+  <div class="title #hide_name#">
+    <div class="cmdName">#name_display#</div>
+  </div>
+  <div class="content-sm ">
+    <span class="iconCmd"></span>
+  </div>
+  <div class="value">
+    <span class="timeCmd#uid# timeCmd label label-default value"></span>
+  </div>
+  <script>
+    jeedom.cmd.update['#id#'] = function(_options){
+      jeedom.cmd.displayDuration(_options.valueDate,  $('.cmd[data-cmd_id=#id#] .timeCmd'));
+      $('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate)
+      if (_options.display_value == '1') {
+        $('.cmd[data-cmd_id=#id#] .iconCmd').empty().append("#_icon_on_#");
+      }else {
+        $('.cmd[data-cmd_id=#id#] .iconCmd').empty().append("#_icon_off_#");
+      }
+    }
+    jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
+  </script>
+</div>

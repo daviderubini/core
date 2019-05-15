@@ -315,7 +315,6 @@ class history {
 		if ($_endTime !== null) {
 			$sql .= ' AND datetime<=:endTime';
 		}
-		$sql .= ' ORDER BY `datetime` ASC';
 		DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
 		
 		$sql = 'DELETE FROM historyArch
@@ -326,7 +325,6 @@ class history {
 		if ($_endTime !== null) {
 			$sql .= ' AND `datetime`<=:endTime';
 		}
-		$sql .= ' ORDER BY `datetime` ASC';
 		DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
 		return true;
 	}
@@ -427,6 +425,31 @@ class history {
 				$sum += $cValue * (strtotime($history->getDatetime()) - $cTime);
 				$cValue = $history->getValue();
 				$cTime = strtotime($history->getDatetime());
+			}
+			$result = $sum / ($cTime - $start);
+			return $result;
+		}
+		
+		public static function getTemporalAvg($_cmd_id, $_startTime, $_endTime){
+			$histories = self::all($_cmd_id, $_startTime, $_endTime);
+			$result = null;
+			$start = null;
+			$cTime = null;
+			$cValue = null;
+			$sum = 0;
+			foreach ($histories as $history) {
+				if($start == null){
+					$cValue = $history->getValue();
+					$cTime = strtotime($history->getDatetime());
+					$start = $cTime;
+					continue;
+				}
+				$sum += $cValue * (strtotime($history->getDatetime()) - $cTime);
+				$cValue = $history->getValue();
+				$cTime = strtotime($history->getDatetime());
+			}
+			if(($cTime - $start) <= 0){
+				return 0;
 			}
 			$result = $sum / ($cTime - $start);
 			return $result;

@@ -7,7 +7,7 @@ functions of organization of equipment and controls, to their
 advanced configuration as well as configuration possibilities
 display.
 
-This page is accessible by **Tools → Home Automation Summary**.
+Cette page est accessible par **Analyse → Résumé domotique**.
 
 The top of the page
 ------------------
@@ -21,7 +21,12 @@ posted on this page. \ * **Search**: Search for a
 particular element. It can be the name of a piece of equipment, a command
 or the name of the plugin by which the device was created.
 
+<<<<<<< HEAD
 Vous avez aussi un bouton "Historique des suppressions" qui vous permettra d'afficher l'historique des commandes, équipements, objets, vue, design, deisgn 3d, scénario et utilisateur supprimés.
+=======
+Vous avez aussi un bouton **Historique des suppressions** : Affiche l'historique
+des commandes, équipements, objets, vues, design, deisgn 3d, scénarios et utilisateurs supprimés.
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Les cadres objet 
 ----------------

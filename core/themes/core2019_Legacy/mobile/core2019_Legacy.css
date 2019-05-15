@@ -1,0 +1,254 @@
+/*
+Theme Core 2019 @Jeedom
+*/
+
+@import url("colors.css");
+
+.ui-link[data-title=Accueil] {
+	background: url(./jeedom_home.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 32px 32px;
+}
+
+/* ___________________________________________________________DASHBOARD CATEGORIES coloring */
+
+.eqLogic.eqLogic-widget[data-category=security] {
+  background-color: rgba(var(--cat-security-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=heating] {
+  background-color: rgba(var(--cat-heating-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=automatism]{
+  background-color: rgba(var(--cat-automatism-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=light] {
+  background-color: rgba(var(--cat-light-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=multimedia] {
+  background-color: rgba(var(--cat-multimedia-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=energy] {
+  background-color: rgba(var(--cat-energy-color), var(--opacity));
+}
+.eqLogic.eqLogic-widget[data-category=''] {
+  background-color: rgba(var(--cat-other-color), var(--opacity));
+}
+:not(.batteryListContainer) > .eqLogic-widget:not([data-category]) {
+  background-color: rgba(var(--cat-other-color), var(--opacity));
+}
+
+.scenario-widget {
+  background-color: rgba(var(--cat-scenario-color), var(--opacity)) !important;
+}
+
+.eqLogic.eqLogic-widget[data-category=security] .ui-btn {
+  background-color: var(--cat-security-BtnColor) !important;
+}
+.eqLogic.eqLogic-widget[data-category=heating] .ui-btn {
+  background-color: var(--cat-heating-BtnColor) !important;
+}
+.eqLogic.eqLogic-widget[data-category=automatism] .ui-btn {
+  background-color: var(--cat-automatism-BtnColor) !important;
+}
+.eqLogic.eqLogic-widget[data-category=light] .ui-btn {
+  background-color: var(--cat-light-BtnColor) !important;
+}
+.eqLogic.eqLogic-widget[data-category=multimedia] .ui-btn {
+  background-color: var(--cat-multimedia-BtnColor) !important;
+}
+.eqLogic.eqLogic-widget[data-category=energy] .ui-btn {
+  background-color: var(--cat-energy-BtnColor) !important;
+}
+
+.scenario-widget.scenario .changeScenarioState,
+.scenario-widget.scenario .changeScenarioState i {
+  background-color: var(--cat-scenario-BtnColor) !important;
+  color: rgb(var(--cat-scenario-color));
+}
+
+.eqLogic.eqLogic-widget :not(.ui-select) > .ui-btn:not(.ui-slider-handle),
+.scenario.scenario-widget :not(.ui-select) > .ui-btn:not(.ui-slider-handle) {
+  color: var(--linkHoverLight-color) !important;
+}
+.eqLogic.eqLogic-widget :not(.ui-select) > .ui-btn:not(.ui-slider-handle):hover,
+.scenario.scenario-widget :not(.ui-select) > .ui-btn:not(.ui-slider-handle):hover {
+  opacity: 0.7;
+}
+
+.eqLogic.eqLogic-widget .ui-btn.ui-slider-handle {
+  background-color: var(--linkHoverLight-color) !important;
+}
+
+/* analyse equipment */
+#div_displayBattery .eqLogic-widget {
+  color: var(--eqTitle-color);
+}
+#div_displayBattery .eqLogic-widget.critical { 
+  background-color: var(--al-danger-color);
+}
+#div_displayBattery .eqLogic-widget.warning { 
+  background-color: var(--al-warning-color);
+}
+#div_displayBattery .eqLogic-widget.good { 
+  background-color: var(--al-success-color);
+}
+#div_displayBattery .eqLogic-widget .jeedom-batterie,
+#div_displayBattery .eqLogic-widget .jeedom-batterie span,
+#div_displayBattery .eqLogic-widget .jeedom-batterie i {
+  color: var(--eqTitle-color) !important;
+}
+
+#div_displayBattery .eqLogic-widget .batteryLevel {
+  color: var(--eqTitle-color);
+}
+
+
+/* ___________________________________________________________EQs */
+.eqLogic.eqLogic-widget,
+.ui-overlay-a,
+.ui-page-theme-a,
+.ui-page-theme-a .ui-panel-wrapper,
+.cmdName {
+	color: var(--linkHoverLight-color) !important;
+}
+
+.state,
+.state i,
+p.state,
+.iconCmd,
+.iconCmd i,
+.iconCmd span,
+.cmd .iconCmd i:not([class*="icon_"]),
+.cmd {
+  color: var(--linkHoverLight-color) !important;
+}
+
+/* buttons */
+.eqLogic.eqLogic-widget .ui-input-text input {
+  color: var(--linkHoverLight-color);
+}
+
+.objectSummaryParent {
+  color: var(--link-color);
+}
+
+.ui-slider-bg {
+  background: linear-gradient(var(--el-defaultColor), var(--el-defaultColor)) fixed !important;
+}
+
+.clr-btn-red,
+.clr-btn-red:hover {
+  color: var(--sc-lightTxt-color) !important;
+  background-color: var(--al-danger-color) !important;
+}
+.ui-btn.clr-btn-deep-orange,
+.ui-btn.clr-btn-deep-orange:hover {
+  color: var(--link-color) !important;
+  background-color: var(--al-warning-color) !important;
+}
+
+.iconCmd:hover {
+  opacity: 0.75;
+}
+
+.eqLogic.eqLogic-widget .fa-refresh,
+.scenario.scenario-widget .fa-refresh,
+.statusCmd > i {
+  color: var(--linkHoverLight-color) !important;
+}
+
+.tableCmd,
+.highcharts-axis-title > tspan,
+.cmd-widget > center {
+  fill: var(--linkHoverLight-color) !important;
+  color: var(--linkHoverLight-color);
+}
+
+/* select */
+.ui-select .ui-btn {
+  background-color: var(--linkHoverLight-color) !important;
+  color: var(--linkHover-color) !important;
+}
+.ui-select .ui-btn:hover {
+  background-color: var(--sc-form-color) !important;
+  opacity: 0.5;
+  color: var(--linkHover-color);
+}
+.ui-select option {
+  background-color: var(--bg-modal-color) !important;
+  color: var(--link-color);
+}
+
+.eqLogic.eqLogic-widget .ui-select .ui-btn {
+  background-color: transparent !important;
+  color: var(--linkHoverLight-color) !important;
+}
+
+.ui-checkbox {
+  color: var(--link-color);
+}
+
+/* ___________________________________________________________GAUGES */
+.shuttergauge-value {
+  background: var(--linkHoverLight-color);
+}
+.shuttergauge > div:first-child {
+  color: var(--linkHoverLight-color) !important;
+}
+.shuttergauge-bckg {
+  border-top: 6px solid var(--el-defaultColor) !important;
+  border-left: 4px solid var(--el-defaultColor) !important;
+  border-right: 4px solid var(--el-defaultColor) !important;
+}
+
+.highcharts-legend-item:not(.highcharts-legend-item-hidden) text{
+  fill: var(--link-color) !important;
+}
+.highcharts-legend-item.highcharts-legend-item-hidden text {
+  fill: var(--txt-color) !important;
+}
+.highcharts-background {
+  fill: var(--defaultBkg-color) !important;
+}
+.gauge .highcharts-background {
+  fill: transparent !important;
+}
+.highcharts-range-selector-buttons > text {
+  fill: var(--link-color) !important;
+}
+.highcharts-container {
+  color: var(--txt-color) !important;
+}
+.highcharts-plot-band {
+  fill: rgb(var(--bg-color)) !important;
+}
+.highcharts-grid-line {
+  stroke: var(--defaultBkg-color);
+}
+.highcharts-button-box {
+  fill: var(--el-defaultColor) !important;
+}
+.highcharts-button > text,
+.highcharts-button-disabled > text{
+  fill: var(--link-color) !important;
+}
+.highcharts-axis-labels > text {
+  fill: var(--link-color) !important;
+}
+
+.highcharts-pane {
+  fill: var(--el-defaultColor);
+}
+.highcharts-data-label > span > span {
+  color: var(--txt-color) !important;
+}
+.highcharts-color-0 {
+  fill: var(--link-color);
+}
+.ui-slider-track .ui-slider-handle {
+  background-color: var(--linkHoverLight-color) !important;
+}
+.ui-slider-handle:hover {
+  background-color: var(--linkHoverLight-color) !important;
+}

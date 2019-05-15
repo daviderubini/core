@@ -14,19 +14,77 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
+SC_CLIPBOARD = null
+PREV_FOCUS = null
+$('#div_scenarioElement').on('focus', ':input', function() {
+  PREV_FOCUS = $(this)
+})
+
 $('.backgroundforJeedom').css('background-position','bottom right');
 $('.backgroundforJeedom').css('background-size','auto');
 $('.backgroundforJeedom').css('background-repeat','no-repeat');
 
+//searching
+$('#in_searchScenario').keyup(function () {
+  var search = $(this).value();
+  if(search == ''){
+    $('.panel-collapse.in').closest('.panel').find('.accordion-toggle').click()
+    $('.scenarioDisplayCard').show();
+    $('.scenarioListContainer').packery();
+    return;
+  }
+  search = search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+  $('.panel-collapse').attr('data-show',0);
+  $('.scenarioDisplayCard').hide();
+  $('.scenarioDisplayCard .name').each(function(){
+    var text = $(this).text().toLowerCase();
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+    if(text.indexOf(search.toLowerCase()) >= 0){
+      $(this).closest('.scenarioDisplayCard').show();
+      $(this).closest('.panel-collapse').attr('data-show',1);
+    }
+  });
+  $('.panel-collapse[data-show=1]').collapse('show');
+  $('.panel-collapse[data-show=0]').collapse('hide');
+  $('.scenarioListContainer').packery();
+});
+
+$('#bt_openAll').off('click').on('click', function () {
+  $(".accordion-toggle[aria-expanded='false']").each(function(){
+    $(this).click()
+  })
+});
+$('#bt_closeAll').off('click').on('click', function () {
+  $(".accordion-toggle[aria-expanded='true']").each(function(){
+    $(this).click()
+  })
+});
+
+$('#bt_resetScenarioSearch').on('click', function () {
+  $('#in_searchScenario').val('')
+  $('#in_searchScenario').keyup();
+})
+
+document.addEventListener('keydown', function(event) {
+  //in expression input or textarea:
+  if (event.target.classList.contains('expressionAttr')){
+    if ((27 === event.which) || (13 === event.which)){
+      event.preventDefault()
+      $(event.target).blur()
+    }
+  }
+})
+
 tab = null;
 var url = document.location.toString();
 if (url.match('#')) {
-  $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+  $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').click();
 }
 $('.nav-tabs a').on('shown.bs.tab', function (e) {
   window.location.hash = e.target.hash;
 })
 
+/* contextMenu */
 $(function(){
   try{
     $.contextMenu('destroy', $('.nav.nav-tabs'));
@@ -38,19 +96,20 @@ $(function(){
         if(scenarios.length == 0){
           return;
         }
+<<<<<<< HEAD
         //get groups:
+=======
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
         scenarioGroups = []
-        for(i=0; i<scenarios.length; i++)
-        {
+        for(i=0; i<scenarios.length; i++){
           group = scenarios[i].group
+          if (group == null) continue
           if (group == "") group = 'Aucun'
           group = group[0].toUpperCase() + group.slice(1)
           scenarioGroups.push(group)
         }
         scenarioGroups = Array.from(new Set(scenarioGroups))
         scenarioGroups.sort()
-        
-        //set list of scenarios per groups:
         scenarioList = []
         for(i=0; i<scenarioGroups.length; i++)
         {
@@ -60,12 +119,12 @@ $(function(){
           {
             sc = scenarios[j]
             scGroup = sc.group
+            if (scGroup == null) continue
             if (scGroup == "") scGroup = 'Aucun'
             if (scGroup.toLowerCase() != group.toLowerCase()) continue
             scenarioList[group].push([sc.name, sc.id])
           }
         }
-        
         //set context menu!
         var contextmenuitems = {}
         for (var group in scenarioList) {
@@ -79,21 +138,24 @@ $(function(){
           }
           contextmenuitems[group] = {'name':group, 'items':items}
         }
-        
-        $('.nav.nav-tabs').contextMenu({
-          selector: 'li',
-          autoHide: true,
-          zIndex: 9999,
-          className: 'scenario-context-menu',
-          callback: function(key, options) {
-            url = 'index.php?v=d&p=scenario&id=' + key;
-            if (document.location.toString().match('#')) {
-              url += '#' + document.location.toString().split('#')[1];
-            }
-            loadPage(url);
-          },
-          items: contextmenuitems
-        })
+
+        if (Object.entries(contextmenuitems).length > 0 && contextmenuitems.constructor === Object)
+        {
+          $('.nav.nav-tabs').contextMenu({
+            selector: 'li',
+            autoHide: true,
+            zIndex: 9999,
+            className: 'scenario-context-menu',
+            callback: function(key, options) {
+              url = 'index.php?v=d&p=scenario&id=' + key;
+              if (document.location.toString().match('#')) {
+                url += '#' + document.location.toString().split('#')[1];
+              }
+              loadPage(url);
+            },
+            items: contextmenuitems
+          })
+        }
       }
     })
   }
@@ -101,9 +163,6 @@ $(function(){
 })
 
 editor = [];
-
-listColor = ['#16a085', '#27ae60', '#2980b9', '#745cb0', '#f39c12', '#d35400', '#c0392b', '#2c3e50', '#7f8c8d'];
-listColorStrong = ['#12846D', '#229351', '#246F9E', '#634F96', '#D88811', '#B74600', '#A53026', '#1D2935', '#687272'];
 pColor = 0;
 
 autoCompleteCondition = [
@@ -140,13 +199,9 @@ autoCompleteCondition = [
   {val: 'name(type,commande)'},
   {val: 'value(commande)'},
   {val: 'lastCommunication(equipement)'},
-  {val:'color_gradient(couleur_debut,couleur_fin,valuer_min,valeur_max,valeur)'}
+  {val: 'color_gradient(couleur_debut,couleur_fin,valuer_min,valeur_max,valeur)'}
 ];
-autoCompleteAction = ['tag','report','sleep', 'variable', 'delete_variable', 'scenario', 'stop', 'wait','gotodesign','log','message','equipement','ask','jeedom_poweroff','scenario_return','alert','popup','icon','event','remove_inat'];
-
-if (getUrlVars('saveSuccessFull') == 1) {
-  $('#div_alert').showAlert({message: '{{Sauvegarde effectuée avec succès}}', level: 'success'});
-}
+autoCompleteAction = ['setColoredIcon','tag','report','sleep', 'variable', 'delete_variable', 'scenario', 'stop', 'wait','gotodesign','log','message','equipement','ask','jeedom_poweroff','scenario_return','alert','popup','icon','event','remove_inat'];
 
 setTimeout(function(){
   $('.scenarioListContainer').packery();
@@ -176,6 +231,7 @@ $('.accordion-toggle').off('click').on('click', function () {
   },100);
 });
 
+
 $("#div_tree").jstree({
   "plugins": ["search"]
 });
@@ -183,29 +239,19 @@ $('#in_treeSearch').keyup(function () {
   $('#div_tree').jstree(true).search($('#in_treeSearch').val());
 });
 
-$('#in_searchScenario').keyup(function () {
-  var search = $(this).value();
-  if(search == ''){
-    $('.panel-collapse.in').closest('.panel').find('.accordion-toggle').click()
-    $('.scenarioDisplayCard').show();
-    $('.scenarioListContainer').packery();
-    return;
-  }
-  $('.panel-collapse:not(.in)').closest('.panel').find('.accordion-toggle').click()
-  $('.scenarioDisplayCard').hide();
-  $('.scenarioDisplayCard .name').each(function(){
-    var text = $(this).text().toLowerCase();
-    if(text.indexOf(search.toLowerCase()) >= 0){
-      $(this)
-      $(this).closest('.scenarioDisplayCard').show();
-    }
-  });
-  $('.scenarioListContainer').packery();
-});
 $('#bt_chooseIcon').on('click', function () {
+  var _icon = false
+  if ( $('div[data-l2key="icon"] > i').length ) {
+    _icon = $('div[data-l2key="icon"] > i').attr('class')
+    _icon = '.' + _icon.replace(' ', '.')
+  }
   chooseIcon(function (_icon) {
     $('.scenarioAttr[data-l1key=display][data-l2key=icon]').empty().append(_icon);
-  });
+  },{icon:_icon});
+});
+
+$('.scenarioAttr[data-l1key=display][data-l2key=icon]').on('dblclick',function(){
+  $('.scenarioAttr[data-l1key=display][data-l2key=icon]').value('');
 });
 
 $('.scenarioAttr[data-l1key=group]').autocomplete({
@@ -286,7 +332,7 @@ $("#bt_saveScenario,#bt_saveScenario2").off('click').on('click', function (event
 
 $("#bt_delScenario,#bt_delScenario2").off('click').on('click', function (event) {
   $.hideAlert();
-  bootbox.confirm('{{Etes-vous sûr de vouloir supprimer le scénario}} <span style="font-weight: bold ;">' + $('.scenarioAttr[data-l1key=name]').value() + '</span> ?', function (result) {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer le scénario}} <span style="font-weight: bold ;">' + $('.scenarioAttr[data-l1key=name]').value() + '</span> ?', function (result) {
     if (result) {
       jeedom.scenario.remove({
         id: $('.scenarioAttr[data-l1key=id]').value(),
@@ -302,18 +348,39 @@ $("#bt_delScenario,#bt_delScenario2").off('click').on('click', function (event) 
   });
 });
 
-$("#bt_testScenario,#bt_testScenario2").off('click').on('click', function () {
+$("#bt_testScenario,#bt_testScenario2").off('click').on('click', function (event) {
   $.hideAlert();
-  jeedom.scenario.changeState({
-    id: $('.scenarioAttr[data-l1key=id]').value(),
-    state: 'start',
-    error: function (error) {
-      $('#div_alert').showAlert({message: error.message, level: 'danger'});
-    },
-    success: function () {
-      $('#div_alert').showAlert({message: '{{Lancement du scénario réussi}}', level: 'success'});
-    }
-  });
+  var scenario_id = $('.scenarioAttr[data-l1key=id]').value();
+  var logmode = $('button[data-l2key="logmode"]').attr('value')
+  if(event.ctrlKey) {
+    saveScenario(function(){
+      jeedom.scenario.changeState({
+        id: scenario_id,
+        state: 'start',
+        error: function (error) {
+          $('#div_alert').showAlert({message: error.message, level: 'danger'});
+        },
+        success: function () {
+          $('#div_alert').showAlert({message: '{{Lancement du scénario réussi}}', level: 'success'});
+          if (logmode != 'none') {
+            $('#md_modal').dialog({title: "{{Log d'exécution du scénario}}"});
+            $("#md_modal").load('index.php?v=d&modal=scenario.log.execution&scenario_id=' + scenario_id).dialog('open');
+          }
+        }
+      });
+    });
+  } else {
+    jeedom.scenario.changeState({
+      id: $('.scenarioAttr[data-l1key=id]').value(),
+      state: 'start',
+      error: function (error) {
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function () {
+        $('#div_alert').showAlert({message: '{{Lancement du scénario réussi}}', level: 'success'});
+      }
+    });
+  }
 });
 
 $("#bt_copyScenario").off('click').on('click', function () {
@@ -375,10 +442,37 @@ $('#bt_scenarioTab').on('click',function(){
   setTimeout(function(){
     setEditor();
     taAutosize();
+    updateElseToggle();
   }, 50);
 });
 
 /*******************Element***********************/
+
+$('#div_pageContainer').off('change','.subElementAttr[data-l1key=options][data-l2key=enable]').on('change','.subElementAttr[data-l1key=options][data-l2key=enable]',function(){
+  var checkbox = $(this);
+  var element = checkbox.closest('.element');
+  if(checkbox.value() == 1){
+    element.removeClass('disableElement');
+  }else{
+    element.addClass('disableElement');
+  }
+  var subElement =checkbox.closest('.element').find('.subElement:not(.noSortable)');
+  if(checkbox.value() == 1){
+    subElement.find('.expressions').removeClass('disableSubElement');
+  }else{
+    subElement.find('.expressions').addClass('disableSubElement');
+  }
+});
+
+$('#div_pageContainer').off('change','.expressionAttr[data-l1key=options][data-l2key=enable]').on('change','.expressionAttr[data-l1key=options][data-l2key=enable]',function(){
+  var checkbox = $(this);
+  var element = checkbox.closest('.expression');
+  if(checkbox.value() == 1){
+    element.removeClass('disableSubElement');
+  }else{
+    element.addClass('disableSubElement');
+  }
+});
 
 $('#div_pageContainer').off('click','.helpSelectCron').on('click','.helpSelectCron',function(){
   var el = $(this).closest('.schedule').find('.scenarioAttr[data-l1key=schedule]');
@@ -388,35 +482,93 @@ $('#div_pageContainer').off('click','.helpSelectCron').on('click','.helpSelectCr
 });
 
 $('#div_pageContainer').off('click','.bt_addScenarioElement').on( 'click','.bt_addScenarioElement', function (event) {
-  var elementDiv = $(this).closest('.element');
+  if (!window.location.href.includes('#scenariotab')) $('#bt_scenarioTab').trigger('click')
+
+  //is scenario empty:
+  var elementDiv = $(this).closest('.element')
   if(elementDiv.html() == undefined){
-    elementDiv = $('#div_scenarioElement');
+    elementDiv = $('#div_scenarioElement')
   }
-  var expression = false;
+
+  var expression = false
+  var insertAfter = false
+
+  //Is triggerred from element button:
   if ($(this).hasClass('fromSubElement')) {
-    elementDiv = $(this).closest('.subElement').find('.expressions').eq(0);
-    expression = true;
+    elementDiv = $(this).closest('.subElement').find('.expressions').eq(0)
+    expression = true
+  } else {
+    $('#div_scenarioElement .span_noScenarioElement').remove()
+    //had focus ?
+    if (PREV_FOCUS != null && $(PREV_FOCUS).closest('div.element').html() != undefined) {
+      insertAfter = true
+      elementDiv = $(PREV_FOCUS).closest('div.element')
+      if (elementDiv.parent().attr('id') != 'div_scenarioElement') {
+        elementDiv = elementDiv.parents('.expression').eq(0)
+        expression = true
+      }
+    }
   }
-  $('#md_addElement').modal('show');
+
+  $('#md_addElement').modal('show')
   $("#bt_addElementSave").off('click').on('click', function (event) {
     if (expression) {
-      elementDiv.append(addExpression({type: 'element', element: {type: $("#in_addElementType").value()}}));
+      newEL = $(addExpression({type: 'element', element: {type: $("#in_addElementType").value()}}))
     } else {
-      $('#div_scenarioElement .span_noScenarioElement').remove();
-      elementDiv.append(addElement({type: $("#in_addElementType").value()}));
+      newEL = $(addElement({type: $("#in_addElementType").value()}))
     }
-    setEditor();
-    updateSortable();
-    $('#md_addElement').modal('hide');
-  });
-});
+    if (insertAfter) {
+      elementDiv.after(newEL.addClass('disableElement'))
+    } else {
+      elementDiv.append(newEL.addClass('disableElement'))
+    }
+
+    setEditor()
+    updateSortable()
+    updateElseToggle()
+    $('#md_addElement').modal('hide')
+    modifyWithoutSave = true
+    setTimeout(function(){ newEL.removeClass('disableElement') }, 600)
+  })
+})
 
 $('#div_pageContainer').off('click','.bt_removeElement').on('click','.bt_removeElement',  function (event) {
-  if ($(this).closest('.expression').length != 0) {
-    $(this).closest('.expression').remove();
-  } else {
-    $(this).closest('.element').remove();
+  var button = $(this);
+  if(event.ctrlKey) {
+    if (button.closest('.expression').length != 0) {
+      button.closest('.expression').remove();
+    } else {
+      button.closest('.element').remove();
+    }
+  }else{
+    bootbox.confirm("{{Êtes-vous sûr de vouloir supprimer ce bloc ?}}", function (result) {
+      if (result) {
+        if (button.closest('.expression').length != 0) {
+          button.closest('.expression').remove();
+        } else {
+          button.closest('.element').remove();
+        }
+      }
+    });
   }
+});
+
+$('#div_pageContainer').off('click','.bt_copyElement').on('click','.bt_copyElement',  function (event) {
+  SC_CLIPBOARD = $(this).closest('.element')
+  if(event.ctrlKey) {
+    $(this).closest('.element').remove()
+  }
+});
+
+$('#div_pageContainer').off('click','.bt_pasteElement').on('click','.bt_pasteElement',  function (event) {
+  clickedBloc = $(this).closest('.element')
+  newBloc = $(SC_CLIPBOARD).clone()
+  newBloc.find('input[data-l1key="id"]').attr("value", "")
+  newBloc.insertAfter(clickedBloc)
+  if(event.ctrlKey) {
+    clickedBloc.remove()
+  }
+  modifyWithoutSave = true;
 });
 
 $('#div_pageContainer').off('click','.bt_addAction').on( 'click','.bt_addAction', function (event) {
@@ -425,43 +577,35 @@ $('#div_pageContainer').off('click','.bt_addAction').on( 'click','.bt_addAction'
   updateSortable();
 });
 
-$('#div_pageContainer').off('click','.bt_addSinon').on( 'click','.bt_addSinon', function (event) {
-  
-  if($(this).children("i").hasClass('fa-chevron-right')){
-    $(this).children("i").removeClass('fa-chevron-right').addClass('fa-chevron-down');
-    $(this).closest('.subElement').next().css('display','table');
-  }
-  else
-  {
-    if($(this).closest('.subElement').next().children('.expressions').children('.expression').length>0)
-    {
-      alert("{{Le bloc Sinon ne peut être supprimé s'il contient des éléments}}");
+$('#div_pageContainer').off('click','.bt_showElse').on( 'click','.bt_showElse', function (event) {
+  if($(this).children('i').hasClass('fa-chevron-right')){
+    $(this).children('i').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+    $(this).closest('.element').children('.subElementELSE').show();
+  }else{
+    if($(this).closest('.element').children('.subElementELSE').children('.expressions').children('.expression').length>0){
+      $('#div_alert').showAlert({message:"{{Le bloc Sinon ne peut être supprimé s'il contient des éléments.}}", level: 'danger'})
+      return;
     }
-    else
-    {
-      $(this).children("i").removeClass('fa-chevron-down').addClass('fa-chevron-right');
-      $(this).closest('.subElement').next().css('display','none');
-    }
+    $(this).children('i').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+    $(this).closest('.element').children('.subElementELSE').hide();
   }
 });
 
-$('#div_pageContainer').off('click','.bt_addSinon').on( 'click','.bt_addSinon', function (event) {
-  
-  if($(this).children("i").hasClass('fa-chevron-right')){
-    $(this).children("i").removeClass('fa-chevron-right').addClass('fa-chevron-down');
-    $(this).closest('.subElement').next().css('display','table');
-  }
-  else
-  {
-    if($(this).closest('.subElement').next().children('.expressions').children('.expression').length>0)
-    {
-      alert("{{Le bloc Sinon ne peut être supprimé s'il contient des éléments}}");
-    }
-    else
-    {
-      $(this).children("i").removeClass('fa-chevron-down').addClass('fa-chevron-right');
-      $(this).closest('.subElement').next().css('display','none');
-    }
+$('#div_pageContainer').off('click','.bt_collapse').on( 'click','.bt_collapse', function (event) {
+  changeThis = $(this)
+  if (event.ctrlKey) changeThis = $('.element').find('.bt_collapse');
+
+  if($(this).children('i').hasClass('fa-eye')){
+    changeThis.children('i').removeClass('fa-eye').addClass('fa-eye-slash');
+    changeThis.closest('.element').addClass('elementCollapse');
+    changeThis.attr('value',1);
+    changeThis.attr('title',"{{Afficher ce bloc (ctrl+click: tous).}}");
+  }else{
+    changeThis.children('i').addClass('fa-eye').removeClass('fa-eye-slash');
+    changeThis.closest('.element').removeClass('elementCollapse');
+    changeThis.attr('value',0);
+    changeThis.attr('title',"{{Masquer ce bloc (ctrl+click: tous).}}");
+    setEditor();
   }
 });
 
@@ -579,7 +723,7 @@ $('#div_pageContainer').off('click','.bt_selectCmdExpression').on('click','.bt_s
         '</div> </div>' +
         '</form> </div>  </div>';
       }
-      
+
       bootbox.dialog({
         title: "{{Ajout d'un nouveau scénario}}",
         message: message,
@@ -618,7 +762,6 @@ $('#div_pageContainer').off('click','.bt_selectCmdExpression').on('click','.bt_s
   });
 });
 
-
 $('#div_pageContainer').off('click','.bt_selectOtherActionExpression').on('click','.bt_selectOtherActionExpression',  function (event) {
   var expression = $(this).closest('.expression');
   jeedom.getSelectActionModal({scenario : true}, function (result) {
@@ -629,7 +772,6 @@ $('#div_pageContainer').off('click','.bt_selectOtherActionExpression').on('click
     });
   });
 });
-
 
 $('#div_pageContainer').off('click','.bt_selectScenarioExpression').on('click','.bt_selectScenarioExpression',  function (event) {
   var expression = $(this).closest('.expression');
@@ -670,12 +812,15 @@ $('#div_pageContainer').off('focusout','.expression .expressionAttr[data-l1key=e
 /**************** Scheduler **********************/
 
 $('.scenarioAttr[data-l1key=mode]').off('change').on('change', function () {
+  $('#bt_addSchedule').removeClass('roundedRight');
+  $('#bt_addTrigger').removeClass('roundedRight');
   if ($(this).value() == 'schedule' || $(this).value() == 'all') {
     $('.scheduleDisplay').show();
     $('#bt_addSchedule').show();
   } else {
     $('.scheduleDisplay').hide();
     $('#bt_addSchedule').hide();
+    $('#bt_addTrigger').addClass('roundedRight');
   }
   if ($(this).value() == 'provoke' || $(this).value() == 'all') {
     $('.provokeDisplay').show();
@@ -683,6 +828,10 @@ $('.scenarioAttr[data-l1key=mode]').off('change').on('change', function () {
   } else {
     $('.provokeDisplay').hide();
     $('#bt_addTrigger').hide();
+    $('#bt_addSchedule').addClass('roundedRight');
+  }
+  if($(this).value() == 'all'){
+    $('#bt_addSchedule').addClass('roundedRight');
   }
 });
 
@@ -751,7 +900,6 @@ $('#div_pageContainer').off('mouseenter','.bt_sortable').on('mouseenter','.bt_so
 
 $('#div_pageContainer').off('mouseout','.bt_sortable').on('mouseout','.bt_sortable',  function () {
   $("#div_scenarioElement").sortable("disable");
-  
 });
 
 $('#bt_graphScenario').off('click').on('click', function () {
@@ -776,19 +924,19 @@ $('#bt_templateScenario').off('click').on('click', function () {
 
 /**************** Initialisation **********************/
 
-$('#div_pageContainer').on('change','.scenarioAttr',  function () {
+$('#div_pageContainer').off('change','.scenarioAttr').on('change','.scenarioAttr',  function () {
   modifyWithoutSave = true;
 });
 
-$('#div_pageContainer').on('change','.expressionAttr',  function () {
+$('#div_pageContainer').off('change','.expressionAttr').on('change','.expressionAttr',  function () {
   modifyWithoutSave = true;
 });
 
-$('#div_pageContainer').on('change','.elementAttr',  function () {
+$('#div_pageContainer').off('change','.elementAttr').on('change','.elementAttr',  function () {
   modifyWithoutSave = true;
 });
 
-$('#div_pageContainer').on('change', '.subElementAttr', function () {
+$('#div_pageContainer').off('change','.subElementAttr').on('change', '.subElementAttr', function () {
   modifyWithoutSave = true;
 });
 
@@ -811,8 +959,22 @@ function updateSortable() {
 }
 
 function updateElseToggle() {
-  $('.subElementElse').each(function () {
-    if ($(this).parent().css('display')=='table') $(this).parent().prev().find('.bt_addSinon:first').children('i').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+  $('.subElementELSE').each(function () {
+    if(!$(this).closest('.element').children('.subElementTHEN').find('.bt_showElse:first i').hasClass('fa-chevron-right')){
+      if($(this).children('.expressions').children('.expression').length == 0){
+        $(this).closest('.element').children('.subElementTHEN').find('.bt_showElse').first().trigger('click');
+      }
+    }
+  });
+}
+
+function updateElementCollpase() {
+  $('.bt_collapse').each(function () {
+    if($(this).value() == 0){
+      $(this).closest('.element').removeClass('elementCollapse');
+    }else{
+      $(this).closest('.element').addClass('elementCollapse');
+    }
   });
 }
 
@@ -833,7 +995,6 @@ function setEditor() {
         });
       }, 1);
     }
-    
   });
 }
 
@@ -897,12 +1058,12 @@ function printScenario(_id) {
       if(data.name){
         document.title = data.name +' - Jeedom';
       }
-      $('.scenarioAttr[data-l1key=object_id] option:first').attr('selected',true);
+      $('.scenarioAttr[data-l1key=object_id] option').first().attr('selected',true);
       $('.scenarioAttr[data-l1key=object_id]').val('');
       $('#div_pageContainer').setValues(data, '.scenarioAttr');
       data.lastLaunch = (data.lastLaunch == null) ? '{{Jamais}}' : data.lastLaunch;
       $('#span_lastLaunch').text(data.lastLaunch);
-      
+
       $('#div_scenarioElement').empty();
       $('.provokeMode').empty();
       $('.scheduleMode').empty();
@@ -938,14 +1099,17 @@ function printScenario(_id) {
           addSchedule(data.schedule);
         }
       }
-      
       if(data.elements.length == 0){
-        $('#div_scenarioElement').append('<center class="span_noScenarioElement"><span style=\'color:#767676;font-size:1.2em;font-weight: bold;\'>Pour constituer votre scénario veuillez ajouter des blocs</span></center>')
+        $('#div_scenarioElement').append('<center class="span_noScenarioElement"><span>Pour constituer votre scénario veuillez ajouter des blocs</span></center>')
       }
       actionOptions = []
+      var elements = '';
       for (var i in data.elements) {
-        $('#div_scenarioElement').append(addElement(data.elements[i]));
+        elements += addElement(data.elements[i]);
       }
+      $('#div_scenarioElement').append(elements);
+      $('.subElementAttr[data-l1key=options][data-l2key=enable]').trigger('change');
+      $('.expressionAttr[data-l1key=options][data-l2key=enable]').trigger('change');
       jeedom.cmd.displayActionsOption({
         params : actionOptions,
         async : false,
@@ -961,11 +1125,13 @@ function printScenario(_id) {
           taAutosize();
         }
       });
+      $('#div_editScenario').show();
       updateSortable();
       setAutocomplete();
+      updateElementCollpase();
       updateElseToggle();
-      $('#div_editScenario').show();
       taAutosize();
+      addOrUpdateUrl('id',data.id);
       setTimeout(function () {
         setEditor();
       }, 100);
@@ -977,7 +1143,7 @@ function printScenario(_id) {
   });
 }
 
-function saveScenario() {
+function saveScenario(_callback) {
   $.hideAlert();
   var scenario = $('#div_pageContainer').getValues('.scenarioAttr')[0];
   if(typeof scenario.trigger == 'undefined'){
@@ -986,7 +1152,10 @@ function saveScenario() {
   if(typeof scenario.schedule == 'undefined'){
     scenario.schedule = '';
   }
+<<<<<<< HEAD
   scenario.type = "expert";
+=======
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
   var elements = [];
   $('#div_scenarioElement').children('.element').each(function () {
     elements.push(getElement($(this)));
@@ -1004,6 +1173,9 @@ function saveScenario() {
         url += '#' + document.location.toString().split('#')[1];
       }
       loadPage(url);
+      if(typeof _callback == 'function'){
+        _callback();
+      }
     }
   });
 }
@@ -1013,11 +1185,11 @@ function addTrigger(_trigger) {
   div += '<label class="col-xs-3 control-label">{{Evénement}}</label>';
   div += '<div class="col-xs-9">';
   div += '<div class="input-group">';
-  div += '<input class="scenarioAttr input-sm form-control" data-l1key="trigger" value="' + _trigger.replace(/"/g,'&quot;') + '" >';
+  div += '<input class="scenarioAttr input-sm form-control roundedLeft" data-l1key="trigger" value="' + _trigger.replace(/"/g,'&quot;') + '" >';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default btn-sm cursor bt_selectTrigger" title="{{Choisir une commande}}"><i class="fas fa-list-alt"></i></a>';
   div += '<a class="btn btn-default btn-sm cursor bt_selectDataStoreTrigger" title="{{Choisir une variable}}"><i class="fas fa-calculator"></i></a>';
-  div += '<a class="btn btn-default btn-sm cursor bt_removeTrigger"><i class="fas fa-minus-circle"></i></a>';
+  div += '<a class="btn btn-default btn-sm cursor bt_removeTrigger roundedRight"><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
@@ -1030,10 +1202,10 @@ function addSchedule(_schedule) {
   div += '<label class="col-xs-3 control-label">{{Programmation}}</label>';
   div += '<div class="col-xs-9">';
   div += '<div class="input-group">';
-  div += '<input class="scenarioAttr input-sm form-control" data-l1key="schedule" value="' + _schedule.replace(/"/g,'&quot;') + '">';
+  div += '<input class="scenarioAttr input-sm form-control roundedLeft" data-l1key="schedule" value="' + _schedule.replace(/"/g,'&quot;') + '">';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default btn-sm cursor helpSelectCron"><i class="fas fa-question-circle"></i></a>';
-  div += '<a class="btn btn-default btn-sm cursor bt_removeSchedule"><i class="fas fa-minus-circle"></i></a>';
+  div += '<a class="btn btn-default btn-sm cursor bt_removeSchedule roundedRight"><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
@@ -1049,7 +1221,7 @@ function addExpression(_expression) {
   if (_expression.type == 'condition') {
     sortable = 'noSortable';
   }
-  var retour = '<div class="expression ' + sortable + ' col-xs-12" style="margin-bottom: 0px; margin-right: 0px;margin-left: 0px;padding-right: 0px; padding-left: 0px">';
+  var retour = '<div class="expression ' + sortable + ' col-xs-12" >';
   retour += '<input class="expressionAttr" data-l1key="id" style="display : none;" value="' + init(_expression.id) + '"/>';
   retour += '<input class="expressionAttr" data-l1key="scenarioSubElement_id" style="display : none;" value="' + init(_expression.scenarioSubElement_id) + '"/>';
   retour += '<input class="expressionAttr" data-l1key="type" style="display : none;" value="' + init(_expression.type) + '"/>';
@@ -1058,18 +1230,18 @@ function addExpression(_expression) {
     if (isset(_expression.expression)) {
       _expression.expression = _expression.expression.replace(/"/g, '&quot;');
     }
-    retour += '<div class="input-group input-group-sm" style="width: 100%; padding-top: 5px;">';
-    retour += '<textarea class="expressionAttr form-control" data-l1key="expression" rows="1" style="resize:vertical;">' + init(_expression.expression) + '</textarea>';
+    retour += '<div class="input-group input-group-sm" >';
+    retour += '<textarea class="expressionAttr form-control roundedLeft" data-l1key="expression" rows="1" style="resize:vertical;">' + init(_expression.expression) + '</textarea>';
     retour += '<span class="input-group-btn">';
     retour += '<button type="button" class="btn btn-default cursor bt_selectCmdExpression tooltips"  title="{{Rechercher une commande}}"><i class="fas fa-list-alt"></i></button>';
     retour += '<button type="button" class="btn btn-default cursor bt_selectScenarioExpression tooltips"  title="{{Rechercher un scenario}}"><i class="fas fa-history"></i></button>';
-    retour += '<button type="button" class="btn btn-default cursor bt_selectEqLogicExpression tooltips"  title="{{Rechercher d\'un équipement}}"><i class="fas fa-cube"></i></button>';
+    retour += '<button type="button" class="btn btn-default cursor bt_selectEqLogicExpression tooltips roundedRight"  title="{{Rechercher un équipement}}"><i class="fas fa-cube"></i></button>';
     retour += '</span>';
     retour += '</div>';
-    
+
     break;
     case 'element' :
-    retour += '<div class="col-xs-12" style="padding-right: 0px; padding-left: 0px;">';
+    retour += '<div class="col-xs-12" >';
     if (isset(_expression.element) && isset(_expression.element.html)) {
       retour += _expression.element.html;
     } else {
@@ -1082,32 +1254,35 @@ function addExpression(_expression) {
     retour += '</div>';
     break;
     case 'action' :
-    retour += '<div class="col-xs-1" style="margin-top: 4px">';
-    retour += '<i class="fas fa-arrows-alt-v cursor bt_sortable" style="margin-right: 5px; "></i>';
+    retour += '<div class="col-xs-1" >';
+    retour += '<i class="fas fa-arrows-alt-v cursor bt_sortable" ></i>';
     if (!isset(_expression.options) || !isset(_expression.options.enable) || _expression.options.enable == 1) {
-      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="enable" checked style="margin-top : 9px;margin-right : 0px;" title="{{Décocher pour désactiver l\'action}}"/>';
+      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="enable" checked  title="{{Décocher pour désactiver l\'action}}"/>';
     } else {
-      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="enable" style="margin-top : 9px;margin-right : 0px;" title="{{Décocher pour désactiver l\'action}}"/>';
+      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="enable"  title="{{Décocher pour désactiver l\'action}}"/>';
     }
     if (!isset(_expression.options) || !isset(_expression.options.background) || _expression.options.background == 0) {
-      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="background" style="margin-top : 9px;margin-right : 0px;" title="{{Cocher pour que la commande s\'exécute en parallèle des autres actions}}"/>';
+      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="background"  title="{{Cocher pour que la commande s\'exécute en parallèle des autres actions}}"/>';
     } else {
-      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="background" checked style="margin-top : 9px;margin-right : 0px;" title="{{Cocher pour que la commande s\'exécute en parallèle des autres actions}}"/>';
+      retour += '<input type="checkbox" class="expressionAttr" data-l1key="options" data-l2key="background" checked  title="{{Cocher pour que la commande s\'exécute en parallèle des autres actions}}"/>';
     }
-    
+    var expression_txt = init(_expression.expression);
+    if(typeof expression_txt != 'string'){
+      expression_txt = json_encode(expression_txt);
+    }
     retour += '</div>';
-    retour += '<div class="col-xs-4" style="margin-top: 4px"><div class="input-group input-group-sm">';
+    retour += '<div class="col-xs-4" ><div class="input-group input-group-sm">';
     retour += '<span class="input-group-btn">';
-    retour += '<button class="btn btn-default bt_removeExpression" type="button" title="{{Supprimer l\'action}}"><i class="fas fa-minus-circle"></i></button>';
+    retour += '<button class="btn btn-default bt_removeExpression roundedLeft" type="button" title="{{Supprimer l\'action}}"><i class="fas fa-minus-circle"></i></button>';
     retour += '</span>';
-    retour += '<input class="expressionAttr form-control" data-l1key="expression" value="' + init(_expression.expression).replace(/"/g,'&quot;') + '" style="font-weight:bold;"/>';
+    retour += '<input class="expressionAttr form-control" data-l1key="expression" value="' + expression_txt.replace(/"/g,'&quot;') + '"/>';
     retour += '<span class="input-group-btn">';
     retour += '<button class="btn btn-default bt_selectOtherActionExpression" type="button" title="{{Sélectionner un mot-clé}}"><i class="fas fa-tasks"></i></button>';
-    retour += '<button class="btn btn-default bt_selectCmdExpression" type="button" title="{{Sélectionner la commande}}"><i class="fas fa-list-alt"></i></button>';
+    retour += '<button class="btn btn-default bt_selectCmdExpression roundedRight" type="button" title="{{Sélectionner la commande}}"><i class="fas fa-list-alt"></i></button>';
     retour += '</span>';
     retour += '</div></div>';
     var actionOption_id = uniqId();
-    retour += '<div class="col-xs-7 expressionOptions" style="margin-top: 4px" id="'+actionOption_id+'">';
+    retour += '<div class="col-xs-7 expressionOptions"  id="'+actionOption_id+'">';
     retour += '</div>';
     actionOptions.push({
       expression : init(_expression.expression, ''),
@@ -1131,10 +1306,10 @@ function addExpression(_expression) {
 $('#div_pageContainer').on('click','.subElementAttr[data-l1key=options][data-l2key=allowRepeatCondition]',function(){
   if($(this).attr('value') == 0){
     $(this).attr('value',1);
-    $(this).html('<span class="fa-stack"><i class="fas fa-refresh fa-stack-1x"></i><i class="fas fa-ban fa-stack-2x text-danger"></i></span>');
+    $(this).html('<span><i class="fas fa-ban text-danger"></i></span>');
   }else{
     $(this).attr('value',0);
-    $(this).html('<span class="fa-stack"><i class="fas fa-refresh fa-stack-1x"></span>');
+    $(this).html('<span><i class="fas fa-refresh"></span>');
   }
 });
 
@@ -1149,56 +1324,95 @@ function addSubElement(_subElement, _pColor) {
   if (_subElement.type == 'if' || _subElement.type == 'for' || _subElement.type == 'code') {
     noSortable = 'noSortable';
   }
-  var displayElse = 'table';
-  if (_subElement.type == 'else') {
-    if (!isset(_subElement.expressions) || _subElement.expressions.length==0) displayElse = 'none';
+
+  blocClass = '';
+  switch (_subElement.type) {
+    case 'if':
+    blocClass = 'subElementIF';
+    break;
+    case 'then':
+    blocClass = 'subElementTHEN';
+    break;
+    case 'else':
+    blocClass = 'subElementELSE';
+    break;
+    case 'for':
+    blocClass = 'subElementFOR';
+    break;
+    case 'in':
+    blocClass = 'subElementIN';
+    break;
+    case 'at':
+    blocClass = 'subElementAT';
+    break;
+    case 'do':
+    blocClass = 'subElementDO';
+    break;
+    case 'code':
+    blocClass = 'subElementCODE';
+    break;
+    case 'comment':
+    blocClass = 'subElementCOMMENT';
+    break;
+    case 'action':
+    blocClass = 'subElementACTION';
+    break;
   }
-  var retour = '<div class="subElement ' + noSortable + '" style="display:' + displayElse + '; width:100%;">';
+  var retour = '<div class="subElement ' + blocClass + ' ' + noSortable + '">';
   retour += '<input class="subElementAttr" data-l1key="id" style="display : none;" value="' + init(_subElement.id) + '"/>';
   retour += '<input class="subElementAttr" data-l1key="scenarioElement_id" style="display : none;" value="' + init(_subElement.scenarioElement_id) + '"/>';
   retour += '<input class="subElementAttr" data-l1key="type" style="display : none;" value="' + init(_subElement.type) + '"/>';
+
   switch (_subElement.type) {
     case 'if' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="condition"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable" style="position:relative;top:5px;"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="Décocher pour désactiver l\'élément" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor" ></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="Décocher pour désactiver l\'élément" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="Décocher pour désactiver l\'élément" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="Décocher pour désactiver l\'élément" />';
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 50px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{SI}}';
+    retour += '<div >';
+    retour += '<legend >{{SI}}';
     retour += '</legend>';
     retour += '</div>';
-    
-    retour += '<div style="display:table-cell; width: 35px;vertical-align: top; padding-top: 5px;">';
+
+    retour += '<div >';
     if(!isset(_subElement.options) || !isset(_subElement.options.allowRepeatCondition) || _subElement.options.allowRepeatCondition == 0){
-      retour += '<a style="height : 30px;" class="btn btn-default btn-xs cursor subElementAttr tooltips pull-right" title="{{Autoriser ou non la répétition des actions si l\'évaluation de la condition est la même que la précédente}}" data-l1key="options" data-l2key="allowRepeatCondition" value="0"><span class="fa-stack"><i class="fas fa-refresh fa-stack-1x"></i></span></a>';
+      retour += '<a class="bt_repeat cursor subElementAttr tooltips" title="{{Autoriser ou non la répétition des actions si l\'évaluation de la condition est la même que la précédente}}" data-l1key="options" data-l2key="allowRepeatCondition" value="0"><span><i class="fas fa-refresh"></i></span></a>';
     }else{
-      retour += '<a style="height : 30px;" class="btn btn-default btn-xs cursor subElementAttr tooltips pull-right" title="{{Autoriser ou non la répétition des actions si l\'évaluation de la condition est la même que la précédente}}" data-l1key="options" data-l2key="allowRepeatCondition" value="1"><span class="fa-stack"><i class="fas fa-refresh fa-stack-1x"></i><i class="fas fa-ban fa-stack-2x text-danger"></i></span></a>';
+      retour += '<a class="bt_repeat cursor subElementAttr tooltips" title="{{Autoriser ou non la répétition des actions si l\'évaluation de la condition est la même que la précédente}}" data-l1key="options" data-l2key="allowRepeatCondition" value="1"><span><i class="fas fa-ban text-danger"></i></span></a>';
     }
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell;">';
+
+    retour += '<div class="expressions" >';
     var expression = {type: 'condition'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '  </div>';
-    retour += '  <div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
-    
+    retour = addElButtons(retour)
     break;
+
     case 'then' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="action"/>';
-    retour += '<div style="display:table-cell; width: 125px;vertical-align: top; padding-left: 15px;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{ALORS}}</legend>';
-    retour += '<button class="btn btn-xs btn-default bt_addSinon" type="button" id="addSinon" data-toggle="dropdown" title="{{Afficher/masquer le bloc Sinon}}" aria-haspopup="true" aria-expanded="true">';
-    retour += '<i class="fas fa-chevron-right"></i>';
+    retour += '<div class="subElementFields">';
+    retour += '<legend >{{ALORS}}</legend>';
+    retour += '<div class="input-group">';
+    retour += '<button class="bt_showElse btn btn-xs btn-default roundedLeft" type="button" data-toggle="dropdown" title="{{Afficher/masquer le bloc Sinon}}" aria-haspopup="true" aria-expanded="true">';
+    retour += '<i class="fas fa-chevron-down"></i>';
     retour += '</button>';
-    retour += '<div class="dropdown" style="display : inline-block;">';
-    retour += '<button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
+    retour += '<span class="input-group-btn">';
+    retour += '<div class="dropdown" >';
+    retour += '<button class="btn btn-default dropdown-toggle roundedRight" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
     retour += '<i class="fas fa-plus-circle"></i> {{Ajouter}}';
     retour += '<span class="caret"></span>';
     retour += '</button>';
@@ -1206,23 +1420,24 @@ function addSubElement(_subElement, _pColor) {
     retour += '<li><a class="bt_addScenarioElement fromSubElement tootlips" title="{{Permet d\'ajouter des éléments fonctionnels essentiels pour créer vos scénarios (Ex: SI/ALORS….)}}">{{Bloc}}</a></li>';
     retour += '<li><a class="bt_addAction">{{Action}}</a></li>';
     retour += '</ul>';
-    retour += '</div><p> </p>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + ';">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '</span>';
+    retour += '</div>';
+    retour += '</div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     if (isset(_subElement.expressions)) {
       for (var k in _subElement.expressions) {
         retour += addExpression(_subElement.expressions[k]);
       }
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"> </div>';
-    
     break;
+
     case 'else' :
     retour += '<input class="subElementAttr subElementElse" data-l1key="subtype" style="display : none;" value="action"/>';
-    retour += '<div style="display:table-cell; width: 125px; vertical-align: top; padding-left: 15px;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{SINON}}</legend>';
+    retour += '<div class="subElementFields">';
+    retour += '<legend >{{SINON}}</legend>';
     retour += '<div class="dropdown">';
     retour += '<button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
     retour += '<i class="fas fa-plus-circle"></i> Ajouter';
@@ -1232,90 +1447,106 @@ function addSubElement(_subElement, _pColor) {
     retour += '<li><a class="bt_addScenarioElement fromSubElement tootlips" title="{{Permet d\'ajouter des éléments fonctionnels essentiels pour créer vos scénarios (ex. : SI/ALORS….)}}">{{Bloc}}</a></li>';
     retour += '<li><a class="bt_addAction">{{Action}}</a></li>';
     retour += '</ul>';
-    retour += '</div><p> </p>';
     retour += '</div>';
-    retour += ' <div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + '; border-top :1px solid ' + listColorStrong[_pColor] + '">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '</div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     if (isset(_subElement.expressions)) {
       for (var k in _subElement.expressions) {
         retour += addExpression(_subElement.expressions[k]);
       }
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"> </div>';
-    
     break;
+
     case 'for' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="condition"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" />';
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 85px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{DE 1 A}}</legend>';
+    retour += '<div>';
+    retour += '<legend >{{DE 1 A}}</legend>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px;">';
+    retour += '<div class="expressions" >';
     var expression = {type: 'condition'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
+    retour = addElButtons(retour)
     break;
+
     case 'in' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="condition"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" />';
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 120px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{DANS (min)}}</legend>';
+    retour += '<div>';
+    retour += '<legend title="Action DANS x minutes">{{DANS}}</legend>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px;">';
+    retour += '<div class="expressions" >';
     var expression = {type: 'condition'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
-    
+    retour = addElButtons(retour)
     break;
+
     case 'at' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="condition"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" />';
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 85px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{A (Hmm)}}</legend>';
+    retour += '<div>';
+    retour += '<legend >{{A (Hmm)}}</legend>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px;">';
+    retour += '<div class="expressions" >';
     var expression = {type: 'condition'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
+    retour = addElButtons(retour)
     break;
+
     case 'do' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="action"/>';
-    retour += '<div style="display:table-cell; width: 100px; vertical-align: top; padding-left: 15px;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{FAIRE}}</legend>';
+    retour += '<div class="subElementFields">';
+    retour += '<legend >{{FAIRE}}</legend>';
     retour += '<div class="dropdown">';
     retour += '<button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
     retour += '<i class="fas fa-plus-circle"></i> Ajouter';
@@ -1325,70 +1556,89 @@ function addSubElement(_subElement, _pColor) {
     retour += '<li><a class="bt_addScenarioElement fromSubElement tootlips" title="{{Permet d\'ajouter des éléments fonctionnels essentiels pour créer vos scénarios (ex. : SI/ALORS….)}}">{{Bloc}}</a></li>';
     retour += '<li><a class="bt_addAction">{{Action}}</a></li>';
     retour += '</ul>';
-    retour += '</div><p> </p>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + ';">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '</div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     if (isset(_subElement.expressions)) {
       for (var k in _subElement.expressions) {
         retour += addExpression(_subElement.expressions[k]);
       }
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"> </div>';
-    
     break;
+
     case 'code' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="action"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" />';
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 85px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{CODE}}</legend>';
+    retour += '<div>';
+    retour += '<legend >{{CODE}}</legend>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + ';">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     var expression = {type: 'code'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; "><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
+    retour = addElButtons(retour)
     break;
+
     case 'comment' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="comment"/>';
-    retour += '<div style="display:table-cell; width: 15px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
+    }else{
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
+    }
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + ';">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '<div>';
+    retour += '<legend >{{COMMENTAIRE}}</legend>';
+    retour += '</div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     var expression = {type: 'comment'};
     if (isset(_subElement.expressions) && isset(_subElement.expressions[0])) {
       expression = _subElement.expressions[0];
     }
     retour += addExpression(expression);
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
-    
+    retour = addElButtons(retour)
     break;
+
     case 'action' :
     retour += '<input class="subElementAttr" data-l1key="subtype" style="display : none;" value="action"/>';
-    retour += '<div style="display:table-cell; width: 30px;vertical-align: top; padding-top: 5px;">';
-    retour += '<i class="fas fa-arrows-alt-v pull-left cursor bt_sortable"></i>';
-    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+    retour += '<div>';
+    retour += '<i class="bt_sortable fas fa-arrows-alt-v pull-left cursor"></i>';
+    if(!isset(_subElement.options) || !isset(_subElement.options.collapse) || _subElement.options.collapse == 0){
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Masquer ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="0"><i class="far fa-eye"></i></a>';
     }else{
-      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" style="margin-right : 0px;"/>';
+      retour += '<a class="bt_collapse cursor subElementAttr tooltips" title="{{Afficher ce bloc (ctrl+click: tous).}}" data-l1key="options" data-l2key="collapse" value="1"><i class="far fa-eye-slash"></i></a>';
     }
+    if(!isset(_subElement.options) || !isset(_subElement.options.enable) || _subElement.options.enable == 1){
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" checked title="{{Décocher pour désactiver l\'élément}}" />';
+    }else{
+      retour += '<input type="checkbox" class="subElementAttr" data-l1key="options" data-l2key="enable" title="{{Décocher pour désactiver l\'élément}}" />';
+    }
+    retour += '<legend class="legendHidden">ACTION</legend>';
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 85px;vertical-align: top;">';
-    retour += '<legend style="margin-bottom: 0px; color : white;border : none;">{{ACTION}}</legend><br/>';
+    retour += '<div class="subElementFields">';
+    retour += '<legend >{{ACTION}}</legend><br/>';
     retour += '<div class="dropdown">';
     retour += '<button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
     retour += ' <i class="fas fa-plus-circle"></i> Ajouter';
@@ -1398,23 +1648,29 @@ function addSubElement(_subElement, _pColor) {
     retour += '<li><a class="bt_addScenarioElement fromSubElement tootlips" title="{{Permet d\'ajouter des éléments fonctionnels essentiels pour créer vos scénarios (Ex: SI/ALORS….)}}">{{Bloc}}</a></li>';
     retour += '<li><a class="bt_addAction">{{Action}}</a></li>';
     retour += '</ul>';
-    retour += '</div><p> </p>';
     retour += '</div>';
-    retour += '<div class="expressions" style="display:table-cell; padding-bottom: 10px; background-color: ' + listColor[_pColor] + ';">';
-    retour += '<div class="sortable empty" style="height : 30px;"></div>';
+    retour += '</div>';
+    retour += '<div class="expressions ' + 'scBlocColor' + _pColor + '">';
+    retour += '<div class="sortable empty" ></div>';
     if (isset(_subElement.expressions)) {
       for (var k in _subElement.expressions) {
         retour += addExpression(_subElement.expressions[k]);
       }
     }
     retour += '</div>';
-    retour += '<div style="display:table-cell; width: 15px; vertical-align: top;"><i class="fas fa-minus-circle pull-right cursor bt_removeElement" style="position : relative;z-index : 2;"></i></div>';
+    retour = addElButtons(retour)
     break;
   }
   retour += '</div>';
   return retour;
 }
 
+function addElButtons(_retour) {
+  _retour += '  <div><i class="fas fa-minus-circle pull-right cursor bt_removeElement" title="{{Supprimer ce bloc. Ctrl+Click: sans confirmation.}}"></i></div>'
+  _retour += '  <div><i class="fas fa-copy pull-right cursor bt_copyElement" title="{{Copier ce bloc. Ctrl+Click: Couper ce bloc.}}"></i></div>'
+  _retour += '  <div><i class="fas fa-paste pull-right cursor bt_pasteElement" title="{{Coller un bloc après celui-ci. Ctrl+Click: remplacer ce bloc par le bloc copié.}}"></i></div>'
+  return _retour
+}
 
 function addElement(_element) {
   if (!isset(_element)) {
@@ -1423,14 +1679,14 @@ function addElement(_element) {
   if (!isset(_element.type) || _element.type == '') {
     return '';
   }
-  
+
   pColor++;
-  if (pColor > 4) {
+  if (pColor > 8) {
     pColor = 0;
   }
   var color = pColor;
-  
-  var div = '<div class="element" style="color : white;padding-right : 7px;padding-left : 7px;padding-bottom : 0px;padding-top : 2px;margin-bottom : 0px;background-color : ' + listColorStrong[color] + '; border :1px solid ' + listColorStrong[color] + '">';
+  var div = '<div class="element ' + 'scBlocColor' + color + '">';
+
   div += '<input class="elementAttr" data-l1key="id" style="display : none;" value="' + init(_element.id) + '"/>';
   div += '<input class="elementAttr" data-l1key="type" style="display : none;" value="' + init(_element.type) + '"/>';
   switch (_element.type) {
@@ -1514,7 +1770,7 @@ function getElement(_element) {
   }
   element = element[0];
   element.subElements = [];
-  
+
   _element.findAtDepth('.subElement', 2).each(function () {
     var subElement = $(this).getValues('.subElementAttr', 2);
     subElement = subElement[0];
@@ -1536,7 +1792,7 @@ function getElement(_element) {
         }
       }
       subElement.expressions.push(expression);
-      
+
     });
     element.subElements.push(subElement);
   });

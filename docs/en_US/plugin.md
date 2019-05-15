@@ -1,5 +1,9 @@
 Le sous-menu Gestion des plugins permet de manipuler les plugins, à
+<<<<<<< HEAD
 savoir : les télécharger, les mettre à jour et les activer,etc.​
+=======
+savoir : les télécharger, les mettre à jour et les activer,…​
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 
 Plugins management
 ===================
@@ -46,6 +50,7 @@ En dessous à gauche, on retrouve une zone état avec :
 
 -   **Version**: the version of the installed plugin
 
+<<<<<<< HEAD
 -   **Action** : Permet d’activer ou désactiver le plugin
 
 -   **Version Jeedom** : Version de Jeedom minimum requise
@@ -100,6 +105,64 @@ Démon :
     relancer si besoin. Sauf contre indication, il est conseillé de
     laisser la gestion automatique active)
 
+=======
+-   **Auteur** : l’auteur du plugin
+
+-   **Action** : Permet d’activer ou désactiver le plugin
+
+-   **Version jeedom** : Indique la version de Jeedom minimum requise
+    pour le plugin
+
+-   **Licence** : Indique la licence du plugin qui sera généralement
+    AGPL
+
+A droite, on retrouve la zone Log qui permet de définir 
+
+-   le niveau de logs spécifique au plugin (on retrouve cette même possibilité dans
+Administation → Configuration sur l’onglet logs, en bas de page)
+
+-   de voir les logs du plugin
+
+-   Heartbeat : toute les 5 mins, Jeedom regarde si au moins un équipement du plugin a communiqué dans les X dernières minutes (si vous voulez désactiver la fonctionnalité, il suffit de mettre 0)
+
+-   Redemarrer démon : si le hertbeat tombe en erreur alors Jeedom va redémarrer le démon
+
+Si le plugin possède des dépendances et/ou un démon, ces zones
+supplémentaires s’affichent sous les zones citées ci-dessus.
+
+Dépendances :
+
+-   **Nom** : généralement sera local
+
+-   **Statut** : vous dira si les dépendances sont OK ou KO
+
+-   **Installation** : permettra d’installer ou réinstaller les
+    dépendances (si vous ne le faites pas manuellement et qu’elles sont
+    KO, Jeedom s’en chargera de lui-même au bout d’un moment)
+
+-   **Dernière installation** : date de la dernière installation des
+    dépendances
+
+Démon :
+
+-   **Nom** : généralement sera local
+
+-   **Statut** : vous dira si le démon est OK ou KO
+
+-   **Configuration** : sera OK si tous les critères pour que le démon
+    tourne sont réunis ou donnera la cause du blocage
+
+-   **(Re)Démarrer** : permet de lancer ou relancer le démon
+
+-   **Arrêter** : permet d’arrêter le démon (Uniquement dans le cas où
+    la gestion automatique est désactivée)
+
+-   **Gestion automatique** : permet d’activer ou désactiver la gestion
+    automatique (ce qui permet à Jeedom de gérer lui même le démon et le
+    relancer si besoin. Sauf contre indication, il est conseillé de
+    laisser la gestion automatique active)
+
+>>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
 -   **Dernier lancement** : date du dernier lancement du démon
 
 > **Tip**
