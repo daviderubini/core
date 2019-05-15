@@ -2563,11 +2563,7 @@
     },
     "desktop\/php\/database.php": {
       "Rechercher": "Rechercher",
-<<<<<<< HEAD
-      "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous": "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous",
-=======
       "Cliquez sur une commande à gauche ou tapez une commande personnalisée ci-dessous": "Cliquez sur une commande à droite ou tapez une commande personnalisée ci-dessous",
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
       "OK": "OK"
     },
     "desktop\/js\/database.js": {
@@ -2840,4 +2836,3 @@
       "|": "|"
     }
   }
-  

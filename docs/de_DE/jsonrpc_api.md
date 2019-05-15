@@ -50,7 +50,7 @@ Parameter :
 
 -   string key : Schlüssel, des zu speichernden Konfigurationswertes
 
--   string plugin : Plugin, des zu speichernden 
+-   string plugin : Plugin, des zu speichernden
     Konfigurationswertes
 
 API JSON Event
@@ -77,38 +77,23 @@ Parameter :
 
 -   int activateOnly = 0 (liefert nur die Liste der aktivierten Plugins)
 
--   int orderByCaterogy = 0 (liefert die Liste der Plugins nach 
+-   int orderByCaterogy = 0 (liefert die Liste der Plugins nach
     Kategorie geordnet)
 
 API JSON Objet
 ==============
 
-<<<<<<< HEAD
 object::all
-=======
-jeeObject::all
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
------------
 
-Gibt die Liste aller Objekte zurück 
+Gibt die Liste aller Objekte zurück
 
-<<<<<<< HEAD
 object::full
-=======
-jeeObject::full
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
-------------
 
 Liefert eine Liste aller Objekte, mit allen Geräten für jedes Objekt und alle
 Befehle von jedem Gerät, sowie die Zustände von diesem
 (für Befehle des Typs Info)
 
-<<<<<<< HEAD
 object::fullById
-=======
-jeeObject::fullById
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
-----------------
 
 Gibt ein Objekt mit allen seinen Geräten und für jedes Gerät alle seine
 Befehle sowie deren Zustände zurück (für Befehle des Typs Info)
@@ -117,12 +102,7 @@ Parameter :
 
 -   int id
 
-<<<<<<< HEAD
 object::byId
-=======
-jeeObject::byId
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
-------------
 
 Gibt das angegebenen Objekt zurück
 
@@ -130,22 +110,12 @@ Parameter :
 
 -   int id
 
-<<<<<<< HEAD
 object::fullById
-=======
-jeeObject::fullById
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
-----------------
 
 Gibt ein Objekt, seine Ausrüstung und für jedes Gerät alle seine Befehle
 sowie die Zustände dieses Objekts zurück (für Befehle des Typs Info)
 
-<<<<<<< HEAD
 object::save
-=======
-jeeObject::save
->>>>>>> 370b7e805d7368b83ea9dce02286fd4ec4f466d7
-------------
 
 Gibt das angegebenen Objekt zurück
 
