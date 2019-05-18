@@ -16,6 +16,8 @@
 
 var hasUpdate = false;
 var hasUpdateOther = false;
+var progress = -2;
+var alertTimeout = null
 printUpdate();
 
 $("#md_specifyUpdate").dialog({
@@ -52,6 +54,8 @@ $('#bt_doUpdate').off('click').on('click', function () {
   $("#md_specifyUpdate").dialog('close');
   var options = $('#md_specifyUpdate').getValues('.updateOption')[0];
   $.hideAlert();
+  progress = 0;
+  updateProgressBar();
   jeedom.update.doAll({
     options: options,
     error: function (error) {
@@ -81,6 +85,8 @@ $('#table_update,#table_updateOther').delegate('.update', 'click', function () {
   var id = $(this).closest('tr').attr('data-id');
   bootbox.confirm('{{Êtes-vous sûr de vouloir mettre à jour cet objet ?}}', function (result) {
     if (result) {
+      progress = -1;
+      updateProgressBar();
       $.hideAlert();
       jeedom.update.do({
         id: id,
@@ -167,12 +173,22 @@ function getJeedomLog(_autoUpdate, _log) {
         for (var i in data.result.reverse()) {
           log += data.result[i]+"\n";
           if(data.result[i].indexOf('[END ' + _log.toUpperCase() + ' SUCCESS]') != -1){
+            progress = -2;
+            updateProgressBar();
             printUpdate();
+            if(alertTimeout != null){
+              clearTimeout(alertTimeout);
+            }
             $('#div_alert').showAlert({message: '{{L\'opération est réussie. Merci de faire F5 pour avoir les dernières nouveautés}}', level: 'success'});
             _autoUpdate = 0;
           }
           if(data.result[i].indexOf('[END ' + _log.toUpperCase() + ' ERROR]') != -1){
+            progress = -3;
+            updateProgressBar();
             printUpdate();
+            if(alertTimeout != null){
+              clearTimeout(alertTimeout);
+            }
             $('#div_alert').showAlert({message: '{{L\'opération a échoué}}', level: 'danger'});
             _autoUpdate = 0;
           }
@@ -278,9 +294,9 @@ function addUpdate(_update) {
   }
   if (_update.type != 'core') {
     if (_update.status == 'UPDATE') {
-      tr += '<a class="btn btn-warning btn-xs update" title="{{Mettre à jour}}"><i class="fas fa-sync"></i> {{Mettre à jour}}</a> ';
+      tr += '<a class="btn btn-warning btn-xs update""><i class="fas fa-sync"></i> {{Mettre à jour}}</a> ';
     } else if (_update.type != 'core') {
-      tr += '<a class="btn btn-warning btn-xs update" title="{{Réinstaller}}"><i class="fas fa-sync"></i> {{Réinstaller}}</a> ';
+      tr += '<a class="btn btn-warning btn-xs update"><i class="fas fa-sync"></i> {{Réinstaller}}</a> ';
     }
   }
   if (_update.type != 'core') {
@@ -292,4 +308,139 @@ function addUpdate(_update) {
   var html = $(tr);
   html.setValues(_update, '.updateAttr');
   return html;
+}
+
+
+$('#bt_showHideLog').off('click').on('click',function() {
+  if($('#div_log').is(':visible')) {
+    $('#div_log').hide()
+    if (progress != 100) $('.progressbarContainer').appendTo('#log.tab-pane > .row')
+  } else {
+    $('#div_log').show()
+    if (progress != 100) $('.progressbarContainer').appendTo('#div_log')
+  }
+});
+
+function updateProgressBar(){
+  if(progress == -4){
+    $('#div_progressbar').removeClass('active progress-bar-info progress-bar-success progress-bar-danger');
+    $('#div_progressbar').addClass('progress-bar-warning');
+    return;
+  }
+  if(progress == -3){
+    $('#div_progressbar').removeClass('active progress-bar-info progress-bar-success progress-bar-warning');
+    $('#div_progressbar').addClass('progress-bar-danger');
+    return;
+  }
+  if(progress == -2){
+    $('#div_progressbar').removeClass('active progress-bar-info progress-bar-success progress-bar-danger progress-bar-warning');
+    $('#div_progressbar').width(0);
+    $('#div_progressbar').attr('aria-valuenow',0);
+    $('#div_progressbar').html('0%');
+    return;
+  }
+  if(progress == -1){
+    $('#div_progressbar').removeClass('progress-bar-success progress-bar-danger progress-bar-warning');
+    $('#div_progressbar').addClass('active progress-bar-info');
+    $('#div_progressbar').width('100%');
+    $('#div_progressbar').attr('aria-valuenow',100);
+    $('#div_progressbar').html('N/A');
+    return;
+  }
+  if(progress == 100){
+    $('#div_progressbar').removeClass('active progress-bar-info progress-bar-danger progress-bar-warning');
+    $('#div_progressbar').addClass('progress-bar-success');
+    $('#div_progressbar').width(progress+'%');
+    $('#div_progressbar').attr('aria-valuenow',progress);
+    $('#div_progressbar').html(progress+'%');
+    return;
+  }
+  $('#div_progressbar').removeClass('progress-bar-success progress-bar-danger progress-bar-warning');
+  $('#div_progressbar').addClass('active progress-bar-info');
+  $('#div_progressbar').width(progress+'%');
+  $('#div_progressbar').attr('aria-valuenow',progress);
+  $('#div_progressbar').html(progress+'%');
+}
+
+//___log interceptor beautifier___
+//create a second <pre> for cleaned text to avoid change event infinite loop:
+newLogClean = '<pre id="pre_updateInfo_clean" style="display:none;"></pre>'
+$('#pre_updateInfo').after($(newLogClean))
+$('#pre_updateInfo').hide()
+$('#pre_updateInfo_clean').show()
+
+//listen change in log to update the cleaned one:
+var prevUpdateText = ''
+var replaceLogLines = ['OK', '. OK', '.OK', 'OK .', 'OK.']
+var regExLogProgress = /\[PROGRESS\]\[(\d.*)]/gm;
+$('#pre_updateInfo').bind("DOMSubtreeModified",function(event) {
+  currentUpdateText = $('#pre_updateInfo').text()
+  if (currentUpdateText == '') return false
+  if (prevUpdateText == currentUpdateText) return false
+  lines = currentUpdateText.split("\n")
+  l = lines.length
+
+  //update progress bar and clean text!
+  linesRev = lines.slice().reverse()
+  for(var i=0; i < l; i++) {
+    regExpResult = regExLogProgress.exec(linesRev[i])
+    if(regExpResult !== null) {
+      progress = regExpResult[1]
+      updateProgressBar()
+      break
+    }
+  }
+
+  newLogText = ''
+  for(var i=0; i < l; i++) {
+    line = lines[i]
+    if (line == '') continue
+    if (line.startsWith('[PROGRESS]')) line = ''
+
+    //check ok at end of line:
+    if (line.endsWith('OK')) {
+      matches = line.match(/[. ]{1,}OK/g)
+      if (matches) {
+        line = line.replace(matches[0], '')
+        line += ' | OK'
+      } else {
+        line = line.replace('OK', ' | OK')
+      }
+    }
+
+    //remove points ...
+    matches = line.match(/[.]{2,}/g)
+    if (matches) {
+      matches.forEach(function(match) {
+        line = line.replace(match, '')
+      })
+    }
+    line = line.trim()
+
+    //check ok on next line, escaping progress inbetween:
+    var offset = 1
+    if (lines[i+1].startsWith('[PROGRESS]')) {
+      var offset = 2
+    }
+    if (replaceLogLines.includes(lines[i+offset])) {
+      line += ' | OK'
+      lines[i+offset] = ''
+    }
+    if (line != '') {
+      newLogText += line + '\n'
+      $('#pre_updateInfo_clean').value(newLogText)
+      $(document).scrollTop($(document).height())
+      prevUpdateText = currentUpdateText
+      if (progress == 100) $('.progressbarContainer').appendTo('#log.tab-pane > .row')
+    }
+  }
+  clearTimeout(alertTimeout);
+  alertTimeout = setTimeout(alertTimeout,60000*10);
+})
+
+
+function alertTimeout(){
+  progress = -4;
+  updateProgressBar();
+  $('#div_alert').showAlert({message: '{{La mise à jour semble etre bloquée (pas de changement depuis 10min. Vérifiez la log)}}', level: 'warning'});
 }
