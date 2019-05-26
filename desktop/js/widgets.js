@@ -115,11 +115,6 @@ $(function(){
   catch(err) {}
 })
 
-
-$('.nav-tabs a').on('shown.bs.tab', function (e) {
-  window.location.hash = e.target.hash;
-})
-
 jwerty.key('ctrl+s/⌘+s', function (e) {
   e.preventDefault();
   $("#bt_saveWidgets").click();
@@ -219,6 +214,7 @@ function loadTemplateConfiguration(_template,_data){
         }
         loadTemplateConfiguration('cmd.'+ $('.widgetsAttr[data-l1key=type]').value()+'.'+$('.widgetsAttr[data-l1key=subtype]').value()+'.'+$(this).value());
       });
+      modifyWithoutSave = false;
     }
   });
 }
@@ -233,10 +229,25 @@ $('.accordion-toggle').off('click').on('click', function () {
   },100);
 });
 
+$('#div_pageContainer').off('change','.widgetsAttr').on('change','.widgetsAttr:visible', function () {
+  modifyWithoutSave = true;
+});
+
 $('#bt_returnToThumbnailDisplay').on('click',function(){
+  setTimeout(function(){
+    $('.nav li.active').removeClass('active');
+    $('a[href="#'+$('.tab-pane.active').attr('id')+'"]').closest('li').addClass('active')
+  },500);
+  if (modifyWithoutSave) {
+    if (!confirm('{{Attention vous quittez une page ayant des données modifiées non sauvegardées. Voulez-vous continuer ?}}')) {
+      return;
+    }
+    modifyWithoutSave = false;
+  }
   $('#div_conf').hide();
   $('#div_widgetsList').show();
   $('.widgetsListContainer').packery();
+  addOrUpdateUrl('id',null,'{{Widgets}} - '+JEEDOM_PRODUCT_NAME);
 });
 
 $('#bt_widgetsAddTest').off('click').on('click', function (event) {

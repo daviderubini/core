@@ -96,19 +96,7 @@ $(function(){
   }
 })
 
-var url = document.location.toString();
-if (url.match('#')) {
-  if(url.split('#')[1] == ''){
-    $('.nav-tabs a:not(.eqLogicAction)').first().click();
-  }else{
-    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').click();
-  }
-}else{
-  $('.nav-tabs a:not(.eqLogicAction)').first().click();
-}
-$('.nav-tabs a').on('shown.bs.tab', function (e) {
-  window.location.hash = e.target.hash;
-})
+$('.nav-tabs a:not(.eqLogicAction)').first().click();
 
 $('.eqLogicAction[data-action=gotoPluginConf]').on('click', function () {
   $('#md_modal').dialog({title: "{{Configuration du plugin}}"});
@@ -116,10 +104,21 @@ $('.eqLogicAction[data-action=gotoPluginConf]').on('click', function () {
 });
 
 $('.eqLogicAction[data-action=returnToThumbnailDisplay]').removeAttr('href').off('click').on('click', function (event) {
+  setTimeout(function(){
+    $('.nav li.active').removeClass('active');
+    $('a[href="#'+$('.tab-pane.active').attr('id')+'"]').closest('li').addClass('active')
+  },500);
+  if (modifyWithoutSave) {
+    if (!confirm('{{Attention vous quittez une page ayant des données modifiées non sauvegardées. Voulez-vous continuer ?}}')) {
+      return;
+    }
+    modifyWithoutSave = false;
+  }
   $('.eqLogic').hide();
   $('.eqLogicThumbnailDisplay').show();
-  $('.li_eqLogic').removeClass('active');
+  $(this).closest('ul').find('li').removeClass('active');
   $('.eqLogicThumbnailContainer').packery();
+  addOrUpdateUrl('id',null,);
 });
 
 $(".li_eqLogic,.eqLogicDisplayCard").on('click', function () {
@@ -278,11 +277,11 @@ $('.eqLogicAction[data-action=remove]').on('click', function () {
         if(Object.keys(data).length > 0){
           text += ' </br> Il est utilisé par : </br>';
           for(var i in data){
-                var complement = '';
-                if ('sourceName' in data[i]) {
-                    complement = ' ('+data[i].sourceName+')';
-                }
-                text += '- ' + '<a href="'+data[i].url+'" target="_blank">' +data[i].type +'</a> : <b>'+ data[i].name + '</b>'+ complement+' <sup><a href="'+data[i].url+'" target="_blank"><i class="fas fa-external-link-alt"></i></a></sup></br>';
+            var complement = '';
+            if ('sourceName' in data[i]) {
+              complement = ' ('+data[i].sourceName+')';
+            }
+            text += '- ' + '<a href="'+data[i].url+'" target="_blank">' +data[i].type +'</a> : <b>'+ data[i].name + '</b>'+ complement+' <sup><a href="'+data[i].url+'" target="_blank"><i class="fas fa-external-link-alt"></i></a></sup></br>';
           }
         }
         text = text.substring(0, text.length - 2)
@@ -368,16 +367,16 @@ $('#in_searchEqlogic').off('keyup').keyup(function () {
 
 /**************************CMD*********************************************/
 $('.cmdAction[data-action=add]').on('click', function () {
-  modifyWithoutSave = true;
   addCmdToTable();
   $('.cmd:last .cmdAttr[data-l1key=type]').trigger('change');
+  modifyWithoutSave = true;
 });
 
 $('#div_pageContainer').on( 'click', '.cmd .cmdAction[data-l1key=chooseIcon]',function () {
-  modifyWithoutSave = true;
   var cmd = $(this).closest('.cmd');
   chooseIcon(function (_icon) {
     cmd.find('.cmdAttr[data-l1key=display][data-l2key=icon]').empty().append(_icon);
+    modifyWithoutSave = true;
   });
 });
 
@@ -500,10 +499,10 @@ $("img.lazy").each(function () {
   }
 });
 
-$('body').delegate('.cmdAttr', 'change', function () {
+$('#div_pageContainer').delegate('.cmd .cmdAttr:visible', 'change', function () {
   modifyWithoutSave = true;
 });
 
-$('body').delegate('.eqLogicAttr', 'change', function () {
+$('#div_pageContainer').delegate('.eqLogic .eqLogicAttr:visible', 'change', function () {
   modifyWithoutSave = true;
 });

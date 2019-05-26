@@ -74,7 +74,8 @@ a.btn,
 .cursor * {
   cursor: pointer !important;
 }
-.cmd-widget {
+.cmd-widget,
+legend {
   cursor: default;
 }
 
@@ -242,13 +243,18 @@ legend {
   font-size: 17px;
   color: var(--link-color);
   text-align: center;
-  border-left: 2.5px solid var(--logo-primary-color);
   margin: 12px 5px !important;
   padding: 5px 0 5px 5px !important;
   line-height: 1em !important;
 }
 :not(.div_object) > legend > i {
   padding-right: 3px
+}
+[data-page="administration"] legend:not(.no-bordered),
+[data-page="backup"] legend:not(.no-bordered),
+[data-page="user"] legend:not(.no-bordered),
+[data-page="profils"] legend:not(.no-bordered) {
+  border-left: 2.5px solid var(--logo-primary-color);
 }
 
 
@@ -832,9 +838,13 @@ pre {
 }
 .alert-danger,
 .label-danger {
-  color: var(--sc-lightTxt-color);
+  color: var(--sc-lightTxt-color) !important;
   background-color: var(--al-danger-color);
   border: none;
+}
+
+.label-danger .state {
+  color: var(--sc-lightTxt-color) !important;
 }
 
 .logoPrimary {
@@ -1030,6 +1040,11 @@ button.dropdown-toggle {
   font-size: 14px;
   min-width: 50px;
 }
+button[disabled],
+button[disabled]:hover {
+  opacity: 0.4 !important;
+}
+
 .dropdown-menu {
   font-size: 14px;
 }
@@ -1636,8 +1651,8 @@ ul.nav.nav-tabs li,
 .nav-tabs > li > a:hover {
   background-color: var(--panel-bg-color) !important;
   color: var(--link-color) !important;
-  border-top : 1px var(--logo-primary-color) solid !important;
-  height: 40px;
+  border-bottom : 1px var(--logo-primary-color) solid !important;
+  height: 39px;
 }
 .nav-tabs,
 .nav-tabs * {
@@ -1769,24 +1784,85 @@ hr {
 }
 
 .tablesorter-filter {
-  opacity: 0.45 !important;
+  background-color: var(--defaultBkg-color);
+  color: var(--link-color);
+  opacity: 0.85 !important;
 }
 
 
 
 
 /* __________________________________________________________________________________________________________SCENARIO */
+#div_scenarioElement .element .element {
+  box-shadow: inset 2px 2px 5px -4px var(--sc-formTxt-color);
+}
+.elementIF { background-color: var(--scBlocIF) !important; }
+.elementFOR { background-color: var(--scBlocFOR) !important; }
+.elementIN { background-color: var(--scBlocIN) !important; }
+.elementAT { background-color: var(--scBlocAT) !important; }
+.elementCODE { background-color: var(--scBlocCODE) !important; }
+.elementCOM { background-color: var(--scBlocCOM) !important; }
+.elementACTION,
+.expressionACTION {
+  background-color: var(--scBlocACTION) !important;
+}
 
-.scBlocColor0 { background-color: var(--scBloc-color0); border: 1px solid var(--scBloc-color0); border-right: none;}
-.scBlocColor1 { background-color: var(--scBloc-color1); border: 1px solid var(--scBloc-color1); border-right: none;}
-.scBlocColor2 { background-color: var(--scBloc-color2); border: 1px solid var(--scBloc-color2); border-right: none;}
-.scBlocColor3 { background-color: var(--scBloc-color3); border: 1px solid var(--scBloc-color3); border-right: none;}
-.scBlocColor4 { background-color: var(--scBloc-color4); border: 1px solid var(--scBloc-color4); border-right: none;}
-.scBlocColor5 { background-color: var(--scBloc-color5); border: 1px solid var(--scBloc-color5); border-right: none;}
-.scBlocColor6 { background-color: var(--scBloc-color6); border: 1px solid var(--scBloc-color6); border-right: none;}
-.scBlocColor7 { background-color: var(--scBloc-color7); border: 1px solid var(--scBloc-color7); border-right: none;}
-.scBlocColor8 { background-color: var(--scBloc-color8); border: 1px solid var(--scBloc-color8); border-right: none;}
+.subElement .element{
+  width : calc(100% - 5px);
+}
 
+.elementIN > div > div > div > div > .elementIN{
+  width : 100%;
+  border-left: 3px solid var(--scBlocIN-sep);
+}
+
+.elementIF > div > div > div > div > .elementIF{
+  width : 100%;
+  border-left: 3px solid var(--scBlocIF-sep);
+}
+
+.elementFOR > div > div > div > div > .elementFOR{
+  width : 100%;
+  border-left: 3px solid var(--scBlocFOR-sep);
+}
+
+.elementAT > div > div > div > div > .elementAT{
+  width : 100%;
+  border-left: 3px solid var(--scBlocAT-sep);
+}
+
+.elementACTION > div > div > div > div > .elementACTION{
+  width : 100%;
+  border-left: 3px solid var(--scBlocACTION-sep);
+}
+
+/*
+.elementIF .elementIF:before {
+content: '';
+position: absolute;
+top: 22px;
+left: -2px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 14px 0 14px 12px;
+border-color: transparent transparent transparent var(--sc-formTxt-color);
+}
+*/
+.expressionACTION .col-xs-1 input[type="checkbox"] {
+  top: 5px !important;
+}
+.expressionACTION .input-group {
+  top: 2px !important;
+}
+.expressionACTION {
+  width: calc(100% - 6px);
+}
+.subElementCODE,
+.subElementCOMMENT {
+  padding-right: 4px;
+  padding-left: 4px;
+}
 .element legend {
   background-color: transparent !important;
   color: var(--sc-lightTxt-color) !important;
@@ -1811,6 +1887,7 @@ hr {
   height: 22px;
   padding-left: 5px;
   padding-top: 2px;
+  margin-left: 5px;
 }
 .element button.dropdown-toggle:hover {
   color: var(--sc-lightTxt-color) !important;
@@ -1820,11 +1897,15 @@ hr {
   color:  var(--linkHoverLight-color) !important;
   background-color: var(--sc-formTxt-color) !important;
 }
-.element button.dropdown-toggle > .caret {
-  color:  var(--linkHoverLight-color) !important;
-  right: 3px;
-  top: 9px !important;
+.subElementFields button.dropdown-toggle .caret {
+  right: 0px;
+  top: 8px !important;
+  border-top-color: var(--linkHoverLight-color) !important;
 }
+.subElementFields ul.dropdown-menu {
+  border-bottom: none !important;
+}
+
 .element .dropdown-submenu.open > a,
 .element .dropdown-menu > li > a:focus,
 .element .dropdown-menu > li > a:hover {
@@ -1852,6 +1933,8 @@ hr {
 }
 .subElementCOMMENT textarea {
   font-weight: normal !important;
+  min-height: 62px;
+  overflow: auto !important;
 }
 .element input.expressionAttr {
   font-weight: bold;
@@ -1964,18 +2047,18 @@ textarea {
 }
 .element .bt_removeElement {
   position: absolute;
-  top: 0;
-  right: 0;
-}
-.element .bt_copyElement {
-  position: absolute;
-  top: 0;
-  right: 35px;
+  top: 3px;
+  right: 3px;
 }
 .element .bt_pasteElement {
   position: absolute;
-  top: 0;
-  right: 18px;
+  top: 3px;
+  right: 20px;
+}
+.element .bt_copyElement {
+  position: absolute;
+  top: 3px;
+  right: 37px;
 }
 .element .subElementFields .dropdown {
   width: 90px !important;
@@ -1983,6 +2066,8 @@ textarea {
 }
 .element .bt_showElse {
   height: 22px !important;
+  margin-left: 5px;
+  margin-right: -5px;
 }
 .element .subElementAttr {
   position: absolute !important;
@@ -2356,7 +2441,6 @@ path.highcharts-graph {
 .eqLogic-widget div.cmd-widget {
   position: relative;
   padding: 0;
-  top: 0 !important;
   min-width: 70px;
 }
 div.cmd-widget .title {
@@ -2880,14 +2964,14 @@ input:invalid {
   display: none;
 }
 .tooltipster-sidetip .tooltipster-box {
-	background: var(--al-info-color);
-	border: none;
-	border-radius: var(--border-radius) !important;
+  background: var(--al-info-color);
+  border: none;
+  border-radius: var(--border-radius) !important;
 }
 
 .tooltipster-sidetip .tooltipster-content {
-	color: var(--linkHoverLight-color);
-	padding: 8px 12px;
+  color: var(--linkHoverLight-color);
+  padding: 2px 8px 4px 8px;
 }
 
 /* __________________________________________________________________________________________________________CodeMirror */
@@ -2989,7 +3073,8 @@ div[id^=__lpform_] { /*lastpass*/
 .scenario-widget,
 #div_alert,
 .alert,
-.jqAlert{
+.jqAlert,
+.expressionACTION {
   border-radius: var(--border-radius) !important;
 }
 
@@ -3099,16 +3184,16 @@ ul.dropdown-menu {
   :root {
     --lineheight: 1.4em;
   }
-
+  
   body {
     font-size: 14px !important;
   }
-
+  
   .btn,
   tbody > tr > td{
     font-size: 12px !important;
   }
-
+  
   .expression .col-xs-1 {
     width: 6.5em !important;
   }
@@ -3116,11 +3201,11 @@ ul.dropdown-menu {
     width: 55% !important;
     align-content: right !important;
   }
-
+  
   #div_editScenario ul.nav.nav-tabs {
     margin-top: 30px !important;
   }
-
+  
   .form-control,
   .btn,
   .label {
@@ -3166,5 +3251,5 @@ ul.dropdown-menu {
   .hidden-xs {
     display: none !important;
   }
-
+  
 }

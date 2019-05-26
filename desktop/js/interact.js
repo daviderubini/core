@@ -76,10 +76,6 @@ $('.interactAttr[data-l1key=display][data-l2key=icon]').on('dblclick',function()
   $('.interactAttr[data-l1key=display][data-l2key=icon]').value('');
 });
 
-$('.nav-tabs a').on('shown.bs.tab', function (e) {
-  window.location.hash = e.target.hash;
-})
-
 //contextMenu:
 $(function(){
   try{
@@ -173,6 +169,7 @@ $('#bt_interactThumbnailDisplay').on('click', function () {
   $('#div_conf').hide();
   $('#interactThumbnailDisplay').show();
   $('.interactListContainer').packery();
+  addOrUpdateUrl('id',null,'{{Interactions}} - '+JEEDOM_PRODUCT_NAME);
 });
 
 $('.interactDisplayCard').on('click', function () {
@@ -192,6 +189,10 @@ $('.interactDisplayCard').on('click',function(){
   if(document.location.toString().split('#')[1] == '' || document.location.toString().split('#')[1] == undefined){
     $('.nav-tabs a[href="#generaltab"]').click();
   }
+});
+
+$('#div_pageContainer').off('change','.interactAttr').on('change','.interactAttr:visible', function () {
+  modifyWithoutSave = true;
 });
 
 $('.accordion-toggle').off('click').on('click', function () {
@@ -316,6 +317,7 @@ $("#bt_addInteract,#bt_addInteract2").on('click', function () {
           $('#div_alert').showAlert({message: error.message, level: 'danger'});
         },
         success: function (data) {
+          modifyWithoutSave = false;
           loadPage('index.php?v=d&p=interact&id=' + data.id + '&saveSuccessFull=1');
         }
       });
@@ -333,6 +335,7 @@ $("#bt_removeInteract").on('click', function () {
           $('#div_alert').showAlert({message: error.message, level: 'danger'});
         },
         success: function () {
+          modifyWithoutSave = false;
           loadPage('index.php?v=d&p=interact&removeSuccessFull=1');
         }
       });
@@ -465,6 +468,7 @@ function displayInteract(_id){
           taAutosize();
         }
       });
+      modifyWithoutSave = false;
     }
   });
 }
