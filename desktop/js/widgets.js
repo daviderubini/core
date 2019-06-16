@@ -15,49 +15,93 @@
 */
 
 $('#in_searchWidgets').keyup(function () {
-  var search = $(this).value();
-  if(search == ''){
+  var search = $(this).value()
+  if (search == '') {
     $('.panel-collapse.in').closest('.panel').find('.accordion-toggle').click()
-    $('.widgetsDisplayCard').show();
-    $('.widgetsListContainer').packery();
+    $('.widgetsDisplayCard').show()
+    $('.widgetsListContainer').packery()
     return;
   }
-  search = search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-
-  $('.widgetsDisplayCard').hide();
-  $('.panel-collapse').attr('data-show',0);
-  $('.widgetsDisplayCard .name').each(function(){
-    var text = $(this).text().toLowerCase();
-    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-    if(text.indexOf(search.toLowerCase()) >= 0){
+  search = normTextLower(search)
+  $('.widgetsDisplayCard').hide()
+  $('.panel-collapse').attr('data-show',0)
+  $('.widgetsDisplayCard .name').each(function() {
+    var text = $(this).text()
+    text = normTextLower(text)
+    if(text.indexOf(search) >= 0){
       $(this).closest('.widgetsDisplayCard').show();
-      $(this).closest('.panel-collapse').attr('data-show',1);
+      $(this).closest('.panel-collapse').attr('data-show',1)
     }
-  });
-  $('.panel-collapse[data-show=1]').collapse('show');
-  $('.panel-collapse[data-show=0]').collapse('hide');
-  $('.widgetsListContainer').packery();
-});
+  })
+  $('.panel-collapse[data-show=1]').collapse('show')
+  $('.panel-collapse[data-show=0]').collapse('hide')
+  $('.widgetsListContainer').packery()
+})
 
 $('#bt_openAll').off('click').on('click', function () {
-  $(".accordion-toggle[aria-expanded='false']").each(function(){
-    $(this).click()
-  })
+  $(".accordion-toggle[aria-expanded='false']").click()
 });
 $('#bt_closeAll').off('click').on('click', function () {
-  $(".accordion-toggle[aria-expanded='true']").each(function(){
-    $(this).click()
-  })
-});
+  $(".accordion-toggle[aria-expanded='true']").click()
+})
 
-$('#bt_resetWidgetsSearch').on('click', function () {
+$('#bt_resetWidgetsSearch').off('click').on('click', function () {
   $('#in_searchWidgets').val('')
   $('#in_searchWidgets').keyup();
 })
 
-$('#bt_editCode').on('click', function () {
+$('#bt_editCode').off('click').on('click', function () {
   loadPage('index.php?v=d&p=editor&type=widget');
 })
+
+$('#bt_applyToCmd').off('click').on('click', function () {
+  $('#md_modal').dialog({title: "{{Résumé scénario}}"})
+  .load('index.php?v=d&modal=cmd.selectMultiple&type='+$('.widgetsAttr[data-l1key=type]').value()+'&subtype='+$('.widgetsAttr[data-l1key=subtype]').value(), function() {
+    initTableSorter();
+    $('#bt_cmdConfigureSelectMultipleAlertToogle').off('click').on('click', function () {
+      var state = false;
+      if ($(this).attr('data-state') == 0) {
+        state = true;
+        $(this).attr('data-state', 1)
+        .find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        $('#table_cmdConfigureSelectMultiple tbody tr .selectMultipleApplyCmd:visible').value(1);
+      } else {
+        state = false;
+        $(this).attr('data-state', 0)
+        .find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        $('#table_cmdConfigureSelectMultiple tbody tr .selectMultipleApplyCmd:visible').value(0);
+      }
+    });
+    
+    $('#bt_cmdConfigureSelectMultipleAlertApply').off().on('click', function () {
+      var widgets = $('.widgets').getValues('.widgetsAttr')[0];
+      widgets.test = $('#div_templateTest .test').getValues('.testAttr');
+      jeedom.widgets.save({
+        widgets: widgets,
+        error: function (error) {
+          $('#div_alert').showAlert({message: error.message, level: 'danger'});
+        },
+        success: function (data) {
+          modifyWithoutSave = false;
+          cmd = {template : {dashboard : 'custom::'+$('.widgetsAttr[data-l1key=name]').value(),mobile : 'custom::'+$('.widgetsAttr[data-l1key=name]').value()}};
+          $('#table_cmdConfigureSelectMultiple tbody tr').each(function () {
+            if ($(this).find('.selectMultipleApplyCmd').prop('checked')) {
+              cmd.id = $(this).attr('data-cmd_id');
+              jeedom.cmd.save({
+                cmd: cmd,
+                error: function (error) {
+                  $('#md_cmdConfigureSelectMultipleAlert').showAlert({message: error.message, level: 'danger'});
+                },
+                success: function () {}
+              });
+              $('#md_cmdConfigureSelectMultipleAlert').showAlert({message: "{{Modification(s) appliquée(s) avec succès}}", level: 'success'});
+            }
+          });
+        }
+      });
+    });
+  }).dialog('open');;
+});
 
 //context menu
 $(function(){
@@ -80,7 +124,7 @@ $(function(){
           if (wg.type == 'info') widgetsList['info'].push([wg.name, wg.id])
           if (wg.type == 'action') widgetsList['action'].push([wg.name, wg.id])
         }
-
+        
         //set context menu!
         var contextmenuitems = {}
         for (var group in widgetsList) {
@@ -94,7 +138,7 @@ $(function(){
           }
           contextmenuitems[group] = {'name':group, 'items':items}
         }
-
+        
         $('.nav.nav-tabs').contextMenu({
           selector: 'li',
           autoHide: true,
@@ -131,7 +175,7 @@ $('#bt_chooseIcon').on('click', function () {
   },{icon:_icon});
 });
 
-$('.widgetsAttr[data-l1key=display][data-l2key=icon]').on('dblclick',function(){
+$('.widgetsAttr[data-l1key=display][data-l2key=icon]').off('dblclick').on('dblclick',function(){
   $('.widgetsAttr[data-l1key=display][data-l2key=icon]').value('');
 });
 
@@ -402,7 +446,7 @@ $("#bt_mainImportWidgets").change(function(event) {
     $('#div_alert').showAlert({message: "{{L'import de widgets se fait au format json à partir de widgets précedemment exporté.}}", level: 'danger'})
     return false
   }
-
+  
   if (uploadedFile) {
     bootbox.prompt("Nom du widget ?", function (result) {
       if (result !== null) {
@@ -414,7 +458,7 @@ $("#bt_mainImportWidgets").change(function(event) {
           success: function (data) {
             var readFile = new FileReader()
             readFile.readAsText(uploadedFile)
-
+            
             readFile.onload = function(e) {
               objectData = JSON.parse(e.target.result)
               if (!isset(objectData.jeedomCoreVersion)) {
@@ -458,7 +502,7 @@ $("#bt_importWidgets").change(function(event) {
   if (uploadedFile) {
     var readFile = new FileReader()
     readFile.readAsText(uploadedFile)
-
+    
     readFile.onload = function(e) {
       objectData = JSON.parse(e.target.result)
       if (!isset(objectData.jeedomCoreVersion)) {

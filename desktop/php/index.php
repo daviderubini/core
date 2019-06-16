@@ -4,6 +4,7 @@ if (init('rescue', 0) == 1 && !in_array(init('p'), array('custom', 'backup', 'cr
 }
 include_file('core', 'authentification', 'php');
 global $JEEDOM_INTERNAL_CONFIG;
+global $jeedom_theme;
 $jeedom_theme = jeedom::getThemeConfig();
 $configs = array_merge($jeedom_theme,config::byKeys(array( 'language', 'jeedom::firstUse')));
 if (isConnect()) {
@@ -84,6 +85,47 @@ if (init('rescue', 0) == 0) {
 		}
 	}
 }
+
+function setTheme() {
+	global $jeedom_theme;
+	$dataNoChange = false;
+	$themeCss = '<link id="bootstrap_theme_css" href="core/themes/core2019_Light/desktop/core2019_Light.css?md5='.md5(__DIR__ . '/../../core/themes/core2019_Light/desktop/core2019_Light.css').'" rel="stylesheet">';
+	$themeJs = 'core2019_Light/desktop/core2019_Light';
+	$themeDefinition = $jeedom_theme['current_desktop_theme'];
+	if (isset($_COOKIE['currentTheme'])) {
+		if ($_COOKIE['currentTheme'] == 'alternate') {
+			$themeDefinition = $jeedom_theme['default_bootstrap_theme_night'];
+			$dataNoChange = true;
+		}else{
+			$themeDefinition = $jeedom_theme['default_bootstrap_theme'];
+			$dataNoChange = true;
+		}
+	}
+	if (init('rescue', 0) == 0) {
+		if (is_dir(__DIR__ . '/../../core/themes/' .$themeDefinition . '/desktop') && file_exists(__DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/' . $themeDefinition . '.css')) {
+			$themeCss = '<link id="bootstrap_theme_css" href="core/themes/'.$themeDefinition.'/desktop/'.$themeDefinition.'.css?md5='.md5(__DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/' . $themeDefinition . '.css').'" rel="stylesheet">';
+			if ($dataNoChange) $themeCss = str_replace('rel="stylesheet"', 'rel="stylesheet" data-nochange="1"', $themeCss);
+		}
+		if(file_exists(__DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/' . $themeDefinition . '.js')) {
+			$themeJs = $themeDefinition . '/desktop/' . $themeDefinition;
+		}
+	}
+	echo $themeCss;
+	include_file('core', $themeJs, 'themes.js');
+
+	//shadows:
+	$loadShadows = true;
+	if (isset($jeedom_theme['interface::advance::enable']) && isset($jeedom_theme['widget::shadow'])) {
+		if ($jeedom_theme['interface::advance::enable'] == 1 && $jeedom_theme['widget::shadow'] == 1) $loadShadows = false;
+	}
+	if ($loadShadows) {
+		$shdPath = __DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/shadows.css';
+		if(file_exists($shdPath)) {
+			echo '<link href="core/themes/'.$themeDefinition.'/desktop/shadows.css" rel="stylesheet">';
+		}
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -171,32 +213,8 @@ if (init('rescue', 0) == 0) {
 	include_file('desktop', 'bootstrap', 'css');
 	include_file('desktop', 'desktop.main', 'css');
 
-	if (!isConnect()) {
-		if (init('rescue', 0) == 0 && is_dir(__DIR__ . '/../../core/themes/' .$jeedom_theme['current_desktop_theme'] . '/desktop') && file_exists(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.css')) {
-			echo '<link id="bootstrap_theme_css" href="core/themes/'.$jeedom_theme['current_desktop_theme'].'/desktop/'.$jeedom_theme['current_desktop_theme'].'.css?md5='.md5(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.css').'" rel="stylesheet">';
-			if(file_exists(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.js')){
-				include_file('core',$jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'], 'themes.js');
-			}
-		} else {
-			echo '<link id="bootstrap_theme_css" href="core/themes/core2019_Light/desktop/core2019_Light.css?md5='.md5(__DIR__ . '/../../core/themes/core2019_Light/desktop/core2019_Light.css').'" rel="stylesheet">';
-			include_file('core', 'core2019_Light/desktop/core2019_Light', 'themes.js');
-		}
-	} else {
-		try {
-			if (init('rescue', 0) == 0 && is_dir(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop') && file_exists(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.css')) {
-				echo '<link id="bootstrap_theme_css" href="core/themes/'.$jeedom_theme['current_desktop_theme'].'/desktop/'.$jeedom_theme['current_desktop_theme'].'.css?md5='.md5(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.css').'" rel="stylesheet">';
-				if(file_exists(__DIR__ . '/../../core/themes/' . $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'] . '.js')){
-					include_file('core', $jeedom_theme['current_desktop_theme'] . '/desktop/' . $jeedom_theme['current_desktop_theme'], 'themes.js');
-				}
-			} else {
-				echo '<link id="bootstrap_theme_css" href="core/themes/core2019_Light/desktop/core2019_Light.css?md5='.md5(__DIR__ . '/../../core/themes/core2019_Light/desktop/core2019_Light.css').'" rel="stylesheet">';
-				include_file('core', 'core2019_Light/desktop/core2019_Light', 'themes.js');
-			}
-		} catch (Exception $e) {
-			echo '<link id="bootstrap_theme_css" href="core/themes/core2019_Light/desktop/core2019_Light.css?md5='.md5(__DIR__ . '/../../core/themes/core2019_Light/desktop/core2019_Light.css').'" rel="stylesheet">';
-			include_file('core', 'core2019_Light/desktop/core2019_Light', 'themes.js');
-		}
-	}
+	setTheme();
+
 	if(init('report') == 1){
 		include_file('desktop', 'report', 'css');
 	}
@@ -357,7 +375,7 @@ if (init('rescue', 0) == 0) {
 										<li><a href="index.php?v=d&p=profils"><i class="fas fa-briefcase"></i> {{Préférences}}</a></li>
 										<li role="separator" class="divider"></li>
 										<?php if ($jeedom_theme['default_bootstrap_theme'] != $jeedom_theme['default_bootstrap_theme_night']){ ?>
-											<li><a id="bt_switchTheme"><i class="fas fa-sync-alt"></i> {{Basculer le thème}}</a></li>
+											<li><a id="bt_switchTheme"><i class="fas fa-sync-alt"></i> {{Thème alternatif}}</a></li>
 										<?php } ?>
 										<li><a href="index.php?v=m" class="noOnePageLoad"><i class="fas fa-mobile"></i> {{Version mobile}}</a></li>
 										<li role="separator" class="divider"></li>
@@ -402,7 +420,9 @@ if (init('rescue', 0) == 0) {
 								<?php } ?>
 								<li class="hidden-xs"><a href="#" style="cursor:default;"><?php echo jeeObject::getGlobalHtmlSummary(); ?></a></li>
 								<li class="hidden-xs navTime">
-									<span id="horloge"><?php echo date('H:i:s'); ?></span>
+									<a href="index.php?v=d&p=log">
+										<span id="horloge"><?php echo date('H:i:s'); ?></span>
+									</a>
 									<a href="index.php?v=d&p=administration#generaltab">
 										<span class="cmdName"><?php echo config::byKey('name'); ?></span>
 									</a>
@@ -487,3 +507,4 @@ if (init('rescue', 0) == 0) {
 		<?php } 	?>
 	</body>
 	</html>
+

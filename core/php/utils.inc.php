@@ -1424,6 +1424,21 @@ function sanitizeAccent($_message) {
 			case 'update':
 			$return = __('Mises à jour',__FILE__);
 			break;
+			case 'panel':
+			try {
+				if(isset($_SERVER['REQUEST_URI'])){
+					$url = $_SERVER['REQUEST_URI'];
+					$plugin = explode('m=', $url)[1];
+					$plugin = explode('&', $plugin)[0];
+					$return = __('Panel '.ucfirst($plugin),__FILE__);
+				}else{
+					$return = __('Panel',__FILE__);
+				}
+				break;
+			} catch(Exception $e) {
+				$return = __('Panel',__FILE__);
+				break;
+			}
 			default:
 			$return = $_page;
 			break;

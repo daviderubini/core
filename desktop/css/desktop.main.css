@@ -32,10 +32,7 @@ body {
   margin: 0 !important;
   scrollbar-color: var(--el-defaultColor) rgb(var(--bg-color)) !important;
 }
-.row.row-overflow {
-  background-color: rgb(var(--bg-color));
-}
-  
+
 .backgroundforJeedom{
   width:100%;
   height:calc(100% - 50px);
@@ -62,6 +59,14 @@ body {
 
 .cursor {
   cursor: pointer;
+}
+
+#div_mainContainer,
+#div_pageContainer,
+#div_resumePluginList,
+#div_resumeObjectList {
+  width: 100% !important;
+  height: calc(100% - 5px) !important;
 }
 
 /* __________________________________________________________________________________________________________LINKS */
@@ -198,12 +203,17 @@ legend {
 }
 [data-page=display] #div_pageContainer #display ul > li {
   list-style-type: none;
-  margin: 2px 0 !important;
-  padding: 1.3px 5px !important;
+  margin: 2px 25px !important;
+  padding: 1px 5px !important;
+  border-bottom: 1px solid var(--el-defaultColor);
+}
+[data-page=display] #div_pageContainer #display ul > li input {
+  top: 2px;
 }
 [data-page=display] #div_pageContainer #display ul > li > ul > li {
-  margin: 1.3px !important;
-  padding: 2px 5px !important;
+  margin: 0 !important;
+  padding: 3px 5px !important;
+  color: var(--linkHoverLight-color) !important;
 }
 [data-page=display] #div_pageContainer #display ul > li > ul > li > i {
   margin: 0 !important;
@@ -249,7 +259,7 @@ legend {
   font-size: 17px;
   color: var(--link-color);
   text-align: center;
-  margin: 12px 5px !important;
+  margin: 12px 8px !important;
   padding: 5px 0 5px 5px !important;
   line-height: 1em !important;
 }
@@ -738,6 +748,7 @@ pre {
 
 .div_rowZones {
   background-color: rgba(var(--eq-bg-color), var(--opacity)) !important;
+  border-radius: var(--border-radius) !important;
 }
 
 .viewZone{
@@ -749,7 +760,8 @@ pre {
 }
 
 .div_viewZone{
-  background-color: rgba(var(--eq-bg-color), var(--opacity)) !important;
+  /*  background-color: rgba(var(--eq-bg-color), var(--opacity)) !important;
+  border-radius: var(--border-radius) !important;*/
 }
 
 .view-link-widget,
@@ -1136,7 +1148,9 @@ button .fas.fa-plus-circle {
   font-size: 14px;
   color: var(--txt-color) !important;
 }
-
+#ul_expressionHistory li a {
+  color: var(--sc-lightTxt-color) !important;
+}
 
 /* __________________________________________________________________________________________________________NAVBAR */
 .navbar-fixed-top .visible-xs-inline-block {
@@ -1295,6 +1309,10 @@ ul.dropdown-menu {
 div.panel {
   border : none;
 }
+#div_resumeObjectList > .panel,
+#div_resumePluginList > .panel {
+  margin-bottom: 30px;
+}
 #md_modal .panel-heading {
   padding: 6px 12px;
   border: none;
@@ -1302,18 +1320,20 @@ div.panel {
 :not(.panel-info):not(.panel-success):not(.panel-primary):not(.panel-warning):not(.panel-danger) > .panel-heading {
   background-color: var(--defaultBkg-color) !important;
 }
-.panel-heading {
+.panel-group .panel-heading {
   padding:0;
 }
 [data-page="plugin"] .panel-heading {
   padding: 10px 15px;
 }
 .panel-title > a.accordion-toggle {
-  width: calc(100% - 550px);
+  width: calc(100% - 100px);
   height: 100%;
-  margin-right: 200px !important;
-  padding: 10px 15px;
+  padding: 8px 15px;
   display: inline-block;
+}
+[data-page="health"] .panel-title > a.accordion-toggle {
+  width: calc(100% - 250px);
 }
 body:not([data-page="plugin"]) .panel-title .pull-right {
   position: relative;
@@ -1362,6 +1382,9 @@ body:not([data-page="plugin"]) .panel-title .pull-right {
 [data-page=plugin] #div_configLog .panel-body,
 [data-page=plugin] #div_state .panel-body {
   min-height: 150px;
+}
+#md_modal #div_confPlugin .panel-body {
+  min-height: 140px;
 }
 
 /* __________________________________________________________________________________________________________FORMS */
@@ -1702,6 +1725,9 @@ ul.nav.nav-tabs li,
   border: none !important;
   border-image-width: 0 !important;
   border-image-width: 0 !important;
+}
+.row.row-overflow > div > div.input-group.pull-right {
+  margin-right: -1px;
 }
 .nav-tabs > li > a[aria-controls=home] {
   padding: 10px 14px;
@@ -2265,21 +2291,12 @@ textarea {
   border-left-width: 0 !important;
 }
 
-/* main div border left screen */
-#div_resumeObjectList,
-#div_resumePluginList,
-#interactThumbnailDisplay,
-#scenarioThumbnailDisplay,
-#div_confPlugin,
-.eqLogicThumbnailDisplay {
-  border-left: none !important;
-}
-
 .bs-sidebar.affix {
   position: static;
 }
 .bs-sidebar {
-  background: rgba(var(--bg-color), var(--opacity)) !important;;
+  background: rgba(var(--bg-color), var(--opacity)) !important;
+  border-radius: var(--border-radius) !important;
 }
 .bs-sidebar .label,
 .bs-sidebar .label > i {
@@ -2297,9 +2314,10 @@ textarea {
 }
 .div_smallSideBar,
 .bs-sidebar > ul {
-  background-color: rgba(var(--bg-color), var(--opacity)) !important;
+  /*background-color: rgba(var(--bg-color), var(--opacity)) !important;*/
 }
-.bs-sidebar li.active {
+.bs-sidebar li.active,
+#ul_object li.li_object.active {
   border-right: 3px solid var(--logo-primary-color) !important;
 }
 .bs-sidebar .nav > li > a:not(.btn) {
@@ -2329,8 +2347,7 @@ textarea {
 }
 .li_object a,
 .li_object a span {
-  float: left !important;
-  padding-left: 2px;
+  padding-left: 4px;
 }
 
 #div_displayScenario > legend {
@@ -2411,17 +2428,22 @@ path.highcharts-graph {
   stroke-width: 1.2;
 }
 
-.highcharts-tooltip-box,
-.highcharts-label-box {
-  fill: var(--sc-form-color);
-  fill-opacity: 1 !important;
+
+.highcharts-tooltip .highcharts-tooltip-box,
+.highcharts-tooltip .highcharts-label-box {
   stroke-width: 0.6 !important;
 }
-.highcharts-tooltip text {
-  fill: var(--txt-color) !important;
-  text-shadow: none !important;
+.highcharts-tooltip .highcharts-tooltip-box path {
+  fill: rgb(var(--bg-color)) !important;
 }
-
+.highcharts-tooltip .highcharts-tooltip-box text,
+.highcharts-tooltip .highcharts-tooltip-box text tspan {
+  fill: rgb(var(--contrast-color)) !important;
+  font-weight: 400 !important;
+}
+.highcharts-tooltip .highcharts-shadow {
+  display: none;
+}
 
 
 #div_graphLinkRenderer g {
@@ -2565,6 +2587,9 @@ div.cmd-widget div[class^="content"] > select {
   font-size: 16px !important;
   height: 22px;
 }
+div.cmd-widget div[class^="content"] > select > option {
+  font-size: 12px !important;
+}
 div.cmd-widget[data-subtype="select"]::after {
   font-size: 14px;
   top: 5px!important;
@@ -2603,6 +2628,20 @@ div.cmd > div.center-block {
   margin : 0;
   padding: 0;
   line-height:0px;
+}
+
+.cmd-widget[data-subtype="select"] .title,
+.cmd-widget[data-subtype="select"] .content-xs {
+  clear: both !important;
+  display: inline;
+  text-align: left;
+}
+.cmd-widget[data-subtype="select"] .cmdName {
+  font-size: 11px !important;
+  margin-left: 5px;
+}
+.cmd-widget[data-subtype="select"] .content-xs {
+  top: -4px !important;
 }
 
 .verticalAlign {
@@ -3131,7 +3170,8 @@ div[id^=__lpform_] { /*lastpass*/
 #div_alert,
 .alert,
 .jqAlert,
-.expressionACTION {
+.expressionACTION,
+.progressbarContainer .progress {
   border-radius: var(--border-radius) !important;
 }
 
@@ -3169,6 +3209,13 @@ textarea,
 button,
 pre {
   border-radius: var(--border-radius) !important;
+}
+
+pre {
+  font-family: "Roboto";
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  line-height: 14px;
 }
 
 .input-group .btn,
@@ -3234,8 +3281,6 @@ ul.dropdown-menu {
 }
 
 
-
-
 /* __________________________________________________________________________________________________________MEDIA QUERIES */
 @media screen and (max-width: 1280px) {
   :root {
@@ -3244,6 +3289,24 @@ ul.dropdown-menu {
 
   body {
     font-size: 14px !important;
+  }
+
+  [data-page="administration"] ul.nav-tabs.nav-primary li i:after {
+    content:'';
+    position:absolute;
+    top:-4px;
+    bottom:-4px;
+    left:-4px;
+    right:-4px;
+  }
+
+  [data-page="administration"] ul.nav-tabs.nav-primary li a > span {
+    display: none;
+  }
+  [data-page="administration"] ul.nav-tabs.nav-primary li {
+    min-width: 5%;
+    max-width: 60px;
+    text-align: center;
   }
 
   .btn,
@@ -3288,9 +3351,10 @@ ul.dropdown-menu {
 @media screen and (max-width: 768px) {
   .navbar-fixed-top .navbar-collapse {
     position: fixed;
-    top: 50px;
+    left: 70px;
+    top: 0;
     bottom: 0;
-    width: 100%;
+    width: calc(100% - 70px);
     max-height: none;
     overflow: hidden auto;
   }

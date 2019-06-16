@@ -2015,23 +2015,9 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 	</div>
 	
 	<div id="md_cmdConfigureSelectMultiple" title="{{Sélection multiple de commandes}}"></div>
-	
-	<script>
-	/*
-	$(function() {
-	$('input[data-l2key="actionConfirm"]').change()
-})
-$('input[data-l2key="actionConfirm"]').change(function() {
-if ($(this).is(':checked')) {
-$('input[data-l2key="actionCodeAccess"]').prop('disabled', false)
-}
-else {
-$('input[data-l2key="actionCodeAccess"]').val('')
-$('input[data-l2key="actionCodeAccess"]').prop('disabled', true)
-}
-})
-*/
+</div>
 
+<script>
 $("#md_cmdConfigureSelectMultiple").dialog({
 	closeText: '',
 	autoOpen: false,
@@ -2319,17 +2305,17 @@ $('#bt_cmdConfigureSaveOn').on('click',function(){
 	cmd = {display : cmd.display,template : cmd.template };
 	$('#md_cmdConfigureSelectMultiple').load('index.php?v=d&modal=cmd.selectMultiple&cmd_id='+cmdInfo.id, function() {
 		initTableSorter();
-		$('#bt_cmdConfigureSelectMultipleAlertToogle').off().on('click', function () {
+		$('#bt_cmdConfigureSelectMultipleAlertToogle').off('click').on('click', function () {
 			var state = false;
 			if ($(this).attr('data-state') == 0) {
 				state = true;
-				$(this).attr('data-state', 1);
-				$(this).find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+				$(this).attr('data-state', 1)
+				.find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
 				$('#table_cmdConfigureSelectMultiple tbody tr .selectMultipleApplyCmd:visible').value(1);
 			} else {
 				state = false;
-				$(this).attr('data-state', 0);
-				$(this).find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+				$(this).attr('data-state', 0)
+				.find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
 				$('#table_cmdConfigureSelectMultiple tbody tr .selectMultipleApplyCmd:visible').value(0);
 			}
 		});

@@ -39,11 +39,9 @@ sendVarToJs('rootObjectId', $object->getId());
 			<?php
 			foreach ($allObject as $object_li) {
 				$margin = 5 * $object_li->getConfiguration('parentNumber');
-				if ($object_li->getId() == $object->getId()) {
-					echo '<li class="cursor li_object active" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
-				} else {
-					echo '<li class="cursor li_object" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
-				}
+				$liobject = '<li class="cursor li_object" ><a data-object_id="' . $object_li->getId() . '" data-href="index.php?v=d&p=dashboard&object_id=' . $object_li->getId() . '&category=' . init('category', 'all') . '" style="padding: 2px 0px;"><span style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true, true) . '</span></a></li>';
+				if ($object_li->getId() == $object->getId()) $liobject = str_replace('class="cursor li_object"', 'class="cursor li_object active"', $liobject);
+				echo $liobject;
 			}
 			?>
 		</ul>
@@ -74,20 +72,18 @@ if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1) {
 </div>
 
 <?php include_file('desktop', 'dashboard', 'js'); ?>
+
 <div class="row" >
 	<?php
-	if (init('object_id') != '') {
-		echo '<div class="col-md-12">';
-	} else {
-		echo '<div class="col-md-12">';
-	}
-	echo '<div data-object_id="' . $object->getId() . '" data-father_id="' . $object->getFather_id() . '" class="div_object">';
-	echo '<legend><a class="div_object" href="index.php?v=d&p=object&id=' . $object->getId() . '">' . $object->getDisplay('icon') . ' ' . ucfirst($object->getName()) . '</a><span>' . $object->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $object->getId() . '" data-mode="0" style="display: none;"></i> </legend>';
-	echo '<div class="div_displayEquipement" id="div_ob' . $object->getId() . '">';
-	echo '<script>getObjectHtml(' . $object->getId() . ')</script>';
-	echo '</div>';
-	echo '</div>';
-	echo '</div>';
+	$div =  '<div class="col-md-12">';
+	$div .= '<div data-object_id="' . $object->getId() . '" data-father_id="' . $object->getFather_id() . '" class="div_object">';
+	$div .= '<legend><a class="div_object" href="index.php?v=d&p=object&id=' . $object->getId() . '">' . $object->getDisplay('icon') . ' ' . ucfirst($object->getName()) . '</a><span>' . $object->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $object->getId() . '" data-mode="0" style="display: none;"></i> </legend>';
+	$div .= '<div class="div_displayEquipement" id="div_ob' . $object->getId() . '">';
+	$div .= '<script>getObjectHtml(' . $object->getId() . ')</script>';
+	$div .= '</div>';
+	$div .= '</div>';
+	$div .= '</div>';
+	echo $div;
 	foreach ($allObject as $value) {
 		if ($value->getId() != $object->getId()) {
 			continue;
@@ -96,14 +92,15 @@ if ($_SESSION['user']->getOptions('displayObjetByDefault') == 1) {
 			if ($child->getConfiguration('hideOnDashboard', 0) == 1) {
 				continue;
 			}
-			echo '<div class="col-md-12">';
-			echo '<div data-object_id="' . $child->getId() . '" data-father_id="' . $child->getFather_id() . '" class="div_object">';
-			echo '<legend><a href="index.php?v=d&p=object&id=' . $child->getId() . '">' . $child->getDisplay('icon') . ' ' . $child->getName() . '</a><span>' . $child->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $child->getId() . '" data-mode="0" style="display: none;"></i></legend>';
-			echo '<div class="div_displayEquipement" id="div_ob' . $child->getId() . '">';
-			echo '<script>getObjectHtml(' . $child->getId() . ')</script>';
-			echo '</div>';
-			echo '</div>';
-			echo '</div>';
+			$div = '<div class="col-md-12">';
+			$div .= '<div data-object_id="' . $child->getId() . '" data-father_id="' . $child->getFather_id() . '" class="div_object">';
+			$div .= '<legend><a href="index.php?v=d&p=object&id=' . $child->getId() . '">' . $child->getDisplay('icon') . ' ' . $child->getName() . '</a><span>' . $child->getHtmlSummary() . '</span> <i class="fas fa-compress pull-right cursor bt_editDashboardWidgetAutoResize" id="edit_object_' . $child->getId() . '" data-mode="0" style="display: none;"></i></legend>';
+			$div .= '<div class="div_displayEquipement" id="div_ob' . $child->getId() . '">';
+			$div .= '<script>getObjectHtml(' . $child->getId() . ')</script>';
+			$div .= '</div>';
+			$div .= '</div>';
+			$div .= '</div>';
+			echo $div;
 		}
 	}
 	?>
