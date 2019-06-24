@@ -621,53 +621,52 @@ function date_fr($date_en) {
 		return $date_en;
 	}
 	$texte_long_en = array(
-		"Monday", "Tuesday", "Wednesday", "Thursday",
-		"Friday", "Saturday", "Sunday", "January",
-		"February", "March", "April", "May",
-		"June", "July", "August", "September",
-		"October", "November", "December",
+		'/(^| )Monday($| )/', '/(^| )Tuesday($| )/', '/(^| )Wednesday($| )/', '/(^| )Thursday($| )/',
+		'/(^| )Friday($| )/', '/(^| )Saturday($| )/', '/(^| )Sunday($| )/', '/(^| )January($| )/',
+		'/(^| )February($| )/', '/(^| )March($| )/', '/(^| )April($| )/', '/(^| )May($| )/',
+		'/(^| )June($| )/', '/(^| )July($| )/', '/(^| )August($| )/', '/(^| )September($| )/',
+		'/(^| )October($| )/', '/(^| )November($| )/', '/(^| )December($| )/',
 	);
 	$texte_short_en = array(
-		"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun",
-		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-		"Aug", "Sep", "Oct", "Nov", "Dec",
+		'/(^| )Mon($| )/', '/(^| )Tue($| )/', '/(^| )Wed($| )/', '/(^| )Thu($| )/', '/(^| )Fri($| )/', '/(^| )Sat($| )/', '/(^| )Sun($| )/',
+		'/(^| )Jan($| )/', '/(^| )Feb($| )/', '/(^| )Mar($| )/', '/(^| )Apr($| )/', '/(^| )May($| )/', '/(^| )Jun($| )/', '/(^| )Jul($| )/',
+		'/(^| )Aug($| )/', '/(^| )Sep($| )/', '/(^| )Oct($| )/', '/(^| )Nov($| )/', '/(^| )Dec($| )/',
 	);
 	
 	switch (config::byKey('language', 'core', 'fr_FR')) {
 		case 'fr_FR':
 		$texte_long = array(
-			"Lundi", "Mardi", "Mercredi", "Jeudi",
-			"Vendredi", "Samedi", "Dimanche", "Janvier",
-			"Février", "Mars", "Avril", "Mai",
-			"Juin", "Juillet", "Août", "Septembre",
-			"Octobre", "Novembre", "Décembre",
+			'Lundi', 'Mardi', 'Mercredi', 'Jeudi',
+			'Vendredi', 'Samedi', 'Dimanche', 'Janvier',
+			'Février', 'Mars', 'Avril', 'Mai',
+			'Juin', 'Juillet', 'Août', 'Septembre',
+			'Octobre', 'Novembre', 'Décembre',
 		);
 		$texte_short = array(
-			"Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim",
-			"Janv.", "Févr.", "Mars", "Avril", "Mai", "Juin",
-			"Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc.",
+			'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim',
+			'Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin',
+			'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.',
 		);
 		break;
 		case 'de_DE':
 		$texte_long = array(
-			"Montag", "Dienstag", "Mittwoch", "Donnerstag",
-			"Freitag", "Samstag", "Sonntag", "Januar",
-			"Februar", "März", "April", "May",
-			"Juni", "July", "August", "September",
-			"October", "November", "December",
+			'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag',
+			'Freitag', 'Samstag', 'Sonntag', 'Januar',
+			'Februar', 'März', 'April', 'May',
+			'Juni', 'July', 'August', 'September',
+			'October', 'November', 'December',
 		);
-		
 		$texte_short = array(
-			"Mon", "Die", "Mit", "Thu", "Don", "Sam", "Son",
-			"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-			"Aug", "Sep", "Oct", "Nov", "Dec",
+			'Mon', 'Die', 'Mit', 'Thu', 'Don', 'Sam', 'Son',
+			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+			'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 		);
 		break;
 		default:
 		return $date_en;
 		break;
 	}
-	return str_replace($texte_short_en, $texte_short, str_replace($texte_long_en, $texte_long, $date_en));
+	return preg_replace($texte_short_en, $texte_short, preg_replace($texte_long_en, $texte_long, $date_en));
 }
 
 function convertDayEnToFr($_day) {
@@ -896,25 +895,6 @@ function getNtpTime() {
 function cast($sourceObject, $destination) {
 	$obj_in = serialize($sourceObject);
 	return unserialize('O:' . strlen($destination) . ':"' . $destination . '":' . substr($obj_in, $obj_in[2] + 7));
-	/*if (is_string($destination)) {
-	$destination = new $destination();
-}
-$sourceReflection = new ReflectionObject($sourceObject);
-$destinationReflection = new ReflectionObject($destination);
-$sourceProperties = $sourceReflection->getProperties();
-foreach ($sourceProperties as $sourceProperty) {
-$sourceProperty->setAccessible(true);
-$name = $sourceProperty->getName();
-$value = $sourceProperty->getValue($sourceObject);
-if ($destinationReflection->hasProperty($name)) {
-$propDest = $destinationReflection->getProperty($name);
-$propDest->setAccessible(true);
-$propDest->setValue($destination, $value);
-} else {
-$destination->$name = $value;
-}
-}
-*/
 }
 
 function getIpFromString($_string) {

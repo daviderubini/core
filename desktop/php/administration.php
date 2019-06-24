@@ -60,7 +60,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Nom de votre}} <?php echo config::byKey('product_name'); ?>
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nom de votre <?php echo config::byKey('product_name'); ?> (utilisé notamment par le market)}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nom de votre <?php echo config::byKey('product_name'); ?> (utilisé notamment par le market)}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 							<input type="text" class="configKey form-control" data-l1key="name" />
@@ -68,7 +68,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Langue}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Langue de votre}} <?php echo config::byKey('product_name'); ?>"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Langue de votre}} <?php echo config::byKey('product_name'); ?>"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 							<div class="dropdown dynDropdown">
@@ -93,13 +93,13 @@ user::isBan();
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Générer les traductions}}</label>
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-							<input type="checkbox" class="configKey" data-l1key="generateTranslation" title="{{Option pour les développeurs permettant à}} <?php echo config::byKey('product_name'); ?> {{de générer les phrases à traduire}}" />
+							<input type="checkbox" class="configKey" data-l1key="generateTranslation" tooltip="{{Option pour les développeurs permettant à}} <?php echo config::byKey('product_name'); ?> {{de générer les phrases à traduire}}" />
 						</div>
 					</div>
 					<hr class="hrPrimary">
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Date et heure}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Fuseau horaire de votre}} <?php echo config::byKey('product_name'); ?>"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Fuseau horaire de votre}} <?php echo config::byKey('product_name'); ?>"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
 							<div class="dropdown dynDropdown">
@@ -209,7 +209,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Serveur de temps optionnel}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet d'ajouter un serveur de temps à}} <?php echo config::byKey('product_name'); ?> {{utilisé lorsque}} <?php echo config::byKey('product_name'); ?> {{force la synchronisation de l'heure}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet d'ajouter un serveur de temps à}} <?php echo config::byKey('product_name'); ?> {{utilisé lorsque}} <?php echo config::byKey('product_name'); ?> {{force la synchronisation de l'heure}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 							<input type="text"  class="configKey form-control" data-l1key="ntp::optionalServer" />
@@ -217,7 +217,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Ignorer la vérification de l'heure}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Indique à}} <?php echo config::byKey('product_name'); ?> {{de ne pas prendre en compte l'heure du système}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Indique à}} <?php echo config::byKey('product_name'); ?> {{de ne pas prendre en compte l'heure du système}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 							<input type="checkbox" class="configKey" data-l1key="ignoreHourCheck" />
@@ -226,7 +226,7 @@ user::isBan();
 					<hr class="hrPrimary">
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Système}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Indique votre type de matériel}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Indique votre type de matériel}}"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
 							<span class="label label-info"><?php echo jeedom::getHardwareName() ?></span>
@@ -237,7 +237,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-3 col-xs-6 control-label">{{Clé d'installation}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet d'identifier votre}} <?php echo config::byKey('product_name'); ?> {{quand il communique avec le market}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet d'identifier votre}} <?php echo config::byKey('product_name'); ?> {{quand il communique avec le market}}"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
 							<span class="label label-info"><?php echo jeedom::getHardwareKey() ?></span>
@@ -318,7 +318,7 @@ user::isBan();
 
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 control-label">{{Clé API}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Clé API globale de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Clé API globale de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
 							<div class="input-group">
@@ -332,7 +332,7 @@ user::isBan();
 
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 control-label">{{Clé API Pro}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Clé API Pro de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Clé API Pro de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
 							<div class="input-group">
@@ -357,7 +357,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 control-label">{{Clé Market}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Clé Market de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Clé Market de}} <?php echo config::byKey('product_name'); ?>"></i></sup>
 						</label>
 						<div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
 							<div class="input-group">
@@ -388,9 +388,9 @@ user::isBan();
 							if (config::byKey('api', $plugin->getId()) == '') {
 								continue;
 							}
-							$div =  '<div class="form-group">';
+							$div .=  '<div class="form-group">';
 							$div .= '<label class="col-lg-2 col-md-3 col-sm-4 col-xs-12 control-label">{{Clé API}} '.$plugin->getName().' ';
-							$div .= '<sup><i class="fas fa-question-circle tooltips" title="{{Clé API pour le plugin}} '.$plugin->getName().'"></i></sup>';
+							$div .= '<sup><i class="fas fa-question-circle" tooltip="{{Clé API pour le plugin}} '.$plugin->getName().'"></i></sup>';
 							$div .= '</label>';
 							$div .= '<div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">';
 							$div .= '<div class="input-group">';
@@ -431,7 +431,7 @@ user::isBan();
 					<legend><i class="fas fa-brain"></i> {{Général}}</legend>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Vérification général}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet de lancer le test de consistence de Jeedom.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet de lancer le test de consistence de Jeedom.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-warning" id="bt_consitency"><i class="fas fa-check"></i> {{Lancer}}</a>
@@ -440,7 +440,7 @@ user::isBan();
 					<legend><i class="fas fa-terminal"></i> {{Système}}</legend>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Administration}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Interface d’administration système.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Interface d’administration système.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-danger" href="index.php?v=d&p=system"><i class="fas fa-exclamation-triangle"></i> {{Lancer}}</a>
@@ -448,7 +448,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Rétablissement des droits des dossiers et fichiers}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet de réappliquer les bons droits sur les fichiers.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet de réappliquer les bons droits sur les fichiers.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-warning" id="bt_cleanFileSystemRight"><i class="fas fa-check"></i> {{Lancer}}</a>
@@ -464,7 +464,7 @@ user::isBan();
 					<legend><i class="fas fa-database"></i> {{Base de données}}</legend>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Administration}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Interface d’administration de la base de données.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Interface d’administration de la base de données.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-danger" href="index.php?v=d&p=database"><i class="fas fa-exclamation-triangle"></i> {{Lancer}}</a>
@@ -474,6 +474,12 @@ user::isBan();
 						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Vérification}}</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-warning" id="bt_checkDatabase"><i class="fas fa-check"></i> {{Lancer}}</a>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-4 col-md-4 col-sm-5 col-xs-6 control-label">{{Nettoyage}}</label>
+						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
+							<a class="btn btn-warning" id="bt_cleanDatabase"><i class="fas fa-broom"></i> {{Lancer}}</a>
 						</div>
 					</div>
 					<div class="form-group">
@@ -577,7 +583,7 @@ user::isBan();
 					<legend>{{Connexion}}</legend>
 					<div class="form-group">
 						<label class="col-md-3 col-sm-4 col-xs-12 control-label">{{Durée de vie des sessions}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Durée de vie de votre connexion, en heure<br>(si vous n'avez pas coché la case enregistrer cet ordinateur)}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Durée de vie de votre connexion, en heure<br>(si vous n'avez pas coché la case enregistrer cet ordinateur)}}"></i></sup>
 							<sub>h</sub>
 						</label>
 						<div class="col-md-3 col-sm-4 col-xs-12">
@@ -586,7 +592,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-md-3 col-sm-4 col-xs-12 control-label">{{Nombre d'échecs tolérés}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Passé ce nombre, l'IP sera bannie.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Passé ce nombre, l'IP sera bannie.}}"></i></sup>
 						</label>
 						<div class="col-md-3 col-sm-4 col-xs-12">
 							<input type="text" class="configKey form-control" data-l1key="security::maxFailedLogin" />
@@ -594,7 +600,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-md-3 col-sm-4 col-xs-12 control-label">{{Temps maximum entre les échecs}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Temps en secondes}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Temps en secondes}}"></i></sup>
 							<sub>s</sub>
 						</label>
 
@@ -604,7 +610,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-md-3 col-sm-4 col-xs-12 control-label">{{Durée du bannissement}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Durée en secondes.<br> -1 : bannissement infini}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Durée en secondes.<br> -1 : bannissement infini}}"></i></sup>
 							<sub>s</sub>
 						</label>
 						<div class="col-md-3 col-sm-4 col-xs-12">
@@ -613,7 +619,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-md-3 col-sm-4 col-xs-12 control-label">{{Liste blanche}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{IPs ou masques séparés par ;<br>ex: 127.0.0.1;192.168.*.*}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{IPs ou masques séparés par ;<br>ex: 127.0.0.1;192.168.*.*}}"></i></sup>
 						</label>
 						<div class="col-md-3 col-sm-4 col-xs-12">
 							<input type="text" class="configKey form-control" data-l1key="security::whiteips" />
@@ -796,7 +802,7 @@ user::isBan();
 								if ($configs['market::allowDNS'] == 1 && network::dns_run()) {
 									$div .= '<span class="label label-success">{{Démarré : }} <a href="' . network::getNetworkAccess('external') . '" target="_blank" style="color:white;text-decoration: underline;">' . network::getNetworkAccess('external') . '</a></span>';
 								} else {
-									$div .= '<span class="label label-warning" title="{{Normal si vous n\'avez pas coché la case : Utiliser les DNS}} ' . config::byKey('product_name') . '">{{Arrêté}}</span>';
+									$div .= '<span class="label label-warning" tooltip="{{Normal si vous n\'avez pas coché la case : Utiliser les DNS}} ' . config::byKey('product_name') . '">{{Arrêté}}</span>';
 								}
 								$div .= '</div>';
 								$div .= '</div>';
@@ -939,7 +945,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-4 col-sm-3 col-xs-6 control-label">{{Basculer le thème en fonction de l'heure}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Activer pour basculer automatiquement en thème alternatif aux heures choisies.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Activer pour basculer automatiquement en thème alternatif aux heures choisies.}}"></i></sup>
 						</label>
 						<div class="col-lg-1 col-md-1 col-sm-3 col-xs-6">
 							<input type="checkbox" class="configKey" data-l1key="theme_changeAccordingTime"/>
@@ -958,7 +964,7 @@ user::isBan();
 					<legend>{{Tuiles}}</legend>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Pas horizontal}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Contraint la largeur des tuiles tous les x pixels}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Contraint la largeur des tuiles tous les x pixels}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="number" class="configKey form-control" data-l1key="widget::step::width" />
@@ -966,7 +972,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Pas vertical}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Contraint la hauteur des tuiles tous les x pixels}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Contraint la hauteur des tuiles tous les x pixels}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="number" class="configKey form-control" data-l1key="widget::step::height" />
@@ -974,7 +980,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Marge}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Espace vertical et horizontal entre les tuiles, en pixel}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Espace vertical et horizontal entre les tuiles, en pixel}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="number" class="configKey form-control" data-l1key="widget::margin" />
@@ -982,7 +988,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Centrage vertical des tuiles}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Centre verticalement le contenu des tuiles}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Centre verticalement le contenu des tuiles}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="checkbox" class="configKey form-control" data-l1key="interface::advance::vertCentering" />
@@ -990,7 +996,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{icônes widgets colorées}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Coloration des icônes de widgets en fonction de leur état.<br>Modifiable par scénario, setColoredIcon ('Coloration des icônes').}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Coloration des icônes de widgets en fonction de leur état.<br>Modifiable par scénario, setColoredIcon ('Coloration des icônes').}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="checkbox" class="configKey form-control" data-l1key="interface::advance::coloredIcons" />
@@ -1000,7 +1006,7 @@ user::isBan();
 					<legend>{{Personnalisation}}</legend>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Activer}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet de modifier les paramètres par défaut des thèmes}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet de modifier les paramètres par défaut des thèmes}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="checkbox" class="configKey form-control" data-l1key="interface::advance::enable" />
@@ -1012,7 +1018,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Transparence}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Transparence (Opacité) des tuiles}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Transparence (Opacité) des tuiles}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="number" min="0" max="1" step="0.1" class="configKey form-control" data-l1key="css::background-opacity" />
@@ -1020,7 +1026,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-3 col-sm-3 col-xs-6 control-label">{{Arrondi}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Arrondi des éléments de l'interface (Tuiles, boutons etc).<br>0 : pas d'arrondi}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Arrondi des éléments de l'interface (Tuiles, boutons etc).<br>0 : pas d'arrondi}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 							<input type="number" min="0" max="1" step="0.1" class="configKey form-control" data-l1key="css::border-radius" />
@@ -1115,7 +1121,7 @@ user::isBan();
 				<fieldset>
 					<div class="form-group">
 						<label class="col-lg-2 col-md-3 col-sm-4 col-xs-6 control-label">{{URL de push globale}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Mettez ici l'URL à appeler lors d'une mise à jour de la valeur des commandes.<br>Vous pouvez utiliser les tags suivants :<br>#value# (valeur de la commande), #cmd_id# (id de la commande) et #cmd_name# (nom de la commande)}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Mettez ici l'URL à appeler lors d'une mise à jour de la valeur des commandes.<br>Vous pouvez utiliser les tags suivants :<br>#value# (valeur de la commande), #cmd_id# (id de la commande) et #cmd_name# (nom de la commande)}}"></i></sup>
 						</label>
 						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 							<input type="text"  class="configKey form-control" data-l1key="cmdPushUrl">
@@ -1192,7 +1198,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Nettoyer le cache}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Force la suppression des objets qui ne sont plus utiles.<br>Jeedom le fait automatiquement toutes les nuits.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Force la suppression des objets qui ne sont plus utiles.<br>Jeedom le fait automatiquement toutes les nuits.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-warning" id="bt_cleanCache" style="width:80px"><i class="fas fa-magic"></i> {{Nettoyer}}</a>
@@ -1200,7 +1206,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Vider toutes les données en cache}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Vide complètement le cache.<br>Attention cela peut faire perdre des données.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Vide complètement le cache.<br>Attention cela peut faire perdre des données.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<a class="btn btn-danger" id="bt_flushCache" style="width:80px"><i class="fas fa-trash"></i> {{Vider}}</a>
@@ -1220,7 +1226,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Temps de pause pour le long polling}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Fréquence à laquelle Jeedom vérifie si il y a des événements en attente.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Fréquence à laquelle Jeedom vérifie si il y a des événements en attente.}}"></i></sup>
 							<sub>s</sub>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
@@ -1238,7 +1244,7 @@ user::isBan();
 					<legend>{{Général}}</legend>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-4 col-sm-4 col-xs-6 control-label">{{Sensibilité}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Plus la sensibilité est basse (de 1 à 99), plus la correspondance doit être exacte.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Plus la sensibilité est basse (de 1 à 99), plus la correspondance doit être exacte.}}"></i></sup>
 						</label>
 						<div class="col-lg-6 col-md-8 col-sm-8 col-xs-6">
 							<div class="input-group">
@@ -1255,7 +1261,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-4 col-sm-4 col-xs-6 control-label">{{Réduire le poids de}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Distance de Levenshtein pour le calcul de correspondance<br>Nombre de différences entre les deux chaines en fonction du nombre de mots.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Distance de Levenshtein pour le calcul de correspondance<br>Nombre de différences entre les deux chaines en fonction du nombre de mots.}}"></i></sup>
 						</label>
 						<div class="col-lg-6 col-md-8 col-sm-8 col-xs-6">
 							<div class="input-group">
@@ -1272,7 +1278,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 col-md-4 col-sm-4 col-xs-6 control-label">{{Ne pas répondre si l'interaction n'est pas comprise}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Par défaut Jeedom répond “je n’ai pas compris” si aucune interaction ne correspond.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Par défaut Jeedom répond “je n’ai pas compris” si aucune interaction ne correspond.}}"></i></sup>
 						</label>
 						<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
 							<input type="checkbox" class="configKey" data-l1key="interact::noResponseIfEmpty"/>
@@ -1328,7 +1334,7 @@ user::isBan();
 							<div class="input-group">
 								<input type="text"  class="configKey form-control roundedLeft" data-l1key="interact::warnme::defaultreturncmd" />
 								<span class="input-group-btn">
-									<a class="btn btn-default cursor bt_selectWarnMeCmd roundedRight" title="{{Rechercher une commande}}"><i class="fas fa-list-alt"></i></a>
+									<a class="btn btn-default cursor bt_selectWarnMeCmd roundedRight" tooltip="{{Rechercher une commande}}"><i class="fas fa-list-alt"></i></a>
 								</span>
 							</div>
 						</div>
@@ -1420,7 +1426,7 @@ user::isBan();
 				<fieldset>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Profondeur pour les scénarios}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de scénario}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de scénario}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::scenario::drill" />
@@ -1428,7 +1434,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Profondeur pour les objets}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens d'objet}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens d'objet}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::jeeObject::drill" />
@@ -1436,7 +1442,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Profondeur pour les équipements}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens d'équipement'}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens d'équipement'}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::eqLogic::drill" />
@@ -1444,7 +1450,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Profondeur pour les commandes}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de commande}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de commande}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::cmd::drill" />
@@ -1452,7 +1458,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Profondeur pour les variables}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de variable}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre de niveaux maximal d’éléments à afficher dans les graphiques de liens de variable}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::dataStore::drill" />
@@ -1460,7 +1466,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Paramètre de prerender}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet d’agir sur la disposition du graphique (défaut 3)}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet d’agir sur la disposition du graphique (défaut 3)}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::prerender" />
@@ -1468,7 +1474,7 @@ user::isBan();
 					</div>
 					<div class="form-group">
 						<label class="col-lg-4 col-md-5 col-sm-6 col-xs-6 control-label">{{Paramètre de render}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Permet d’agir sur la disposition du graphique selon les relations entre éléments (défaut 3000)}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Permet d’agir sur la disposition du graphique selon les relations entre éléments (défaut 3000)}}"></i></sup>
 						</label>
 						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 							<input class="configKey form-control" data-l1key="graphlink::render" />
@@ -1569,7 +1575,7 @@ user::isBan();
 								$div .= '<div class="input-group">';
 								$div .= '<input type="text"  class="configKey form-control roundedLeft" data-l1key="alert::' . $level . 'Cmd" />';
 								$div .= '<span class="input-group-btn">';
-								$div .= '<a class="btn btn-default cursor bt_selectAlertCmd roundedRight" title="{{Rechercher une commande}}" data-type="' . $level . '"><i class="fas fa-list-alt"></i></a>';
+								$div .= '<a class="btn btn-default cursor bt_selectAlertCmd roundedRight" tooltip="{{Rechercher une commande}}" data-type="' . $level . '"><i class="fas fa-list-alt"></i></a>';
 								$div .= '</span>';
 								$div .= '</div>';
 								$div .= '</div>';
@@ -1693,7 +1699,7 @@ user::isBan();
 				<fieldset>
 					<div class="col-lg-12 form-group">
 						<label class="col-lg-4 col-sm-4 col-xs-12 control-label">{{Échecs avant désactivation}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Nombre d'échecs avant désactivation de l'équipement.}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Nombre d'échecs avant désactivation de l'équipement.}}"></i></sup>
 						</label>
 						<div class="col-lg-1 col-sm-1 col-xs-4">
 							<input type="text"  class="configKey form-control" data-l1key="numberOfTryBeforeEqLogicDisable" />
@@ -1705,7 +1711,7 @@ user::isBan();
 					</div>
 					<div class="col-lg-12 form-group">
 						<label class="col-lg-4 col-sm-4 col-xs-12 control-label"><i class="warning jeedom-batterie1" style="font-size:36px;vertical-align: middle;"></i> {{Inférieur à}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Si la charge passe en dessous de}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Si la charge passe en dessous de}}"></i></sup>
 						</label>
 						<div class="col-lg-1 col-sm-1 col-xs-4">
 							<input class="configKey form-control" data-l1key="battery::warning" />
@@ -1714,7 +1720,7 @@ user::isBan();
 					</div>
 					<div class="col-lg-12 form-group">
 						<label class="col-lg-4 col-sm-4 col-xs-12 control-label"><i class="danger jeedom-batterie0" style="font-size:36px;vertical-align: middle;"></i> {{Inférieur à}}
-							<sup><i class="fas fa-question-circle tooltips" title="{{Si la charge passe en dessous de}}"></i></sup>
+							<sup><i class="fas fa-question-circle" tooltip="{{Si la charge passe en dessous de}}"></i></sup>
 						</label>
 						<div class="col-lg-1 col-sm-1 col-xs-4">
 							<input class="configKey form-control" data-l1key="battery::danger" />
@@ -1758,7 +1764,7 @@ user::isBan();
 							</div>
 							<div class="form-group">
 								<label class="col-lg-6 col-xs-6 control-label">{{Version du core}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Version installée du core, pour la vérification de mise à jour disponible.}}"></i></sup>
+									<sup><i class="fas fa-question-circle" tooltip="{{Version installée du core, pour la vérification de mise à jour disponible.}}"></i></sup>
 								</label>
 								<div class="col-lg-4 col-xs-6">
 									<div class="dropdown dynDropdown">

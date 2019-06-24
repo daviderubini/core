@@ -932,9 +932,9 @@ class cmd {
 		if ($this->getEqType() == '') {
 			$this->setEqType($this->getEqLogic()->getEqType_name());
 		}
-		if ($this->getDisplay('generic_type') !== '' && $this->getGeneric_type() == '') {
+		if ($this->getDisplay('generic_type') != '' && $this->getGeneric_type() == '') {
 			$this->setGeneric_type($this->getDisplay('generic_type'));
-			$this->setDisplay('generic_type', '');
+			$this->setDisplay('generic_type', null);
 		}
 		if($this->getTemplate('dashboard','') == ''){
 			$this->setTemplate('dashboard','default');
@@ -942,10 +942,16 @@ class cmd {
 		if($this->getTemplate('mobile','') == ''){
 			$this->setTemplate('mobile','default');
 		}
+		if($this->getType() == 'action' && $this->getIsHistorized() == 1){
+			$this->setIsHistorized(0);
+		}
 		DB::save($this);
 		if ($this->_needRefreshWidget) {
 			$this->_needRefreshWidget = false;
-			$this->getEqLogic()->refreshWidget();
+			$eqLogic = $this->getEqLogic();
+			if(is_object($eqLogic)){
+				$eqLogic->refreshWidget();
+			}
 		}
 		if ($this->_needRefreshAlert && $this->getType() == 'info') {
 			$value = $this->execCmd();
@@ -964,7 +970,10 @@ class cmd {
 	public function remove() {
 		viewData::removeByTypeLinkId('cmd', $this->getId());
 		dataStore::removeByTypeLinkId('cmd', $this->getId());
-		$this->getEqLogic()->emptyCacheWidget();
+		$eqLogic = $this->getEqLogic();
+		if(is_object($eqLogic)){
+			$eqLogic->emptyCacheWidget();
+		}
 		$this->emptyHistory();
 		cache::delete('cmdCacheAttr' . $this->getId());
 		cache::delete('cmd' . $this->getId());
@@ -1572,10 +1581,7 @@ class cmd {
 				}
 			}
 		}
-		if ($this->getCache('alertLevel') == $currentLevel) {
-			return $currentLevel;
-		}
-		if ($_allowDuring && $this->getAlert($currentLevel . 'during') != '' && $this->getAlert($currentLevel . 'during') > 0) {
+		if ($_allowDuring && $currentLevel != 'none' && $this->getAlert($currentLevel . 'during') != '' && $this->getAlert($currentLevel . 'during') > 0) {
 			$cron = cron::byClassAndFunction('cmd', 'duringAlertLevel', array('cmd_id' => intval($this->getId())));
 			$next = strtotime('+ ' . $this->getAlert($currentLevel . 'during', 1) . ' minutes ' . date('Y-m-d H:i:s'));
 			if (!is_object($cron)) {
@@ -2103,7 +2109,7 @@ class cmd {
 		if(($_key == 'dashboard' || $_key == 'mobile') && $_value != 'default' && strpos($_value,'::') === false){
 			$_value = 'core::'.$_value;
 		}
-		if ($this->getTemplate($_key) != $_value) {
+		if ($this->getTemplate($_key) !== $_value) {
 			$this->_needRefreshWidget = true;
 			$this->_changed = true;
 		}
@@ -2132,7 +2138,7 @@ class cmd {
 	}
 	
 	public function setDisplay($_key, $_value) {
-		if ($this->getDisplay($_key) != $_value) {
+		if ($this->getDisplay($_key) !== $_value) {
 			$this->_needRefreshWidget = true;
 			$this->_changed = true;
 		}

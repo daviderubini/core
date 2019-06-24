@@ -43,6 +43,7 @@ $('#in_searchConfig').keyup(function () {
     $('.nav-tabs.nav-primary').show()
     $('.tab-content').show()
     initPickers()
+    updateTooltips()
     return
   }
   if (search.length < 3) return
@@ -53,9 +54,10 @@ $('#in_searchConfig').keyup(function () {
 
   var prevTab = ''
   $('.form-group > .control-label').each(function() {
-    var text = $(this).html()
-    text = normTextLower(text)
-    if (text.indexOf(search) >= 0) {
+    var text = normTextLower($(this).text())
+    var tooltip = $(this).find('sup i').attr('tooltip')
+    if (tooltip) { tooltip = normTextLower(tooltip) } else { tooltip = '' }
+    if (text.indexOf(search) >= 0 || tooltip.indexOf(search) >= 0) {
       //get element tab to create link to:
       var tabId = $(this).closest('div[role="tabpanel"]').attr('id')
       tabName = $('ul.nav-primary a[href="#' + tabId + '"]').html()
@@ -68,11 +70,15 @@ $('#in_searchConfig').keyup(function () {
       searchId = Math.random()
       el.attr('searchId', searchId)
       el.replaceWith('<span searchId='+ searchId + '></span>')
+      el.find('.tooltipstered').each(function() {
+        $(this).removeClass('tooltipstered')
+      })
       $('#searchResult').append(el)
     }
   })
   initPickers()
   initSearchLinks()
+  updateTooltips()
 })
 
 function initSearchLinks() {
@@ -83,6 +89,14 @@ function initSearchLinks() {
   })
 }
 
+function updateTooltips() {
+  //management of tooltip with search enginein scenarios, tooltips are specially created with tooltip attribute and copied as title to keep track of it!
+  $('[tooltip]:not(.tooltipstered)').each(function() {
+    $(this).attr('title', $(this).attr('tooltip'))
+  })
+  $('[tooltip]:not(.tooltipstered)').tooltipster(TOOLTIPSOPTIONS)
+}
+
 $('#bt_resetConfigSearch').on('click', function () {
   $('#in_searchConfig').val('')
   $('#in_searchConfig').keyup()
@@ -90,9 +104,10 @@ $('#bt_resetConfigSearch').on('click', function () {
 
 $(function () {
   setTimeout(function(){
-    modifyWithoutSave = false;
-  }, 1000);
-});
+    modifyWithoutSave = false
+  }, 1000)
+  updateTooltips()
+})
 
 //DateTimePickers and Spinners
 function initPickers() {
@@ -753,19 +768,30 @@ $('.testRepoConnection').on('click',function(){
 
 /**************************SYSTEM***********************************/
 $('#bt_accessSystemAdministration').on('click',function(){
-  $('#md_modal').dialog({title: "{{Administration système}}"});
-  $("#md_modal").load('index.php?v=d&modal=system.action').dialog('open');
+  $('#md_modal').dialog({title: "{{Administration système}}"})
+  .load('index.php?v=d&modal=system.action').dialog('open');
 });
 
 /**************************Database***********************************/
 $('#bt_accessDbAdministration').on('click',function(){
-  $('#md_modal').dialog({title: "{{Administration base de données}}"});
-  $("#md_modal").load('index.php?v=d&modal=db.action').dialog('open');
+  $('#md_modal').dialog({title: "{{Administration base de données}}"})
+  .load('index.php?v=d&modal=db.action').dialog('open');
 });
 
 $('#bt_checkDatabase').on('click',function(){
-  $('#md_modal').dialog({title: "{{Vérification base de données}}"});
-  $("#md_modal").load('index.php?v=d&modal=db.check').dialog('open');
+  $('#md_modal').dialog({title: "{{Vérification base de données}}"})
+  .load('index.php?v=d&modal=db.check').dialog('open');
+});
+
+$('#bt_cleanDatabase').off('click').on('click',function(){
+  jeedom.cleanDatabase({
+    error: function (error) {
+      $('#div_alert').showAlert({message: error.message, level: 'danger'});
+    },
+    success: function (data) {
+      $('#div_alert').showAlert({message: '{{Nettoyage lancé avec succès. Pour suivre l\'avancement merci de regarder le log cleaningdb}}', level: 'success'});
+    }
+  });
 });
 
 /**************************Summary***********************************/

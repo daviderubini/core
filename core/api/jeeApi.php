@@ -147,6 +147,7 @@ if (init('type') != '') {
 			if ($_USER_GLOBAL != null && !$scenario->hasRight('x', $_USER_GLOBAL)) {
 				throw new Exception(__('Vous n\'avez pas le droit de faire une action sur ce scénario', __FILE__));
 			}
+			$return = 'ok';
 			switch (init('action')) {
 				case 'start':
 				log::add('api', 'debug', __('Démarrage scénario de : ', __FILE__) . $scenario->getHumanName());
@@ -164,7 +165,10 @@ if (init('type') != '') {
 				} else if (is_array(init('tags'))) {
 					$scenario->setTags(init('tags'));
 				}
-				$scenario->launch('api', __('Exécution provoquée par un appel API ', __FILE__));
+				$scenario_return = $scenario->launch('api', __('Exécution provoquée par un appel API ', __FILE__));
+				if (is_string($scenario_return)) {
+					$return = $scenario_return;
+				}
 				break;
 				case 'stop':
 				log::add('api', 'debug', __('Arrêt scénario de : ', __FILE__) . $scenario->getHumanName());
@@ -183,7 +187,7 @@ if (init('type') != '') {
 				default:
 				throw new Exception(__('Action non trouvée ou invalide [start,stop,deactivate,activate]', __FILE__));
 			}
-			echo 'ok';
+			echo $return;
 			die();
 		}
 		if ($type == 'message') {
@@ -626,6 +630,9 @@ try {
 	if ($jsonrpc->getMethod() == 'cmd::all') {
 		$return = array();
 		foreach (cmd::all() as $cmd) {
+			if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+				continue;
+			}
 			$return[] = $cmd->exportApi();
 		}
 		$jsonrpc->makeSuccess($return);
@@ -634,6 +641,9 @@ try {
 	if ($jsonrpc->getMethod() == 'cmd::byEqLogicId') {
 		$return = array();
 		foreach (cmd::byEqLogicId($params['eqLogic_id']) as $cmd) {
+			if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+				continue;
+			}
 			$return[] = $cmd->exportApi();
 		}
 		$jsonrpc->makeSuccess($return);
@@ -643,6 +653,9 @@ try {
 		$cmd = cmd::byId($params['id']);
 		if (!is_object($cmd)) {
 			throw new Exception(__('Cmd introuvable : ', __FILE__) . secureXSS($params['id']), -32701);
+		}
+		if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+			throw new Exception(__('Vous n\'avez pas les droits sur cette commande', __FILE__), -32701);
 		}
 		$jsonrpc->makeSuccess($cmd->exportApi());
 	}
@@ -705,6 +718,9 @@ try {
 		if (!is_object($cmd)) {
 			throw new Exception('Commande introuvable : ' . secureXSS($params['id']), -32702);
 		}
+		if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+			throw new Exception(__('Vous n\'avez pas les droits sur cette commande', __FILE__), -32701);
+		}
 		$jsonrpc->makeSuccess($cmd->getStatistique($params['startTime'], $params['endTime']));
 	}
 	
@@ -713,6 +729,9 @@ try {
 		if (!is_object($cmd)) {
 			throw new Exception('Commande introuvable : ' . secureXSS($params['id']), -32702);
 		}
+		if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+			throw new Exception(__('Vous n\'avez pas les droits sur cette commande', __FILE__), -32701);
+		}
 		$jsonrpc->makeSuccess($cmd->getTendance($params['startTime'], $params['endTime']));
 	}
 	
@@ -720,6 +739,9 @@ try {
 		$cmd = cmd::byId($params['id']);
 		if (!is_object($cmd)) {
 			throw new Exception('Commande introuvable : ' . secureXSS($params['id']), -32702);
+		}
+		if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+			throw new Exception(__('Vous n\'avez pas les droits sur cette commande', __FILE__), -32701);
 		}
 		$jsonrpc->makeSuccess(utils::o2a($cmd->getHistory($params['startTime'], $params['endTime'])));
 	}
@@ -752,6 +774,9 @@ try {
 		$cmd = cmd::byId($params['id']);
 		if (!is_object($cmd)) {
 			throw new Exception('Commande introuvable : ' . secureXSS($params['id']), -32702);
+		}
+		if (is_object($_USER_GLOBAL) && !$cmd->hasRight($_USER_GLOBAL)) {
+			throw new Exception(__('Vous n\'avez pas les droits sur cette commande', __FILE__), -32701);
 		}
 		if(!isset($params['datetime'])){
 			$params['datetime'] = null;

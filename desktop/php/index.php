@@ -106,22 +106,13 @@ function setTheme() {
 			$themeCss = '<link id="bootstrap_theme_css" href="core/themes/'.$themeDefinition.'/desktop/'.$themeDefinition.'.css?md5='.md5(__DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/' . $themeDefinition . '.css').'" rel="stylesheet">';
 			if ($dataNoChange) $themeCss = str_replace('rel="stylesheet"', 'rel="stylesheet" data-nochange="1"', $themeCss);
 		}
-		if(file_exists(__DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/' . $themeDefinition . '.js')) {
-			$themeJs = $themeDefinition . '/desktop/' . $themeDefinition;
-		}
 	}
+	$jeedom_theme['currentTheme'] = $themeDefinition;
 	echo $themeCss;
-	include_file('core', $themeJs, 'themes.js');
-
-	//shadows:
-	$loadShadows = true;
-	if (isset($jeedom_theme['interface::advance::enable']) && isset($jeedom_theme['widget::shadow'])) {
-		if ($jeedom_theme['interface::advance::enable'] == 1 && $jeedom_theme['widget::shadow'] == 1) $loadShadows = false;
-	}
-	if ($loadShadows) {
+	if (!isset($jeedom_theme['interface::advance::enable']) || !isset($jeedom_theme['widget::shadow']) || $jeedom_theme['interface::advance::enable'] == 0 || $jeedom_theme['widget::shadow'] == 0) {
 		$shdPath = __DIR__ . '/../../core/themes/' . $themeDefinition . '/desktop/shadows.css';
 		if(file_exists($shdPath)) {
-			echo '<link href="core/themes/'.$themeDefinition.'/desktop/shadows.css" rel="stylesheet">';
+			echo '<link id="shadows_theme_css" href="core/themes/'.$themeDefinition.'/desktop/shadows.css" rel="stylesheet">';
 		}
 	}
 }
@@ -212,9 +203,9 @@ function setTheme() {
 	include_file('3rdparty', 'autosize/autosize.min', 'js');
 	include_file('desktop', 'bootstrap', 'css');
 	include_file('desktop', 'desktop.main', 'css');
-
+	
 	setTheme();
-
+	
 	if(init('report') == 1){
 		include_file('desktop', 'report', 'css');
 	}
@@ -311,7 +302,7 @@ function setTheme() {
 									<?php if (isConnect('admin')) { ?>
 										<li><a href="index.php?v=d&p=log"><i class="far fa-file"></i> {{Logs}}</a></li>
 									<?php } ?>
-									<li><a href="#" id="bt_showEventInRealTime"><i class="fas fa-tachometer-alt"></i> {{Temps réel}}</a></li>
+									<li><a id="bt_showEventInRealTime"><i class="fas fa-tachometer-alt"></i> {{Temps réel}}</a></li>
 									<?php if (isConnect('admin')) { ?>
 										<li><a href="index.php?v=d&p=eqAnalyse"><i class="fas fa-battery-full"></i> {{Equipements}}</a></li>
 										<li><a href="index.php?v=d&p=display"><i class="fas fa-th"></i> {{Résumé domotique}}</a></li>
@@ -333,7 +324,7 @@ function setTheme() {
 										<li><a href = "index.php?v=d&p=scenario"><i class = "fas fa-cogs"></i> {{Scénarios}}</a></li>
 										<li><a href="index.php?v=d&p=interact"><i class="far fa-comments"></i> {{Interactions}}</a></li>
 										<li><a href="index.php?v=d&p=widgets"><i class="fas fa-camera-retro"></i> {{Widgets}}</a></li>
-										<li><a href="#" id="bt_showNoteManager"><i class="fas fa-sticky-note"></i> {{Notes}}</a></li>
+										<li><a id="bt_showNoteManager"><i class="fas fa-sticky-note"></i> {{Notes}}</a></li>
 									</ul>
 								</li>
 							<?php } ?>
@@ -347,7 +338,7 @@ function setTheme() {
 									</ul>
 								</li>
 								<li class="dropdown cursor">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									<a class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fas fa-cog"></i>  <span class="hidden-sm hidden-md">{{Réglages}}</span>
 										<span class="caret"></span>
 									</a>
@@ -356,7 +347,7 @@ function setTheme() {
 											<li class="dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i> {{Système}}</a>
 												<ul class="dropdown-menu">
 													<li><a href="index.php?v=d&p=administration" tabindex="0"><i class="fas fa-wrench"></i> {{Configuration}}</a></li>
-													<li><a href="index.php?v=d&p=backup"><i class="far fa-save"></i> {{Sauvegardes}}</a></li>
+													<li><a href="index.php?v=d&p=backup"><i class="fas fa-save"></i> {{Sauvegardes}}</a></li>
 													<li><a href="index.php?v=d&p=update"><i class="fas fa-sync-alt"></i> {{Centre de mise à jour}}</a></li>
 													<?php if(jeedom::getHardwareName() == 'smart'){
 														echo '<li><a href="index.php?v=d&p=migrate"><i class="fas fa-hdd"></i> {{Restauration Image}}</a></li>';
@@ -389,7 +380,7 @@ function setTheme() {
 											</li>
 										<?php } ?>
 										<li><a href="index.php?v=d&logout=1" class="noOnePageLoad"><i class="fas fa-sign-out-alt"></i> {{Se déconnecter}}</a></li>
-										<li><a href="#" id="bt_jeedomAbout"><i class="fas fa-info-circle"></i> {{Version}} v<?php echo jeedom::version(); ?></a></li>
+										<li><a id="bt_jeedomAbout"><i class="fas fa-info-circle"></i> {{Version}} v<?php echo jeedom::version(); ?></a></li>
 									</ul>
 								</li>
 							<?php } ?>
@@ -399,14 +390,14 @@ function setTheme() {
 							$nbMessage = message::nbMessage();
 							$displayMessage = ($nbMessage > 0) ? '' : 'display : none;';?>
 							<li>
-								<a href="#" id="bt_messageModal">
+								<a id="bt_messageModal">
 									<span class="badge btn btn-warning" id="span_nbMessage" title="{{Nombre de messages}}" style="<?php echo $displayMessage; ?>">
 										<?php echo $nbMessage; ?>
 									</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" id="bt_jsErrorModal" style="display:none;">
+								<a id="bt_jsErrorModal" style="display:none;">
 									<i class="fas fa-exclamation-triangle" title="{{Erreur Javascript}}"></i>
 								</a>
 							</li>
@@ -418,7 +409,7 @@ function setTheme() {
 										<span class="badge btn btn-danger" id="span_nbUpdate"  title="{{Nombre de mises à jour}}" style="<?php echo $displayUpdate; ?>"><?php echo $nbUpdate; ?></span></a>
 									</li>
 								<?php } ?>
-								<li class="hidden-xs"><a href="#" style="cursor:default;"><?php echo jeeObject::getGlobalHtmlSummary(); ?></a></li>
+								<li class="hidden-xs"><a style="cursor:default;"><?php echo jeeObject::getGlobalHtmlSummary(); ?></a></li>
 								<li class="hidden-xs navTime">
 									<a href="index.php?v=d&p=log">
 										<span id="horloge"><?php echo date('H:i:s'); ?></span>
@@ -507,4 +498,4 @@ function setTheme() {
 		<?php } 	?>
 	</body>
 	</html>
-
+	
