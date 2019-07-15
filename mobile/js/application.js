@@ -23,6 +23,7 @@ if ('serviceWorker' in navigator) {
 
 $(function () {
   MESSAGE_NUMBER = null;
+  BACKGROUND_IMG = '';
   nbActiveAjaxRequest = 0;
   utid = Date.now();
   $.mobile.orientationChangeEnabled = false;
@@ -65,6 +66,7 @@ $(function () {
     }
     $('#jQMnDColor').attr('href', theme);
     $('#jQMnDColor').attr('data-nochange',1);
+    setBackgroundImage(BACKGROUND_IMG);
   });
   
   var webappCache = window.applicationCache;
@@ -104,7 +106,7 @@ $(function () {
 
 
 function setBackgroundImage(_path){
-  if(typeof jeedom.theme == 'undefined' || typeof jeedom.theme.hideBackgroundImg  == 'undefined' || jeedom.theme.hideBackgroundImg == 1){
+  if(typeof jeedom.theme == 'undefined' || typeof jeedom.theme.showBackgroundImg  == 'undefined' || jeedom.theme.showBackgroundImg == 0){
     return;
   }
   $backForJeedom = $('.backgroundforJeedom')
@@ -113,12 +115,27 @@ function setBackgroundImage(_path){
     'background-position':'',
     'background-repeat':'no-repeat'
   })
-  if (_path != '') {
-    $backForJeedom.css('background-image','url("'+_path+'") !important');
-    document.body.style.setProperty('--dashBkg-url','url("../../../../'+_path+'")');
-  } else {
+  BACKGROUND_IMG = _path;
+  if(_path === null){
     document.body.style.setProperty('--dashBkg-url','url("")');
     $backForJeedom.css('background-image','url("") !important');
+  }else if(_path === ''){
+    var mode = 'light'
+    if ($('body').attr('data-theme') == 'core2019_Dark') {
+      mode = 'dark';
+    }
+    _path = 'core/img/background/jeedom_abstract_01_'+mode+'.jpg';
+    if(['administration','profils'].indexOf($('body').attr('data-page')) != -1){
+      _path = 'core/img/background/jeedom_abstract_03_'+mode+'.jpg';
+    }
+    if(['display','eqAnalyse','log','history','report','health'].indexOf($('body').attr('data-page')) != -1){
+      _path = 'core/img/background/jeedom_abstract_02_'+mode+'.jpg';
+    }
+    $backForJeedom.css('background-image','url("'+_path+'") !important');
+    document.body.style.setProperty('--dashBkg-url','url("../../../../'+_path+'")');
+  }else{
+    $backForJeedom.css('background-image','url("'+_path+'") !important');
+    document.body.style.setProperty('--dashBkg-url','url("../../../../'+_path+'")');
   }
 }
 
@@ -186,6 +203,7 @@ function changeThemeAuto(_ambiantLight){
           if($('#jQMnDColor').attr('href') != themeCss){
             $('body').attr('data-theme',theme);
             $('#jQMnDColor').attr('href', themeCss);
+            setBackgroundImage(BACKGROUND_IMG);
           }
         }, 500);
       }
@@ -206,6 +224,7 @@ function changeThemeAuto(_ambiantLight){
       if($('#jQMnDColor').attr('href') != themeCss){
         $('body').attr('data-theme',theme);
         $('#jQMnDColor').attr('href', themeCss);
+        setBackgroundImage(BACKGROUND_IMG);
       }
     }, 60000);
   }
@@ -367,7 +386,7 @@ function page(_page, _title, _option, _plugin,_dialog) {
   if (_page == 'connection') {
     var page = 'index.php?v=m&ajax=1&p=' + _page;
     $('#page').load(page, function () {
-      $('body').attr('data-page', page);
+      $('body').attr('data-page', 'connection');
       $('#page').trigger('create');
       $('#pagecontainer').css('padding-top','64px');
       setTimeout(function(){$('#pagecontainer').css('padding-top','64px');}, 100);
@@ -413,7 +432,7 @@ function page(_page, _title, _option, _plugin,_dialog) {
     });
   }else{
     $('#page').hide().load(page, function () {
-      $('body').attr('data-page', page);
+      $('body').attr('data-page', _page);
       window.history.pushState('','','index.php?v=m&p=' +_page);
       $('#page').trigger('create');
       var functionName = '';

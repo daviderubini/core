@@ -2,7 +2,6 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-sendVarToJs('jeedomBackgroundImg', 'core/img/background/display.png');
 $nbEqlogic = 0;
 $nbCmd = 0;
 $objects = jeeObject::all();
@@ -99,7 +98,12 @@ if (!is_array($remove_history)) {
 					$div .= '<a href="' . $eqLogic->getLinkToConfiguration() . '" target="_blank" class="pull-right" title="{{Aller sur la configuration de l\'équipement}}"><i class="fas fa-external-link-alt"></i></a>';
 					$div .= '<ul class="cmdSortable" style="display:none;" >';
 					foreach ($cmds[$eqLogic->getId()] as $cmd) {
-						$div .= '<li class="alert alert-info cmd cursor" data-id="' . $cmd->getId() . '"  data-name="' . $cmd->getName() . '">' . $cmd->getName();
+						$div .= '<li class="alert alert-info cmd cursor" data-id="' . $cmd->getId() . '"  data-name="' . $cmd->getName() . '">' ;
+						$div .= '<input type="checkbox" class="cb_selCmd" /> ';
+						$div .=  $cmd->getName();
+						if ($cmd->getIsVisible() != 1) {
+							$div .= '<i class="fas fa-eye-slash" title="{{Non visible}}"></i> ';
+						}
 						$div .= '<i class="fas fa-cog pull-right configureCmd" title="{{Configuration avancée}}"></i>';
 						$div .= '</li>';
 					}
@@ -158,7 +162,9 @@ if (!is_array($remove_history)) {
 					$div .= '<a href="' . $eqLogic->getLinkToConfiguration() . '" target="_blank" class="pull-right" title="{{Aller sur la configuration de l\'équipement}}"><i class="fas fa-external-link-alt"></i></a>';
 					$div .= '<ul class="cmdSortable" style="display:none;" >';
 					foreach ($cmds[$eqLogic->getId()] as $cmd) {
-						$div .= '<li class="alert alert-info cmd cursor" data-id="' . $cmd->getId() . '"  data-name="' . $cmd->getName() . '">' . $cmd->getName();
+						$div .= '<li class="alert alert-info cmd cursor" data-id="' . $cmd->getId() . '"  data-name="' . $cmd->getName() . '">';
+						$div .= '<input type="checkbox" class="cb_selCmd" /> ';
+						$div .=  $cmd->getName();
 						$div .= '<i class="fas fa-cog pull-right configureCmd" title="{{Configuration avancée}}"></i>';
 						$div .= '</li>';
 					}

@@ -40,7 +40,7 @@ class jeedom {
 			'theme_end_day_hour',
 			'theme_changeAccordingTime',
 			'mobile_theme_useAmbientLight',
-			'hideBackgroundImg',
+			'showBackgroundImg',
 			'widget::step::width',
 			'widget::step::height',
 			'widget::margin',
@@ -973,6 +973,7 @@ class jeedom {
 			report::clean();
 			DB::optimize();
 			cache::clean();
+			listener::clean();
 		} catch (Exception $e) {
 			log::add('jeedom', 'error', $e->getMessage());
 		} catch (Error $e) {
@@ -1037,6 +1038,7 @@ class jeedom {
 			$datas = array_merge($datas, viewData::searchByConfiguration($key));
 			$datas = array_merge($datas, plan::searchByConfiguration($key));
 			$datas = array_merge($datas, plan3d::searchByConfiguration($key));
+			$datas = array_merge($datas, listener::searchEvent($key));
 		}
 		if (count($datas) > 0) {
 			foreach ($datas as $data) {

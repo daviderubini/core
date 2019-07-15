@@ -15,8 +15,6 @@ Theme Core 2019 @Jeedom
 
 html {
   height: 100%;
-  scrollbar-color: var(--el-defaultColor) var(--btnEq-default-color) !important;
-  scrollbar-width: thin;
 }
 
 body {
@@ -26,36 +24,41 @@ body {
   padding-top: 50px;
   height: 100%;
   box-sizing: border-box;
+  margin: 0 !important;
   background-color: rgb(var(--bg-color));
   color: var(--txt-color) !important;
   background-repeat : no-repeat;
   background-size: cover;
   background-position: center center;
-  margin: 0 !important;
-  scrollbar-color: var(--el-defaultColor) var(--btnEq-default-color) !important;
-  scrollbar-width: thin;
 }
-div,
-pre,
-p.state {
-  scrollbar-width: thin;
-}
+
+html,
+body,
 textarea {
   scrollbar-color: var(--txt-color) var(--sc-form-color) !important;
   scrollbar-width: thin;
 }
 
-.backgroundforJeedom{
-  width:100%;
-  height:calc(100% - 50px);
-  z-index : -1;
-  position:fixed;
-  opacity : 0.35;
-  top : 50;
-  background-size:cover;
-  background-position: center center;
+div,
+pre,
+p.state {
+  scrollbar-width: thin;
+}
+
+.backgroundforJeedom {
+  width: 100%;
+  height: calc(100% - 50px);
+  z-index: -1;
+  position: fixed;
+  opacity: 0.4;
+  background-size: cover !important;
+  background-position: right bottom !important;
+  background-repeat: no-repeat;
   background-image: var(--dashBkg-url) !important;
   background-color: transparent !important;
+}
+[data-theme*="Dark"] .backgroundforJeedom {
+  opacity : 0.6;
 }
 .ui-widget-overlay.ui-front {
   background: rgba(10,10,10,1);
@@ -67,10 +70,6 @@ textarea {
   margin: 5px 0px;
   max-height: calc(100% - 100px);
   z-index: 9999;
-}
-
-.cursor {
-  cursor: pointer;
 }
 
 #div_mainContainer,
@@ -419,7 +418,7 @@ sup i {
 
 .list-group-item {
   padding: 0 5px;
-  background-color: var(--defaultBkg-color);
+  background-color: rgb(var(--defaultBkg-color));
 }
 .list-group-item-success {
   background-color: var(--al-success-color);
@@ -746,7 +745,7 @@ div[data-market_type=script]:hover {
 
 pre {
   color: var(--link-color);
-  background-color: var(--form-bg-color);
+  background-color: rgba(var(--panel-bg-color), var(--opacity))!important;
   border: none;
 }
 
@@ -959,7 +958,7 @@ hr.hrSecondary {
 /* résumé */
 li.alert-info.eqLogic {
   color: var(--txt-color);
-  background-color: var(--defaultBkg-color) !important;
+  background-color: rgb(var(--defaultBkg-color)) !important;
 }
 .row .objectSummaryParent{ font-size : 14px !important; }
 
@@ -1076,74 +1075,6 @@ button:focus {
   height: 22px;
 }
 
-/* dropdown select alternative */
-button.dropdown-toggle {
-  font-size: 14px;
-  min-width: 50px;
-}
-button[disabled],
-button[disabled]:hover {
-  opacity: 0.4 !important;
-}
-
-.dropdown-menu {
-  font-size: 14px;
-}
-.dropdown.dynDropdown li a {
-  line-height: 14px !important;
-}
-.dropdown button.dropdown-toggle {
-  color: var(--txt-color) !important;
-  background: var(--form-bg-color) !important;
-  text-align: left;
-  width: 100%;
-  height: 32px;
-  padding: 6px 12px;
-}
-.dropdown button.dropdown-toggle.btn-sm {
-  height: 28px;
-  padding: 3px 12px;
-}
-.dropdown button.dropdown-toggle:hover {
-  color: var(--txt-color) !important;
-}
-.dropdown button.dropdown-toggle:focus,
-.dropdown button.dropdown-toggle a:focus {
-  color: var(--txt-color) !important;
-  background-color: var(--form-bg-color) !important;
-}
-.dropdown button.dropdown-toggle .caret {
-  color: var(--txt-color) !important;
-  position: absolute;
-  top: 45% !important;
-  right: 10px;
-  border-width: 6px;
-}
-.caret  {
-  border-top: 4px solid var(--txt-color);
-}
-.dropdown.open > button {
-  color: var(--txt-color)  !important;
-  background: var(--form-bg-color) !important;
-}
-
-.input-group > .dropdown {
-  vertical-align: top !important;
-  display: table-cell;
-}
-
-.dropdown.open > .scrollable-menu,
-.dropdown.open > .scrollable-menu:hover {
-  position: absolute;
-  z-index: 9999 !important;
-}
-.scrollable-menu {
-  height: auto;
-  max-height: 200px;
-  overflow-x: hidden;
-  z-index: 9999 !important;
-}
-
 button .fas.fa-plus-circle {
   font-size: 10px;
 }
@@ -1236,7 +1167,7 @@ header.navbar {
 .dropdown-menu,
 .dropdown > a,
 .dropdown > a:hover {
-  background-color: var(--defaultBkg-color) !important;
+  background-color: rgb(var(--defaultBkg-color)) !important;
 }
 
 .nav .dropdown-menu {
@@ -1335,7 +1266,7 @@ div.panel {
   border: none;
 }
 :not(.panel-info):not(.panel-success):not(.panel-primary):not(.panel-warning):not(.panel-danger) > .panel-heading {
-  background-color: var(--defaultBkg-color) !important;
+  background-color: rgb(var(--defaultBkg-color)) !important;
 }
 .panel-group .panel-heading {
   padding:0;
@@ -1363,15 +1294,14 @@ body:not([data-page="plugin"]) .panel-title .pull-right {
 
 .panel {
   color: var(--txt-color) !important;
-  background-color: var(--defaultBkg-color) !important;
   border-color: var(--el-defaultColor) !important;
+  background-color: rgba(var(--defaultBkg-color), var(--opacity)) !important;
 }
 .panel-title {
   color: var(--linkHoverLight-color) !important;
 }
-.panel-body,
 .list-group li {
-  background-color: var(--panel-bg-color) !important;
+  background-color: rgba(var(--panel-bg-color), var(--opacity)) !important;
 }
 .panel-body {
   padding: 12px 0 0 5px;
@@ -1434,7 +1364,7 @@ body:not([data-page="plugin"]) .panel-title .pull-right {
   height: 32px;
   border: none !important;
   cursor: text;
-  background: var(--form-bg-color) !important;
+  background-color: var(--form-bg-color) !important;
 }
 .form-control::placeholder {
   color: var(--placeholder-color);
@@ -1499,7 +1429,7 @@ fieldset > div {
 .form-control:not(.btn):not(.expressionAttr),
 input:not(.btn):not(.dial):not([type=radio]):not([type=image]):not(.expressionAttr):not(.knob):not([type=checkbox]),
 textarea:not(.expressionAttr) {
-  background: var(--form-bg-color) !important;
+  background-color: var(--form-bg-color) !important;
   color: var(--txt-color) !important;
   border-color: transparent !important;
   border-image-width: 0 !important;
@@ -1633,18 +1563,7 @@ div[data-subtype=select]::after {
   position: absolute;
   pointer-events: none;
 }
-div[data-subtype=select]::after { /*  Custom dropdown arrow */
-  content: "\25BC";
-  font-size: 14px;
-  right: 2px;
-  top: 25%;
-  margin: 0 !important;
-}
-div[data-subtype=select] select option {
-  margin: 40px;
-  background-color: var(--btnEq-default-color) !important;
-  color: var(--link-color) !important;
-}
+
 div[data-subtype=select][data-version=dplan] {
   font-size: 20px; /* no zoom on iOS */
   overflow: scroll;
@@ -1660,17 +1579,32 @@ input[type=password]{
 }
 select option {
   color: var(--txt-color) !important;
-  background-color: var(--defaultBkg-color) !important;
+  background-color: rgb(var(--defaultBkg-color)) !important;
 }
 select optgroup {
   color: var(--txt-color) !important;
   background-color: var(--bg-modal-color) !important;
 }
+select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(115, 115, 115)'><polygon points='0,0 100,0 50,50'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 7px) center !important;
+  background-size: 12px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+body[data-theme*="Dark"] select:not(.expressionAttr) {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(172, 172, 172)'><polygon points='0,0 100,0 50,50'/></svg>") !important;
+}
+select::-ms-expand {
+  display: none;
+}
 
 .input-xs {
   padding: 0 5px !important;
 }
-
 
 /* custom checkbox ! */
 .input-group-btn {
@@ -1741,8 +1675,12 @@ input[type=checkbox].summaryAttr {
 
 /* __________________________________________________________________________________________________________TABS */
 .tab-content {
-  background-color: var(--panel-bg-color)!important;
+  background-color: rgba(var(--panel-bg-color), var(--opacity))!important;
   padding-bottom: 2px !important;
+}
+.tab-content .tab-content,
+.tab-content pre {
+  background-color: rgba(0,0,0,0)!important;
 }
 ul.nav.nav-tabs li,
 .nav-tabs > li > a {
@@ -1753,15 +1691,15 @@ ul.nav.nav-tabs li,
 }
 .nav-tabs > li > a {
   padding: 10px 6px;
+  
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li > a:hover {
-  background-color: var(--panel-bg-color) !important;
+  background-color: rgba(var(--panel-bg-color), var(--opacity)) !important;
   color: var(--link-color) !important;
   border-bottom : 1px var(--logo-primary-color) solid !important;
-  height: 39px;
 }
 .nav-tabs,
 .nav-tabs * {
@@ -1834,7 +1772,7 @@ th {
 }
 .table-striped>tbody>tr:nth-of-type(2n+1),
 .table > thead > tr {
-  background-color: var(--panel-bg-color)!important;
+  background-color: rgba(var(--panel-bg-color), var(--opacity))!important;
 }
 
 :not(.ui-dialog-content) table:not(.tableCmd) > tbody tr:nth-child(even){
@@ -1896,7 +1834,7 @@ hr {
 }
 
 .tablesorter-filter {
-  background-color: var(--defaultBkg-color);
+  background-color: rgb(var(--defaultBkg-color));
   color: var(--link-color);
   opacity: 0.85 !important;
 }
@@ -2022,7 +1960,7 @@ hr {
 .element select.expressionAttr:not([data-l2key=graphColor]),
 .element textarea.expressionAttr:not([data-l2key=graphColor]) {
   color: var(--sc-formTxt-color);
-  background: var(--sc-form-color)!important;
+  background-color: var(--sc-form-color)!important;
   border: 0 !important;
   font-size: 12px !important;
   height:28px;
@@ -2311,6 +2249,26 @@ textarea {
   color: rgb(var(--bg-color)) !important;
 }
 
+.elementIF.elementCollapse .expressions,
+.elementIN.elementCollapse .expressions,
+.elementAT.elementCollapse .expressions {
+  display: block !important;
+}
+.elementIF.elementCollapse .expressionAttr,
+.elementIN.elementCollapse .expressionAttr,
+.elementAT.elementCollapse .expressionAttr {
+  opacity: 0.75;
+  height: 24px !important;
+  border-radius: var(--border-radius) var(--border-radius) var(--border-radius) var(--border-radius) !important;
+}
+.elementIF.elementCollapse .input-group-btn,
+.elementIN.elementCollapse .input-group-btn,
+.elementAT.elementCollapse .input-group-btn {
+  z-index: -1;
+}
+
+
+
 /* __________________________________________________________________________________________________________FLOATING BARS */
 
 #jqueryLoadingDiv {
@@ -2332,6 +2290,7 @@ textarea {
 .bs-sidebar .label > i {
   font-size: 14px;
   display: inline-block;
+  cursor: pointer !important;
 }
 .bs-sidebar .label > i {
   color: inherit !important;
@@ -2357,9 +2316,9 @@ textarea {
 .bs-sidebar .nav > li > i {
   padding-right: 5px;
 }
-.bs-sidebar .nav li a:hover,
-.bs-sidebar .nav li a:focus,
-.bs-sidebar .nav li a:active {
+.bs-sidebar .nav li a:not(.btn):hover,
+.bs-sidebar .nav li a:not(.btn):focus,
+.bs-sidebar .nav li a:not(.btn):active {
   background-color: var(--btnEq-default-color) !important;
 }
 .bs-sidenav .cmdList li > a {
@@ -2397,7 +2356,7 @@ textarea {
 #ul_noteList .li_noteDisplay a:active,
 #ul_noteList .li_noteDisplay a:focus,
 #ul_noteList .li_noteDisplay a:hover{
-  background-color: var(--defaultBkg-color) !important;
+  background-color: rgb(var(--defaultBkg-color)) !important;
 }
 
 
@@ -2425,7 +2384,7 @@ textarea {
 .highcharts-axis-labels text tspan { fill: var(--txt-color)!important; }
 
 .highcharts-background {
-  fill: var(--panel-bg-color) !important;
+  fill: rgba(var(--panel-bg-color), var(--opacity)) !important;
   fill-opacity: var(--opacity);
 }
 .eqLogic-widget .highcharts-background {
@@ -2910,7 +2869,7 @@ div.cmd > div.center-block {
 }
 
 .ui-dialog {
-  background-color: var(--defaultBkg-color);
+  background-color: rgb(var(--defaultBkg-color));
 }
 .ui-dialog .ui-dialog-titlebar {
   border-bottom: none !important;
@@ -3081,7 +3040,7 @@ input:invalid {
 .nav>li>a:focus,
 .nav>li>a:hover {
   text-decoration: none;
-  background-color: var(--defaultBkg-color)
+  background-color: rgb(var(--defaultBkg-color))
 }
 
 
