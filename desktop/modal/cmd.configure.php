@@ -1282,7 +1282,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 	</span>
 </div>
 <div role="tabpanel">
-	<ul class="nav nav-tabs" role="tablist">
+	<ul class="nav nav-tabs" role="tablist" id="cmdConfigureTab">
 		<li role="presentation" class="active"><a href="#cmd_information" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i> {{Informations}}</a></li>
 		<li role="presentation"><a href="#cmd_configuration" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-wrench"></i> {{Configuration}}</a></li>
 		<?php if ($cmd->getType() == 'info') {?>
@@ -2022,6 +2022,9 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 </div>
 
 <script>
+$('#cmdConfigureTab').off('click').on('click',function(){
+	setTimeout(function(){ taAutosize(); }, 100);
+})
 $("#md_cmdConfigureSelectMultiple").dialog({
 	closeText: '',
 	autoOpen: false,
@@ -2191,6 +2194,7 @@ if(isset(cmdInfo.configuration.jeedomPostExecCmd) && $.isArray(cmdInfo.configura
 		addActionCmd(cmdInfo.configuration.jeedomPostExecCmd[i], 'actionPostExecCmd','{{Action}}');
 	}
 }
+taAutosize();
 $('#bt_cmdConfigureSave').on('click', function () {
 	var cmd = $('#div_displayCmdConfigure').getValues('.cmdAttr')[0];
 	if (!isset(cmd.display)) {
@@ -2292,7 +2296,6 @@ function addActionCmd(_action, _type, _name) {
 	div += '</div>';
 	$('#div_' + _type).append(div);
 	$('#div_' + _type + ' .' + _type + '').last().setValues(_action, '.expressionAttr');
-	taAutosize();
 }
 
 $('#bt_cmdConfigureSaveOn').on('click',function(){

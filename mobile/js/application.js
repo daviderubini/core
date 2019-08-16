@@ -366,6 +366,7 @@ function initApplication(_reinit) {
 }
 
 function page(_page, _title, _option, _plugin,_dialog) {
+  jeedom.eqLogic.changeDisplayObjectName(false);
   $('#searchContainer').hide()
   setBackgroundImage('');
   $.showLoading();

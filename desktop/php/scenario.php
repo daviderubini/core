@@ -39,10 +39,6 @@ if (is_array($scenarioListGroup)) {
 				<center><i class="fas fa-list"></i></center>
 				<span class="txtColor"><center>{{Vue d'ensemble}}</center></span>
 			</div>
-			<div class="cursor logoSecondary  bt_showExpressionTest">
-				<center><i class="fas fa-check"></i></center>
-				<span class="txtColor"><center>{{Testeur d'expression}}</center></span>
-			</div>
 		</div>
 		
 		<legend><i class="icon jeedom-clap_cinema"></i>  {{Mes scénarios}}</legend>
@@ -138,7 +134,6 @@ if (is_array($scenarioListGroup)) {
 				<span id="span_ongoing" class="label" style="position:relative; margin-right:4px;"></span>
 				<a class="btn btn-sm bt_addScenarioElement roundedLeft"><i class="fas fa-plus-circle"></i> {{Ajouter bloc}}
 				</a><a class="btn btn-primary btn-sm" id="bt_displayScenarioVariable"><i class="fas fa-eye"></i> {{Variables}}
-				</a><a class="btn btn-primary btn-sm bt_showExpressionTest"><i class="fas fa-check"></i> {{Expression}}
 				</a><a class="btn btn-sm" id="bt_logScenario" title="{{Log}}"><i class="far fa-file-alt"></i>
 				</a><a class="btn btn-sm" id="bt_copyScenario" title="{{Dupliquer}}"><i class="fas fa-copy"></i>
 				</a><a class="btn btn-sm" id="bt_graphScenario" title="{{Liens}}"><i class="fas fa-object-group"></i>
@@ -182,13 +177,16 @@ if (is_array($scenarioListGroup)) {
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 control-label"></label>
-									<label>
-										{{Actif}}&nbsp;&nbsp;<input type="checkbox" class="scenarioAttr" data-l1key="isActive">
-									</label>
-									<label>
-										{{Visible}}&nbsp;&nbsp;<input type="checkbox" class="scenarioAttr" data-l1key="isVisible">
-									</label>
+									<label class="col-xs-5 control-label">{{Actif}}</label>
+									<div class="col-xs-1">
+										<input type="checkbox" class="scenarioAttr" data-l1key="isActive">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-xs-5 control-label">{{Visible}}</label>
+									<div class="col-xs-1">
+										<input type="checkbox" class="scenarioAttr" data-l1key="isVisible">
+									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-xs-5 control-label" >{{Objet parent}}</label>
@@ -220,19 +218,25 @@ if (is_array($scenarioListGroup)) {
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 control-label">{{Multi-lancement}}</label>
+									<label class="col-xs-5 control-label">{{Multi-lancement}}
+										<sup><i class="fas fa-question-circle" tooltip="{{Le scénario pourra tourner plusieurs fois en même temps}}"></i></sup>
+									</label>
 									<div class="col-xs-1">
-										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="allowMultiInstance" title="{{Le scénario pourra tourner plusieurs fois en même temps}}">
+										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="allowMultiInstance">
 									</div>
-									<label class="col-xs-2 control-label">{{Synchrone}}</label>
+									<label class="col-xs-2 control-label">{{Synchrone}}
+										<sup><i class="fas fa-question-circle" tooltip="{{Le scénario est en mode synchrone. Attention, cela peut rendre le système instable}}"></i></sup>
+									</label>
 									<div class="col-xs-1">
-										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="syncmode" title="{{Le scénario est en mode synchrone. Attention, cela peut rendre le système instable}}">
+										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="syncmode">
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 control-label">{{Timeline}}</label>
+									<label class="col-xs-5 control-label">{{Timeline}}
+										<sup><i class="fas fa-question-circle" tooltip="{{Les exécutions du scénario pourront être vues dans la timeline.}}"></i></sup>
+									</label>
 									<div class="col-xs-1">
-										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="timeline::enable" title="{{Les exécutions du scénario pourront être vues dans la timeline.}}">
+										<input type="checkbox" class="scenarioAttr" data-l1key="configuration" data-l2key="timeline::enable">
 									</div>
 								</div>
 								<div class="form-group">

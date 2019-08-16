@@ -405,11 +405,6 @@ $('#bt_displayScenarioVariable,#bt_displayScenarioVariable2').off('click').on('c
   .load('index.php?v=d&modal=dataStore.management&type=scenario').dialog('open');
 });
 
-$('.bt_showExpressionTest').off('click').on('click', function () {
-  $('#md_modal').dialog({title: "{{Testeur d'expression}}"})
-  .load('index.php?v=d&modal=expression.test').dialog('open');
-});
-
 $('.bt_showScenarioSummary').off('click').on('click', function () {
   $('#md_modal').dialog({title: "{{Résumé scénario}}"})
   .load('index.php?v=d&modal=scenario.summary').dialog('open');
@@ -1926,14 +1921,16 @@ var _firstState_ = 0
 var _undoLimit_ = 12
 var _redo_ = 0
 
-jwerty.key('ctrl+z/⌘+z', function (e) {
-  e.preventDefault();
-  undo();
-});
-jwerty.key('ctrl+y/⌘+y', function (e) {
-  e.preventDefault();
-  redo();
-});
+jwerty.key('shift+z', function (e) {
+  e.preventDefault()
+  undo()
+  PREV_FOCUS = null
+})
+jwerty.key('shift+y', function (e) {
+  e.preventDefault()
+  redo()
+  PREV_FOCUS = null
+})
 
 function setUndoStack(state=0) {
   syncEditors()

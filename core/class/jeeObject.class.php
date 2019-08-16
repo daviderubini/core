@@ -556,6 +556,9 @@ class jeeObject {
 		$eqLogics = eqLogic::byObjectId($this->getId(), $_onlyEnable, $_onlyVisible, $_eqType_name, $_logicalId);
 		$eqLogics_id = array();
 		foreach ($summaries[$_summary] as $infos) {
+			if($infos['enable'] != 1){
+				continue;
+			}
 			$cmd = cmd::byId(str_replace('#', '', $infos['cmd']));
 			if (is_object($cmd)) {
 				$eqLogics_id[$cmd->getEqLogic_id()] = $cmd->getEqLogic_id();
@@ -641,7 +644,23 @@ class jeeObject {
 			if (isset($infos['enable']) && $infos['enable'] == 0) {
 				continue;
 			}
-			$value = cmd::cmdToValue($infos['cmd']);
+			$cmd = cmd::byId(str_replace('#','',$infos['cmd']));
+			if(!is_object($cmd)){
+				continue;
+			}
+			if($cmd->getType() != 'info'){
+				continue;
+			}
+			if(!is_object($cmd->getEqLogic()) || $cmd->getEqLogic()->getIsEnable() == 0){
+				continue;
+			}
+			$value = $cmd->execCmd();
+			if(isset($def[$_key]['ignoreIfCmdOlderThan']) && $def[$_key]['ignoreIfCmdOlderThan'] != '' && $def[$_key]['ignoreIfCmdOlderThan'] > 0){
+				if((strtotime('now') - strtotime($cmd->getCollectDate())) > ($def[$_key]['ignoreIfCmdOlderThan'] * 60)){
+					continue;
+				}
+			}
+			
 			if (isset($infos['invert']) && $infos['invert'] == 1) {
 				$value = !$value;
 			}

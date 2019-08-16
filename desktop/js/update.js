@@ -147,6 +147,12 @@ $('#bt_saveUpdate').on('click',function(){
   });
 });
 
+$(function () {
+  $('[data-l2key="doNotUpdate"]').on('click',function(){
+    $(this).tooltipster('open')
+  })
+})
+
 function getJeedomLog(_autoUpdate, _log) {
   $.ajax({
     type: 'POST',
@@ -282,7 +288,7 @@ function addUpdate(_update) {
   tr += '<td style="width:160px;"><span class="label label-primary" data-l1key="remoteVersion">'+_remoteVersion+'</span></td>';
   tr += '<td style="width:180px;">';
   if (_update.type != 'core') {
-    tr += '<input type="checkbox" class="updateAttr" data-l1key="configuration" data-l2key="doNotUpdate"><span>{{Ne pas mettre à jour}}</span>';
+    tr += '<input type="checkbox" class="updateAttr" data-l1key="configuration" data-l2key="doNotUpdate" title="Sauvegarder pour conserver les modications"><span>{{Ne pas mettre à jour}}</span>';
   }
   tr += '</td>';
   tr += '<td style="width:350px;">';
@@ -320,6 +326,9 @@ $('#bt_showHideLog').off('click').on('click',function() {
   } else {
     $('#div_log').show()
     $(this).attr('title', '{{Masquer le log d\'update}}')
+    if(progress == 100){
+      getJeedomLog(0, 'update');
+    }
     if (progress != 100) $('.progressbarContainer').appendTo('#div_log')
   }
 });

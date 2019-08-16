@@ -608,6 +608,10 @@ div[class*="DisplayCard"] .name > .label {
   color: var(--linkHoverLight-color);
   font-size: 14px !important;
 }
+.eqLogic.eqLogic-widget .widget-name .object_name {
+  vertical-align: super;
+  font-size: 11px;
+}
 .scenarioDisplayCard > span > i {
   font-size: 3em !important;
 }
@@ -1100,6 +1104,7 @@ button .fas.fa-plus-circle {
   color: var(--sc-lightTxt-color) !important;
 }
 
+
 /* __________________________________________________________________________________________________________NAVBAR */
 .navbar-fixed-top .visible-xs-inline-block {
   max-width: calc(100% - 150px) !important;
@@ -1107,9 +1112,6 @@ button .fas.fa-plus-circle {
   overflow: hidden;
 }
 
-.navbar-fixed-top .visible-xs-inline-block .objectSummaryglobal .objectSummaryParent:nth-child(n+8) {
-  //display: none !important;
-}
 .navbar {
   min-height: 50px;
   height: 50px;
@@ -1500,10 +1502,6 @@ textarea {
   padding-top: 0px !important;
 }
 
-.checkbox-inline {
-  margin-left: 5px;
-  margin-right: 5px !important;
-}
 .checkbox-inline > input[type=checkbox] {
   margin-top: -2px;
 }
@@ -1691,7 +1689,7 @@ ul.nav.nav-tabs li,
 }
 .nav-tabs > li > a {
   padding: 10px 6px;
-  
+
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
@@ -1777,6 +1775,10 @@ th {
 
 :not(.ui-dialog-content) table:not(.tableCmd) > tbody tr:nth-child(even){
   background-color: rgb(var(--bg-color)) !important;
+}
+
+:not(.ui-dialog-content) table:not(.tableCmd) > tbody tr:nth-child(odd){
+  background-color: var(--bg-modal-color) !important;
 }
 
 tr.tablesorter-filter-row td {
@@ -2005,6 +2007,10 @@ textarea {
 }
 
 /*    __DESIGN__    */
+.div_backgroundPlan > .div_displayObject {
+  z-index: 50 !important;
+}
+
 .element legend {
   border-left: none!important;
 }
@@ -2916,6 +2922,7 @@ div.cmd > div.center-block {
 }
 #ui-datepicker-div {
   background: rgb(var(--bg-color)) !important;
+  z-index: 1020 !important;
 }
 #ui-datepicker-div .ui-datepicker-header a {
   color: red !important;
@@ -3086,43 +3093,6 @@ input:invalid {
   height: 100% !important;
 }
 
-.elfinder-dialog-title {
-  color: rgb(var(--bg-color)) !important;
-  font-weight: bold;
-}
-.elfinder-contextmenu-item {
-  color: var(--sc-formTxt-color) !important;
-  font-size: 14px;
-}
-
-
-.elfinder-cwd-wrapper {
-  color: var(--txt-color) !important;
-}
-.elfinder-cwd-view-list table {
-  background-color: var(--sc-formTxt-color)  !important;
-  color: var(--sc-lightTxt-color);
-}
-.elfinder-cwd-view-list table tbody.elfinder-cwd-fixheader tr:hover {
-  background-color: var(--placeholder-color)  !important;
-}
-.elfinder-cwd-view-list table tbody.elfinder-cwd-fixheader tr:nth-child(2n) {
-  background-color: var(--sc-formTxt-color)  !important;
-}
-.elfinder-cwd-view-list table tbody.elfinder-cwd-fixheader tr:nth-child(2n):hover {
-  background-color: var(--placeholder-color)  !important;
-}
-.elfinder-cwd-view-list table .elfinder-cwd-file.ui-selected,
-.elfinder-cwd-view-list table .elfinder-cwd-file.ui-selected:nth-child(2n) {
-  background-color: var(--placeholder-color) !important;
-}
-
-#elfinder,
-.ui-widget-content.elfinder-buttonset {
-  background-image: none !important;
-  background: none !important;
-}
-
 /* hihgly special */
 div[id^=__lpform_] { /*lastpass*/
   display: none;
@@ -3206,6 +3176,11 @@ pre {
   letter-spacing: 0.05em;
   line-height: 14px;
 }
+#pre_globallog {
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  line-height: 12px;
+}
 
 .input-group .btn,
 .input-group input,
@@ -3275,11 +3250,11 @@ ul.dropdown-menu {
   :root {
     --lineheight: 1.4em;
   }
-  
+
   body {
     font-size: 14px !important;
   }
-  
+
   [data-page="administration"] ul.nav-tabs.nav-primary li i:after {
     content:'';
     position:absolute;
@@ -3288,7 +3263,7 @@ ul.dropdown-menu {
     left:-4px;
     right:-4px;
   }
-  
+
   [data-page="administration"] ul.nav-tabs.nav-primary li a > span {
     display: none;
   }
@@ -3297,12 +3272,12 @@ ul.dropdown-menu {
     max-width: 60px;
     text-align: center;
   }
-  
+
   .btn,
   tbody > tr > td{
     font-size: 12px !important;
   }
-  
+
   .expression .col-xs-1 {
     width: 6.5em !important;
   }
@@ -3310,11 +3285,11 @@ ul.dropdown-menu {
     width: 55% !important;
     align-content: right !important;
   }
-  
+
   #div_editScenario ul.nav.nav-tabs {
     margin-top: 30px !important;
   }
-  
+
   .form-control,
   .btn,
   .label {
@@ -3360,5 +3335,5 @@ ul.dropdown-menu {
   .hidden-xs {
     display: none !important;
   }
-  
+
 }

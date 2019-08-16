@@ -7,38 +7,38 @@ sendVarToJs('selectIcon', init('selectIcon', 0));
 ?>
 <div style="display: none;" id="div_iconSelectorAlert"></div>
 <style>
-	.divIconSel{
-		height: 80px;
-		border: 1px solid #fff;
-		box-sizing: border-box;
-		cursor: pointer;
-		text-align: center;
-	}
+.divIconSel{
+	height: 80px;
+	border: 1px solid #fff;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-align: center;
+}
 
-	.iconSel{
-		line-height: 1.4;
-		font-size: 1.5em;
-	}
+.iconSel{
+	line-height: 1.4;
+	font-size: 1.5em;
+}
 
-	.iconSelected{
-		background-color: #563d7c;
-		color: white;
-	}
+.iconSelected{
+	background-color: #563d7c;
+	color: white;
+}
 
-	.iconDesc{
-		font-size: 0.8em;
-	}
+.iconDesc{
+	font-size: 0.8em;
+}
 
-	.imgContainer img{
-		max-width: 120px;
-		max-height: 70px;
-		padding: 10px;
-	}
+.imgContainer img{
+	max-width: 120px;
+	max-height: 70px;
+	padding: 10px;
+}
 </style>
 <ul class="nav nav-tabs" role="tablist">
-	<li role="presentation" class="active"><a href="#icon" aria-controls="home" role="tab" data-toggle="tab">{{Icône}}</a></li>
+	<li role="presentation" class="active"><a href="#tabicon" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-icons"></i> {{Icône}}</a></li>
 	<?php if(init('imgtab') == 1 || init('showimg') == 1){ ?>
-		<li role="presentation" ><a href="#img" aria-controls="home" role="tab" data-toggle="tab">{{Image}}</a></li>
+		<li role="presentation" ><a href="#tabimg" aria-controls="home" role="tab" data-toggle="tab"><i class="far fa-images"></i> {{Image}}</a></li>
 	<?php } ?>
 </ul>
 
@@ -46,21 +46,76 @@ sendVarToJs('selectIcon', init('selectIcon', 0));
 	<div id="mySearch" class="input-group" style="margin-left:6px;margin-top:6px">
 		<div class="input-group-btn">
 			<select class="form-control roundedLeft" style="width : 200px;" id="sel_colorIcon">
-				<option value="">{{default}}</option>
-				<option value="icon_green">{{Vert}}</option>
+				<option value="">{{Aucune}}</option>
 				<option value="icon_blue">{{Bleu}}</option>
+				<option value="icon_yellow">{{Jaune}}</option>
 				<option value="icon_orange">{{Orange}}</option>
 				<option value="icon_red">{{Rouge}}</option>
-				<option value="icon_yellow">{{Jaune}}</option>
+				<option value="icon_green">{{Vert}}</option>
 			</select>
 		</div>
-		<input class="form-control" placeholder="{{Rechercher}}" id="in_iconSelectorSearch">
+		<input class="form-control" placeholder="{{Rechercher}}" id="in_searchIconSelector">
 		<div class="input-group-btn">
 			<a id="bt_resetSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i> </a>
 		</div>
 	</div>
 
-	<div role="tabpanel" class="tab-pane active" id="icon">
+
+	<?php if(init('imgtab') == 1 || init('showimg') == 1){ ?>
+		<div role="tabpanel" class="tab-pane" id="tabimg" style="width:calc(100% - 20px)">
+			<span class="btn btn-default btn-file pull-right">
+				<i class="fas fa-cloud-upload-alt"></i> {{Envoyer}}<input  id="bt_uploadImageIcon" type="file" name="file" style="display: inline-block;">
+			</span>
+			<div class="imgContainer" style="width:calc(100% - 15px)">
+				<div class="row">
+					<?php
+					foreach (ls(__DIR__.'/../../data/img/','*') as $file) {
+						echo '<div class="col-lg-1">';
+						echo '<div class="divIconSel">';
+						echo '<span class="iconSel"><img src="data/img/'.$file.'" /></span>';
+						echo '</div>';
+						echo '<center>'.substr(basename($file),0,12).'</center>';
+						echo '<center><a class="btn btn-danger btn-xs bt_removeImgIcon" data-filename="'.$file.'"><i class="fas fa-trash"></i> {{Supprimer}}</a></center>';
+						echo '</div>';
+					}
+					?>
+				</div>
+			</div>
+			<script>
+			$('#bt_uploadImageIcon').fileupload({
+				replaceFileInput: false,
+				url: 'core/ajax/jeedom.ajax.php?action=uploadImageIcon&jeedom_token='+JEEDOM_AJAX_TOKEN,
+				dataType: 'json',
+				done: function (e, data) {
+					if (data.result.state != 'ok') {
+						$('#div_iconSelectorAlert').showAlert({message: data.result.result, level: 'danger'});
+						return;
+					}
+					$('#mod_selectIcon').empty().load('index.php?v=d&modal=icon.selector&tabimg=1&showimg=1');
+				}
+			});
+
+			$('.bt_removeImgIcon').on('click',function(){
+				var filename = $(this).attr('data-filename');
+				bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer cette image}} <span style="font-weight: bold ;">' + filename + '</span> ?', function (result) {
+					if (result) {
+						jeedom.removeImageIcon({
+							filename : filename,
+							error: function (error) {
+								$('#div_iconSelectorAlert').showAlert({message: error.message, level: 'danger'});
+							},
+							success: function (data) {
+								$('#mod_selectIcon').empty().load('index.php?v=d&modal=icon.selector&tabimg=1&showimg=1');
+							}
+						})
+					}
+				});
+			});
+			</script>
+		</div>
+	<?php } ?>
+
+	<div role="tabpanel" class="tab-pane active" id="tabicon" style="width:calc(100% - 20px)">
 		<?php
 		$scanPaths = array('core/css/icon', 'data/fonts');
 		foreach ($scanPaths as $root) {
@@ -299,129 +354,83 @@ sendVarToJs('selectIcon', init('selectIcon', 0));
 			</div>
 		</div>
 	</div>
-	<?php if(init('imgtab') == 1 || init('showimg') == 1){ ?>
-		<div role="tabpanel" class="tab-pane" id="img">
-			<span class="btn btn-default btn-file pull-right">
-				<i class="fas fa-cloud-upload-alt"></i> {{Envoyer}}<input  id="bt_uploadImageIcon" type="file" name="file" style="display: inline-block;">
-			</span>
-			<div class="imgContainer">
-				<div class="row">
-					<?php
-					foreach (ls(__DIR__.'/../../data/img/','*') as $file) {
-						echo '<div class="col-lg-1">';
-						echo '<div class="divIconSel">';
-						echo '<span class="iconSel"><img src="data/img/'.$file.'" /></span>';
-						echo '</div>';
-						echo '<center>'.substr(basename($file),0,12).'</center>';
-						echo '<center><a class="btn btn-danger btn-xs bt_removeImgIcon" data-filename="'.$file.'"><i class="fas fa-trash"></i> {{Supprimer}}</a></center>';
-						echo '</div>';
-					}
-					?>
-				</div>
-			</div>
-			<script>
-			$('#bt_uploadImageIcon').fileupload({
-				replaceFileInput: false,
-				url: 'core/ajax/jeedom.ajax.php?action=uploadImageIcon&jeedom_token='+JEEDOM_AJAX_TOKEN,
-				dataType: 'json',
-				done: function (e, data) {
-					if (data.result.state != 'ok') {
-						$('#div_iconSelectorAlert').showAlert({message: data.result.result, level: 'danger'});
-						return;
-					}
-					$('#mod_selectIcon').empty().load('index.php?v=d&modal=icon.selector&tabimg=1&showimg=1');
-				}
-			});
-
-			$('.bt_removeImgIcon').on('click',function(){
-				var filename = $(this).attr('data-filename');
-				bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer cette image}} <span style="font-weight: bold ;">' + filename + '</span> ?', function (result) {
-					if (result) {
-						jeedom.removeImageIcon({
-							filename : filename,
-							error: function (error) {
-								$('#div_iconSelectorAlert').showAlert({message: error.message, level: 'danger'});
-							},
-							success: function (data) {
-								$('#mod_selectIcon').empty().load('index.php?v=d&modal=icon.selector&tabimg=1&showimg=1');
-							}
-						})
-					}
-				});
-			});
-			</script>
-		</div>
-	<?php } ?>
 </div>
 
 <script>
-	$('#sel_colorIcon').off('change').on('change',function() {
-		$('.iconSel i').removeClass('icon_green icon_blue icon_orange icon_red icon_yellow').addClass($(this).value());
-	});
+setTimeout(function() {
+	if (getDeviceType()['type'] == 'desktop') $("input[id^='in_search']").focus()
+}, 500);
 
-	$('#in_iconSelectorSearch').on('keyup',function(){
-		$('.divIconSel').show();
-		$('.iconCategory').show();
-		var search = $(this).value();
-		if(search != ''){
-			$('.iconDesc').each(function(){
-				if($(this).text().indexOf(search) == -1){
-					$(this).closest('.divIconSel').hide();
-				}
-			})
-		}
-		$('.iconCategory').each(function(){
-			var hide = true;
-			if($(this).find('.divIconSel:visible').length == 0){
-				$(this).hide();
+$('#sel_colorIcon').off('change').on('change',function() {
+	$('.iconSel i').removeClass('icon_green icon_blue icon_orange icon_red icon_yellow').addClass($(this).value());
+});
+
+$('#in_searchIconSelector').on('keyup',function(){
+	$('.divIconSel').show();
+	$('.iconCategory').show();
+	var search = $(this).value();
+	if(search != ''){
+		$('.iconDesc').each(function(){
+			if($(this).text().indexOf(search) == -1){
+				$(this).closest('.divIconSel').hide();
 			}
-		});
-	});
-	$('#bt_resetSearch').on('click', function () {
-		$('#in_iconSelectorSearch').val('')
-		$('#in_iconSelectorSearch').keyup();
-	})
-
-	$('.divIconSel').on('click', function () {
-		$('.divIconSel').removeClass('iconSelected');
-		$(this).closest('.divIconSel').addClass('iconSelected');
-	});
-	$('.divIconSel').on('dblclick', function () {
-		$('.divIconSel').removeClass('iconSelected');
-		$(this).closest('.divIconSel').addClass('iconSelected');
-		$('#mod_selectIcon').dialog("option", "buttons")['Valider'].apply($('#mod_selectIcon'));
-	});
-
-	if(tabimg && tabimg == 1) {
-		$('#mod_selectIcon ul li a[href="#img"]').click();
-		$('#mySearch').hide()
+		})
 	}
-	$('#mod_selectIcon ul li a[href="#img"]').click(function(e) {
-		$('#mySearch').hide()
-	})
-	$('#mod_selectIcon ul li a[href="#icon"]').click(function(e) {
-		$('#mySearch').show()
-	})
-
-	$('#mod_selectIcon').css('overflow', 'hidden')
-	$(function() {
-		//move select/search in modal bottom:
-	    var buttonSet = $('.ui-dialog[aria-describedby="mod_selectIcon"]').find('.ui-dialog-buttonpane')
-	    buttonSet.find('#mySearch').remove()
-	    var mySearch = $('.ui-dialog[aria-describedby="mod_selectIcon"]').find('#mySearch')
-		buttonSet.append(mySearch)
-
-		//auto select actual icon:
-		if (selectIcon != "0") {
-			$(selectIcon).closest('.divIconSel').addClass('iconSelected')
-
-			setTimeout(function() {
-				elem = $('div.divIconSel.iconSelected')
-				container = $('#mod_selectIcon > .tab-content')
-				pos = elem.position().top + container.scrollTop() - container.position().top
-				container.animate({scrollTop: pos})
-			}, 250);
+	$('.iconCategory').each(function(){
+		var hide = true;
+		if($(this).find('.divIconSel:visible').length == 0){
+			$(this).hide();
 		}
-	})
+	});
+});
+$('#bt_resetSearch').on('click', function () {
+	$('#in_searchIconSelector').val('')
+	$('#in_searchIconSelector').keyup();
+})
 
+$('.divIconSel').on('click', function () {
+	$('.divIconSel').removeClass('iconSelected');
+	$(this).closest('.divIconSel').addClass('iconSelected');
+});
+$('.divIconSel').on('dblclick', function () {
+	$('.divIconSel').removeClass('iconSelected');
+	$(this).closest('.divIconSel').addClass('iconSelected');
+	$('#mod_selectIcon').dialog("option", "buttons")['Valider'].apply($('#mod_selectIcon'));
+});
+
+if(tabimg && tabimg == 1) {
+	$('#mod_selectIcon ul li a[href="#img"]').click();
+	$('#mySearch').hide()
+}
+$('#mod_selectIcon ul li a[href="#tabicon"]').click(function(e) {
+	$('#mySearch').show()
+	$('.iconCategory').show()
+})
+$('#mod_selectIcon ul li a[href="#tabimg"]').click(function(e) {
+	$('#mySearch').hide()
+	$('.iconCategory').hide()
+})
+
+$('#mod_selectIcon').css('overflow', 'hidden');
+
+$(function() {
+	$('.imgContainer').show()
+	//move select/search in modal bottom:
+	var buttonSet = $('.ui-dialog[aria-describedby="mod_selectIcon"]').find('.ui-dialog-buttonpane')
+	buttonSet.find('#mySearch').remove()
+	var mySearch = $('.ui-dialog[aria-describedby="mod_selectIcon"]').find('#mySearch')
+	buttonSet.append(mySearch)
+	//auto select actual icon:
+	if (selectIcon != "0") {
+		$(selectIcon).closest('.divIconSel').addClass('iconSelected')
+
+		setTimeout(function() {
+			elem = $('div.divIconSel.iconSelected')
+			container = $('#mod_selectIcon > .tab-content')
+			pos = elem.position().top + container.scrollTop() - container.position().top
+			container.animate({scrollTop: pos})
+		}, 250);
+	}
+
+})
 </script>
