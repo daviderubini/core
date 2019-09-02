@@ -26,7 +26,7 @@ class planHeader {
 	private $name;
 	private $image;
 	private $configuration;
-	private $order;
+	private $order = 9999;
 	private $_changed = false;
 	
 	/*     * ***********************Méthodes statiques*************************** */
@@ -146,9 +146,9 @@ class planHeader {
 		if ($_level > $_drill) {
 			return $_data;
 		}
-		$icon = findCodeIcon('fa-paint-brush');
+		$icon = findCodeIcon($this->getConfiguration('icon','<i class="fas fa-paint-brush"></i>'));
 		$_data['node']['plan' . $this->getId()] = array(
-			'id' => 'interactDef' . $this->getId(),
+			'id' => 'plan' . $this->getId(),
 			'type' => __('Design',__FILE__),
 			'name' => substr($this->getName(), 0, 20),
 			'icon' => $icon['icon'],
@@ -158,7 +158,7 @@ class planHeader {
 			'texty' => -14,
 			'textx' => 0,
 			'title' => __('Design :', __FILE__) . ' ' . $this->getName(),
-			'url' => 'index.php?v=d&p=plan&view_id=' . $this->getId(),
+			'url' => 'index.php?v=d&p=plan&plan_id=' . $this->getId(),
 		);
 	}
 	
@@ -173,6 +173,9 @@ class planHeader {
 	}
 	
 	public function getOrder() {
+		if ($this->order == '' || !is_numeric($this->order)) {
+			return 0;
+		}
 		return $this->order;
 	}
 	

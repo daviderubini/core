@@ -1308,7 +1308,7 @@ class cmd {
 			$replace['#alertLevel#'] = $this->getCache('alertLevel', 'none');
 			if ($this->getIsHistorized() == 1) {
 				$replace['#history#'] = 'history cursor';
-				if (config::byKey('displayStatsWidget') == 1 && strpos($template, '#hide_history#') !== false && $this->getDisplay('showStatsOn' . $_version, 1) == 1) {
+				if (config::byKey('displayStatsWidget') == 1 && (strpos($template, '#averageHistoryValue#') !== false || strpos($template, '#maxHistoryValue#') !== false || strpos($template, '#minHistoryValue#') !== false || strpos($template, '#hide_history#') !== false) && $this->getDisplay('showStatsOn' . $_version, 1) == 1) {
 					$startHist = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -' . config::byKey('historyCalculPeriod') . ' hour'));
 					$replace['#hide_history#'] = '';
 					$historyStatistique = $this->getStatistique($startHist, date('Y-m-d H:i:s'));
@@ -1568,7 +1568,6 @@ class cmd {
 			return 'none';
 		}
 		global $JEEDOM_INTERNAL_CONFIG;
-		
 		$currentLevel = 'none';
 		foreach ($JEEDOM_INTERNAL_CONFIG['alerts'] as $level => $value) {
 			if (!$value['check']) {
@@ -1581,7 +1580,8 @@ class cmd {
 				}
 			}
 		}
-		if ($_allowDuring && $currentLevel != 'none' && $this->getAlert($currentLevel . 'during') != '' && $this->getAlert($currentLevel . 'during') > 0) {
+		
+		if ($_allowDuring && $currentLevel != 'none' && $currentLevel !=$this->getCache('alertLevel')&& $this->getAlert($currentLevel . 'during') != '' && $this->getAlert($currentLevel . 'during') > 0) {
 			$cron = cron::byClassAndFunction('cmd', 'duringAlertLevel', array('cmd_id' => intval($this->getId())));
 			$next = strtotime('+ ' . $this->getAlert($currentLevel . 'during', 1) . ' minutes ' . date('Y-m-d H:i:s'));
 			if (!is_object($cron)) {
@@ -1589,7 +1589,7 @@ class cmd {
 			} else {
 				$nextRun = $cron->getNextRunDate();
 				if ($nextRun !== false && $next > strtotime($nextRun) && strtotime($nextRun) > strtotime('now')) {
-					return 'none';
+					return $this->getCache('alertLevel');
 				}
 			}
 			$cron->setClass('cmd');
@@ -1599,7 +1599,7 @@ class cmd {
 			$cron->setSchedule(cron::convertDateToCron($next));
 			$cron->setLastRun(date('Y-m-d H:i:s'));
 			$cron->save();
-			return 'none';
+			return $this->getCache('alertLevel');
 		}
 		if ($_allowDuring && $currentLevel == 'none') {
 			$cron = cron::byClassAndFunction('cmd', 'duringAlertLevel', array('cmd_id' => intval($this->getId())));
@@ -1632,9 +1632,15 @@ class cmd {
 		if ($this->getType() != 'info') {
 			return;
 		}
+		if($_level == $this->getCache('alertLevel')){
+			return;
+		}
 		global $JEEDOM_INTERNAL_CONFIG;
 		$this->setCache('alertLevel', $_level);
 		$eqLogic = $this->getEqLogic();
+		if($eqLogic->getIsEnable() == 0){
+			return;
+		}
 		$maxAlert = $eqLogic->getMaxCmdAlert();
 		$prevAlert = $eqLogic->getAlert();
 		if (!$_value) {
@@ -1955,6 +1961,7 @@ class cmd {
 		addGraphLink($this, 'cmd', $usedBy['cmd'], 'cmd', $_data, $_level, $_drill);
 		addGraphLink($this, 'cmd', $usedBy['interactDef'], 'interactDef', $_data, $_level, $_drill, array('dashvalue' => '2,6', 'lengthfactor' => 0.6));
 		addGraphLink($this, 'cmd', $usedBy['plan'], 'plan', $_data, $_level, $_drill, array('dashvalue' => '2,6', 'lengthfactor' => 0.6));
+		addGraphLink($this, 'cmd', $usedBy['plan3d'], 'plan3d', $_data, $_level, $_drill, array('dashvalue' => '2,6', 'lengthfactor' => 0.6));
 		addGraphLink($this, 'cmd', $usedBy['view'], 'view', $_data, $_level, $_drill, array('dashvalue' => '2,6', 'lengthfactor' => 0.6));
 		addGraphLink($this, 'cmd', $use['scenario'], 'scenario', $_data, $_level, $_drill);
 		addGraphLink($this, 'cmd', $use['eqLogic'], 'eqLogic', $_data, $_level, $_drill);
@@ -1972,6 +1979,7 @@ class cmd {
 		$return['interactDef'] = interactDef::searchByUse('#' . $this->getId() . '#');
 		$return['view'] = view::searchByUse('cmd', $this->getId());
 		$return['plan'] = planHeader::searchByUse('cmd', $this->getId());
+		$return['plan3d'] = plan3dHeader::searchByUse('cmd', $this->getId());
 		if ($_array) {
 			foreach ($return as &$value) {
 				$value = utils::o2a($value);

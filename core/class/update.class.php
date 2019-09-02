@@ -214,10 +214,14 @@ class update {
 	}
 	
 	public static function nbNeedUpdate() {
+		$value = array(
+			'configuration' => '%"doNotUpdate":"1"%'
+		);
 		$sql = 'SELECT count(*)
 		FROM `update`
-		WHERE `status`="update"';
-		$result = DB::Prepare($sql, array(), DB::FETCH_TYPE_ROW);
+		WHERE `status`="update"
+		AND `configuration` NOT LIKE :configuration';
+		$result = DB::Prepare($sql, $value, DB::FETCH_TYPE_ROW);
 		return $result['count(*)'];
 	}
 	
@@ -466,7 +470,7 @@ class update {
 	
 	public static function getLastAvailableVersion() {
 		try {
-			$url = 'https://raw.githubusercontent.com/jeedom/core/' . config::byKey('core::branch', 'core', 'master') . '/core/config/version';
+			$url = 'https://raw.githubusercontent.com/jeedom/core/' . config::byKey('core::branch', 'core', 'V4-stable') . '/core/config/version';
 			$request_http = new com_http($url);
 			return trim($request_http->exec());
 		} catch (Exception $e) {

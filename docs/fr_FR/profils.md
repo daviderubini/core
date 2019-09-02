@@ -6,7 +6,7 @@ aussi de changer votre mot de passe.
 Vous la retrouvez en haut à droite en cliquant sur le l’icône bonhomme
 puis Profil (suivi de votre identifiant).
 
-Thèmes 
+Thèmes
 ======
 
 Le panneau thèmes vous permet de régler des paramètres d’interface :
@@ -35,7 +35,7 @@ Le panneau thèmes vous permet de régler des paramètres d’interface :
 -   **Opacité par des widgets Mobile** : permet de donner l’opacité
     (entre 0 et 1) des widgets en mobile
 
-Interface 
+Interface
 ---------
 
 Vous permet de définir certains comportements de l’interface :
@@ -60,7 +60,7 @@ Vous permet de définir certains comportements de l’interface :
 
     -   **Plein écran** : affichage par défaut en plein écran lors de
         l’arrivée sur les designs
-        
+
 -   **Dashboard**
 
     -   **Déplier le panneau des objets** : permet de rendre visible par
@@ -71,27 +71,27 @@ Vous permet de définir certains comportements de l’interface :
     -   **Déplier le panneau des vues** : permet de rendre visible par
         défaut le menu des vues (à gauche) sur les vues
 
-Sécurité 
+Sécurité
 --------
 
 -   **Authentification en 2 étapes** : permet de configurer
     l’authentification en 2 étapes (pour rappel, c’est un code changeant
     toutes les X secondes qui s’affiche sur une application mobile, type
-    google authentificator). A noter que la double authentification ne sera demandée que pour les connexions externes. Pour les connexions locales le code ne sera donc pas demandé.
+    google authentificator). A noter que la double authentification ne sera demandée que pour les connexions externe. Pour les connexion local le code ne sera donc pas demandé. Important si lors de la configuration de la double authentification vous avez une erreur vérifier que jeedom (voir sur la page santé) et votre téléphone sont bien à la meme heure (1 min de difference suffit pour que ca ne marche pas)
 
 -   **Mot de passe** : permet de changer votre mot de passe (ne pas
     oublier de le retaper en dessous)
 
 -   **Hash de l’utilisateur** : votre clef API d’utilisateur
 
-### Sessions actives 
+### Sessions actives
 
 Vous avez ici la liste de vos sessions actuellement connectées, leur ID,
 leur IP ainsi que la date de dernière communication. En cliquant sur
 "Déconnecter" cela déconnectera l’utilisateur. Attention si il est sur
 un péripherique enregistré cela supprimera également l’enregistrement.
 
-### Péripheriques enregistrés 
+### Péripherique enregistrés
 
 Vous retrouvez ici la liste de tous les péripheriques enregistrés (qui se
 connectent sans authentification) à votre Jeedom ainsi que la date de
@@ -99,10 +99,8 @@ dernière utilisation. Vous pouvez ici supprimer l’enregistrement d’un
 périphérique. Attention cela ne le déconnecte pas mais empêchera juste
 sa reconnection automatique.
 
-Notifications 
+Notifications
 -------------
 
 -   **Commande de notification utilisateur** : Commande par défaut pour
     vous joindre (commande de type message)
-
-

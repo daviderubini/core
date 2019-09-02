@@ -278,7 +278,7 @@ body {
 }
 
 .cmd.label .cmdName{
-  color : var(--link-color) !important;
+  color : var(--linkHoverLight-color) !important;
 }
 
 .cmd.label{
@@ -327,6 +327,14 @@ p.state {
 .label {
   font-size: 12px !important;
   font-weight: normal;
+}
+.label-danger {
+  background-color:var(--al-danger-color) !important;
+  color : var(--linkHoverLight-color) !important;
+}
+.label-warning {
+  background-color:var(--al-warning-color) !important;
+  color : var(--linkHoverLight-color) !important;
 }
 .full-width-slider {
   width: 100% !important;
@@ -623,7 +631,7 @@ a.action.ui-btn {
 }
 
 .cmd.label i{
-  color : var(--link-color) !important;
+  color : var(--linkHoverLight-color) !important;
 }
 
 .alert-sucess {
