@@ -1,5 +1,6 @@
 /*
 Theme Core 2019 @Jeedom
+colors Light
 */
 :root {
   --lineheight : 1.42em;
@@ -7,12 +8,12 @@ Theme Core 2019 @Jeedom
   --border-radius: 0rem;
   --opacity: 1;
   
-  --url-logo-svg : url(logo-jeedom.svg);
+  --url-logo: url('/core/themes/core2019_Light/desktop/logo-jeedom.png');
   
   --dashBkg-url: url("");
   --logo-primary-color: rgb(150, 201, 39);
   --logo-secondary-color: rgb(69, 68, 73);
-  --bg-color: 235, 235, 238;
+  --bg-color: 232, 232, 234;
   --bg-modal-color: rgb(237, 238, 238);
   --contrast-color: 30, 30, 30;
   

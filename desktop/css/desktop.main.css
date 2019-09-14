@@ -2,6 +2,8 @@
 Theme Core 2019 @Jeedom
 */
 
+@import url("coreWidgets.css");
+
 ::-webkit-scrollbar{
   width:8px;
   height:8px;
@@ -30,6 +32,10 @@ body {
   background-repeat : no-repeat;
   background-size: cover;
   background-position: center center;
+}
+
+.hidden  {
+  display: none !important;
 }
 
 html,
@@ -97,9 +103,9 @@ a.btn,
 .cmd-widget,
 legend,
 span,
-.label {
+.label:not(.cursor) {
   cursor: default !important;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 a > img:hover {
@@ -502,6 +508,20 @@ div[class*="ListContainer"] span.objectSummaryParent i {
   font-size: 12px !important;
 }
 
+/*
+.pluginDisplayCard:hover,
+.eqLogicDisplayCard:hover,
+.interactDisplayCard:hover,
+.scenarioDisplayCard:hover,
+.objectDisplayCard:hover,
+.widgetsDisplayCard:hover {
+  transform: translateY(-4px);
+  transition-duration: 0.4s;
+  transition-property: transform;
+  transition-timing-function: ease-out;
+}
+*/
+
 .eqLogicDisplayCard,
 .eqLogicThumbnailContainer div,
 .interactDisplayCard,
@@ -514,6 +534,11 @@ div[class*="ListContainer"]:not(.batteryListContainer):not(.alertListContainer) 
   padding-top: 0!important;
   text-align: center;
 }
+
+.scenarioDisplayCard .label {
+  cursor: pointer !important;
+}
+
 div[class*="ListContainer"]:not(.batteryListContainer):not(.alertListContainer) div.cursor,
 .eqLogicDisplayCard div.cursor,
 .eqLogicThumbnailContainer div.cursor {
@@ -577,7 +602,7 @@ div[class*="DisplayCard"] .name > .label {
   overflow: hidden;
 }
 .eqLogicDisplayCard .name {
-  word-break: keep-all !important;
+  word-break: break-word !important;
   font-size: 12px !important;
   position: relative;
   top: 3px !important;
@@ -597,13 +622,21 @@ div[class*="DisplayCard"] .name > .label {
 
 .eqLogicDisplayCard img {
   min-height: 90px !important;
-  max-height: 90px;
+  max-height: 99px;
   width: auto !important;
   max-width: 75px !important;
   overflow: hidden;
   vertical-align: baseline;
 }
 
+
+.eqLogic.eqLogic-widget .widget-name {
+  padding-right: 22px;
+  padding-left: 12px;
+}
+.eqLogic.eqLogic-widget .widget-name span.warning i[class=""] {
+  display: none;
+}
 .eqLogic.eqLogic-widget .widget-name span.warning i {
   margin-right: 5px;
   color: var(--linkHoverLight-color);
@@ -680,7 +713,7 @@ div[data-market_type=script]:hover {
   position: relative;
   font-family: "Roboto";
   color: var(--txt-color);
-  width: 190px !important;
+  width: 210px !important;
   height: 155px !important;
 }
 #battery .eqLogic-widget .widget-name {
@@ -773,12 +806,11 @@ pre {
   margin: 0 0px 5px;
   font-size: 13px;
   line-height: 20px;
-  background: var(--bg-modal-color);
+  background: rgb(var(--bg-color));
 }
 
-.div_viewZone{
-  /*  background-color: rgba(var(--eq-bg-color), var(--opacity)) !important;
-  border-radius: var(--border-radius) !important;*/
+.div_rowZones {
+  background-color: rgb(var(--bg-color)) !important;
 }
 
 .view-link-widget,
@@ -1263,6 +1295,15 @@ ul.dropdown-menu {
 
 /* __________________________________________________________________________________________________________PANELS */
 
+.eqLogicThumbnailDisplay .eqLogicThumbnailContainer:not(:first-of-type) {
+  background-color: rgba(var(--defaultBkg-color), var(--opacity)) !important;
+  border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
+  z-index: 0;
+  transition: box-shadow 0.4s cubic-bezier(.25,.8,.25,1);
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
 .navbar-nav.navbar-right > li a {
   background-color: transparent !important;
 }
@@ -1520,8 +1561,6 @@ textarea {
   margin-top: -2px;
 }
 
-
-
 .checkbox-inline.disabled,
 .checkbox.disabled label,
 .radio-inline.disabled,
@@ -1609,6 +1648,9 @@ select {
 }
 body[data-theme*="Dark"] select:not(.expressionAttr) {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(172, 172, 172)'><polygon points='0,0 100,0 50,50'/></svg>") !important;
+}
+body[data-theme*="Legacy"] select:not(.expressionAttr) {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(240, 240, 240)'><polygon points='0,0 100,0 50,50'/></svg>") !important;
 }
 select::-ms-expand {
   display: none;
@@ -1703,7 +1745,7 @@ ul.nav.nav-tabs li,
 }
 .nav-tabs > li > a {
   padding: 10px 6px;
-  
+  z-index: 3;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
@@ -1818,6 +1860,17 @@ tr.tablesorter-filter-row td {
   background-color: var(--btn-default-color)!important;
 }
 
+.table-condensed tbody tr td {
+  padding-top: 1px;
+  padding-bottom: 2px;
+}
+.table-condensed tbody tr:hover td,
+.table-condensed tbody tr:hover td div.cmd div,
+.table-condensed tbody tr:hover > td input,
+.table-condensed tbody tr:hover > td input:not(.btn):not(.dial):not([type=radio]):not([type=image]):not(.expressionAttr):not(.knob):not([type=checkbox])  {
+  color: rgb(var(--contrast-color)) !important;
+}
+
 :not(.eqLogic-widget) + table.tableCmd td {
   vertical-align: top !important;
 }
@@ -1856,7 +1909,55 @@ hr {
 }
 
 
+/* __________________________________________________________________________________________________________CodeMirror */
+div.CodeMirror {
+  height: auto;
+  background: var(--form-bg-color) !important;
+}
+.CodeMirror-sizer {
+  background: var(--form-bg-color) !important;
+}
 
+.CodeMirror-code { background: rgb(250,250,250) !important; }
+.CodeMirror-selected { background: rgba(5,5,5,1) !important; }
+
+.CodeMirror:not(class*=cm-s-),
+.CodeMirror-code,
+.CodeMirror-sizer {
+  color: var(--sc-formTxt-color)!important;
+}
+.CodeMirror-gutters {
+  background: var(--form-bg-color)!important;
+  border-right: 0;
+  border: none !important;
+}
+
+.CodeMirror-line {
+  background: var(--sc-form-color) !important;
+}
+
+[data-page=custom] .CodeMirror,
+[data-page=custom] .CodeMirror textarea,
+[data-page=custom] .CodeMirror-gutters {
+  height: 100% !important;
+}
+
+/* hihgly special */
+div[id^=__lpform_] { /*lastpass*/
+  display: none;
+}
+
+
+.jstree-default .jstree-clicked {
+  background-color: transparent;
+  border-left: 2.5px solid var(--logo-primary-color);
+}
+.jstree li a {
+  width: 90% !important;
+}
+.jstree li a:hover {
+  background-color: var(--form-bg-color);
+}
 
 /* __________________________________________________________________________________________________________SCENARIO */
 #div_scenarioElement .element .element {
@@ -2526,279 +2627,6 @@ path.highcharts-graph {
 }
 
 
-/* __________________________________________________________________________________________________________GAUGES */
-.eqLogic-widget div.cmd-widget {
-  position: relative;
-  padding: 0;
-  min-width: 70px;
-}
-div.cmd-widget .title {
-  color: var(--txt-color);
-  width: 100%;
-  height: 16px;
-  min-height: 16px;
-  max-height: 16px;
-  line-height: 14px;
-  position: relative;
-  display: table;
-  text-align: center;
-}
-
-div.cmd-widget div[class^="content"] {
-  display: table-cell;
-  vertical-align: middle !important;
-}
-
-div.cmd-widget .content-xs {
-  color: var(--txt-color);
-  width: 100%;
-  height: 12px;
-  min-height: 12px;
-  line-height: 14px;
-  margin: 0;
-  position: relative;
-  text-align: center;
-}
-div.cmd-widget .content-xs .slider {
-  margin-top: 8px;
-  margin-bottom: 12px;
-}
-div.cmd-widget .content-sm {
-  height: 40px !important;
-  min-height: 40px;
-  max-height: 40px;
-}
-div.cmd-widget .content {
-  height: 56px !important;
-  min-height: 56px;
-  max-height: 56px;
-}
-div.cmd-widget .content-lg {
-  height: 72px !important;
-  min-height: 72px;
-  max-height: 72px;
-}
-div.cmd-widget .value {
-  font-weight: bold;
-  width: 100%;
-  height: 16px;
-  min-height: 16px;
-  max-height: 16px;
-  margin-bottom: 2px;
-}
-div.cmd-widget .value > .center-block {
-  color: var(--txt-color);
-  font-size: 11px;
-  font-weight: normal;
-  padding: 0 !important;
-  margin: 0;
-}
-div.cmd-widget div[class^="content"] > select {
-  font-size: 16px !important;
-  height: 22px;
-}
-div.cmd-widget div[class^="content"] > select > option {
-  font-size: 12px !important;
-}
-div.cmd-widget[data-subtype="select"]::after {
-  font-size: 14px;
-  top: 5px!important;
-  right: 5px;
-}
-div.eqLogic_layout_table table.tableCmd {
-  min-width: 100%;
-}
-div.eqLogic_layout_table table.tableCmd td {
-  vertical-align: top;
-}
-.eqLogic.eqLogic-widget > .widget-name {
-  margin-bottom: 5px;
-}
-
-.cmdStats,
-div.cmd > div.center-block {
-  color: var(--txt-color) !important;
-  font-size: 10px !important;
-  font-weight: normal;
-  padding: 0 !important;
-  width: 100% !important;
-}
-
-.cmd-widget {
-  display: inline-block;
-  position : relative;
-  vertical-align: top;
-}
-
-.cmd-widget .statistiques {
-  position : absolute;
-  bottom: 0;
-  font-size: 0.80em;
-  left : 0;
-  margin : 0;
-  padding: 0;
-  line-height:0px;
-}
-
-.cmd-widget[data-subtype="select"] .title,
-.cmd-widget[data-subtype="select"] .content-xs {
-  clear: both !important;
-  display: inline;
-  text-align: left;
-}
-.cmd-widget[data-subtype="select"] .cmdName {
-  font-size: 11px !important;
-  margin-left: 5px;
-}
-.cmd-widget[data-subtype="select"] .content-xs {
-  top: -4px !important;
-}
-
-.verticalAlign {
-  position: relative;
-  transform: translateY(-50%);
-  top: calc(50% - 18px);
-  z-index: -1;
-}
-
-.slider.ui-slider-horizontal {
-  position: relative;
-  margin: 5px;
-  width: 65px;
-  left: 0;
-}
-.slider.ui-slider-vertical {
-  position: absolute;
-  margin: 5px;
-  height: 50px;
-  top: 16px !important;
-  right: 3px;
-}
-
-.sliderValue {
-  font-size: 12px;
-  color: var(--txt-color);
-  font-weight: normal;
-  position: absolute;
-  z-index: 1;
-}
-.ui-slider-horizontal > .sliderValue {
-  top: -7px;
-  right: -22px;
-}
-.ui-slider-vertical > .sliderValue {
-  bottom: -1px;
-  right: 10px;
-}
-
-.gauge {
-  position: relative;
-  width: 100px;
-  height: 54px;
-  margin: 0 auto;
-}
-.gauge .highcharts-pane {
-  fill: var(--el-defaultColor);
-}
-.arcgauge .cmdStats {
-  position: relative;
-  top: 3px;
-}
-.arcgauge .highcharts-background {
-  fill-opacity: 0 !important;
-}
-.gauge .highcharts-yaxis-grid {
-  display: none;
-}
-.hgauge-value,
-.vgauge-value,
-.shuttergauge-value {
-  background: var(--link-color);
-}
-.hgauge-bckg,
-.vgauge-bckg {
-  background: var(--el-defaultColor);
-}
-.hgauge-bckg {
-  position:relative;
-  width: 70px;
-  height: 5px;
-  left: 0;
-}
-.vgauge-bckg {
-  position: relative;
-  top: -4px;
-  left: -6px;
-  width: 5px;
-  height: 38px;
-  margin-bottom: -7px;
-}
-.hgauge,
-.vgauge,
-.shuttergauge {
-  width: 90px;
-  max-width: 90px;
-  margin-left: 5px;
-  margin-right: 5px;
-  line-height: 10px;
-}
-
-.shuttergauge .center-block {
-  top: -3px;
-}
-.shuttergauge .content-sm {
-  width: 90px;
-  min-width: 90px;
-  max-width: 90px;
-}
-.shuttergauge-bckg {
-  width: 39px;
-  height: 40px;
-  border-top: 5px solid var(--el-defaultColor);
-  border-left: 3px solid var(--el-defaultColor);
-  border-right: 3px solid var(--el-defaultColor);
-  position: absolute;
-  top: 16px;
-  left: 25px;
-}
-.shuttergauge-chart {
-  position: relative;
-  top: -18px;
-  height: 37px;
-}
-.shuttergauge[data-type=action] .shuttergauge-bckg {
-  left: 18px;
-}
-.shuttergauge[data-type=action] .state {
-  position: relative;
-  left: -7px;
-}
-.shuttergauge .slider {
-  width: 60px;
-  top: 12px !important;
-}
-.shuttergauge .timeCmd {
-  position: relative;
-  margin-left: -15px !important;
-}
-.hgauge .content-sm {
-  width: 70px !important;
-  text-align: left;
-}
-.hgauge-value {
-  position: relative;
-  padding: 0;
-  margin-top: -1px;
-  height: 10px;
-}
-.vgauge-value {
-  position: absolute;
-  bottom: 0;
-  width: 10px;
-  margin-left: 4px;
-}
-
-
 /* __________________________________________________________________________________________________________DIALOGS */
 .ui-autocomplete .ui-menu-item-wrapper,
 .ui-autocomplete .ui-menu-item-wrapper .ui-state-active {
@@ -2976,11 +2804,13 @@ div.vis-item-content {
   opacity: 0.65;
 }
 
-button.ui-dialog-titlebar-close:before {
-  font-weight: normal;
-  content: "X";
-  color: rgb(var(--bg-color)) !important;
-  z-index: 50;
+button.ui-dialog-titlebar-close::before {
+   font-family: "Font Awesome 5 Free";
+   font-size: 18px !important;
+   font-weight: 900;
+   content: "\f00d";
+   color: rgb(var(--bg-color)) !important;
+   vertical-align: middle;
 }
 button.ui-dialog-titlebar-close {
   position: absolute;
@@ -3081,56 +2911,6 @@ input:invalid {
   padding: 2px 8px 4px 8px;
 }
 
-/* __________________________________________________________________________________________________________CodeMirror */
-.CodeMirror {
-  height: auto;
-  background: var(--sc-form-color);
-}
-
-.CodeMirror:not(class*=cm-s-),
-.CodeMirror-code,
-.CodeMirror-sizer {
-  background: var(--sc-form-color)!important;
-  color: var(--sc-formTxt-color)!important;
-}
-.CodeMirror-gutters {
-  background: var(--form-bg-color)!important;
-  border-right: 0;
-  border: none !important;
-}
-.CodeMirror-selected {
-  background: var(--txt-color)!important;
-}
-
-[data-page=custom] .CodeMirror,
-[data-page=custom] .CodeMirror textarea,
-[data-page=custom] .CodeMirror-gutters {
-  height: 100% !important;
-}
-
-/* hihgly special */
-div[id^=__lpform_] { /*lastpass*/
-  display: none;
-}
-
-
-.hidden  {
-  display: none !important;
-}
-
-
-.jstree-default .jstree-clicked {
-  background-color: transparent;
-  border-left: 2.5px solid var(--logo-primary-color);
-}
-.jstree li a {
-  width: 90% !important;
-}
-.jstree li a:hover {
-  background-color: var(--form-bg-color);
-}
-
-
 /* __________________________________________________________________________________________________________ROUNDING */
 ::-moz-color-swatch {
   border-radius: var(--border-radius) !important;
@@ -3193,8 +2973,8 @@ pre {
 }
 #pre_globallog {
   font-size: 12px;
-  letter-spacing: 0.07em;
-  line-height: 12px;
+  letter-spacing: 0.12em;
+  line-height: 15px;
 }
 
 .input-group .btn,
@@ -3265,11 +3045,11 @@ ul.dropdown-menu {
   :root {
     --lineheight: 1.4em;
   }
-  
+
   body {
     font-size: 14px !important;
   }
-  
+
   [data-page="administration"] ul.nav-tabs.nav-primary li i:after {
     content:'';
     position:absolute;
@@ -3278,7 +3058,7 @@ ul.dropdown-menu {
     left:-4px;
     right:-4px;
   }
-  
+
   [data-page="administration"] ul.nav-tabs.nav-primary li a > span {
     display: none;
   }
@@ -3287,12 +3067,12 @@ ul.dropdown-menu {
     max-width: 60px;
     text-align: center;
   }
-  
+
   .btn,
   tbody > tr > td{
     font-size: 12px !important;
   }
-  
+
   .expression .col-xs-1 {
     width: 6.5em !important;
   }
@@ -3300,11 +3080,11 @@ ul.dropdown-menu {
     width: 55% !important;
     align-content: right !important;
   }
-  
+
   #div_editScenario ul.nav.nav-tabs {
     margin-top: 30px !important;
   }
-  
+
   .form-control,
   .btn,
   .label {
@@ -3327,6 +3107,7 @@ ul.dropdown-menu {
     height: 50px !important;
   }
 }
+
 @media screen and (max-width: 768px) {
   .navbar-fixed-top .navbar-collapse {
     position: fixed;
@@ -3350,5 +3131,4 @@ ul.dropdown-menu {
   .hidden-xs {
     display: none !important;
   }
-  
 }

@@ -541,7 +541,7 @@ class eqLogic {
 		$html .= '<div class="eqLogic eqLogic-widget ' . $classAttr . ' id="' . $idAttr . '">';
 		
 		$eqName = $this->getName();
-		if (strlen($eqName) > 23) $eqName = mb_substr($eqName,0,23)."...";
+		if (strlen($eqName) > 20) $eqName = mb_substr($eqName,0,20)."...";
 		if ($_version == 'mobile') {
 			$html .= '<div class="widget-name">' . $eqName . '<br/><span>' . $object_name . '</span></div>';
 		} else {
@@ -583,7 +583,7 @@ class eqLogic {
 			$cmd->event($_value, $_updateTime);
 			return true;
 		}
-		if ($_updateTime !== null) {
+		if ($_updateTime !== null && $_updateTime !== false) {
 			if (strtotime($cmd->getCollectDate()) < strtotime($_updateTime)) {
 				$cmd->event($_value, $_updateTime);
 				return true;
@@ -593,8 +593,10 @@ class eqLogic {
 			$cmd->event($_value, $_updateTime);
 			return true;
 		}
-		$cmd->setCache('collectDate', date('Y-m-d H:i:s'));
-		$this->setStatus(array('lastCommunication' => date('Y-m-d H:i:s'), 'timeout' => 0));
+		if ($_updateTime !== false) {
+			$cmd->setCache('collectDate', date('Y-m-d H:i:s'));
+			$this->setStatus(array('lastCommunication' => date('Y-m-d H:i:s'), 'timeout' => 0));
+		}
 		return false;
 	}
 	
@@ -656,10 +658,14 @@ class eqLogic {
 			}
 		}
 		$translate_category = trim($translate_category,',');
+		$name_display = $this->getName();
+		if (mb_strlen($name_display) > 25) {
+			$name_display = mb_substr($name_display,0,25)."...";
+		}
 		$replace = array(
 			'#id#' => $this->getId(),
 			'#name#' => $this->getName(),
-			'#name_display#' => (strlen($this->getName()) <25) ? $this->getName() : mb_substr($this->getName(),0,25)."...",
+			'#name_display#' => $name_display,
 			'#eqLink#' => $this->getLinkToConfiguration(),
 			'#category#' => $this->getPrimaryCategory(),
 			'#translate_category#' => $translate_category,

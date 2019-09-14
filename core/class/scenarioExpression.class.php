@@ -470,6 +470,36 @@ class scenarioExpression {
 		return $values[round(count($values) / 2) - 1];
 	}
 	
+	public static function avg() {
+		$args = func_get_args();
+		$values = array();
+		foreach ($args as $arg) {
+			if (is_numeric($arg)) {
+				$values[] = $arg;
+			} else {
+				$value = cmd::cmdToValue($arg);
+				if (is_numeric($value)) {
+					$values[] = $value;
+				} else {
+					try {
+						$values[] = evaluate($value);
+					} catch (Exception $ex) {
+						
+					} catch (Error $ex) {
+						
+					}
+				}
+			}
+		}
+		if (count($values) < 1) {
+			return 0;
+		}
+		if (count($values) == 1) {
+			return $values[0];
+		}
+		return array_sum($values)/count($values);
+	}
+	
 	public static function tendance($_cmd_id, $_period = '1 hour', $_threshold = '') {
 		$cmd = cmd::byId(trim(str_replace('#', '', $_cmd_id)));
 		if (!is_object($cmd)) {
@@ -1530,12 +1560,15 @@ class scenarioExpression {
 						throw new Exception(__('Erreur : Aucun rapport généré', __FILE__));
 					}
 					if ($this->getOptions('cmd') != '') {
-						$cmd = cmd::byId(str_replace('#', '', $this->getOptions('cmd')));
-						if (!is_object($cmd)) {
-							throw new Exception(__('Commande introuvable veuillez vérifiez l\'id : ', __FILE__) . $this->getOptions('cmd'));
+						$cmdArray = explode('&&',$this->getOptions('cmd'));
+						foreach ($cmdArray as $cmdname){
+							$cmd = cmd::byId(str_replace('#', '', $cmdname));
+							if (!is_object($cmd)) {
+								throw new Exception(__('Commande introuvable veuillez vérifiez l\'id : ', __FILE__) . $this->getOptions('cmd'));
+							}
+							$this->setLog($scenario, __('Envoi du rapport généré sur ', __FILE__) . $cmd->getHumanName());
+							$cmd->execCmd($cmd_parameters);
 						}
-						$this->setLog($scenario, __('Envoi du rapport généré sur ', __FILE__) . $cmd->getHumanName());
-						$cmd->execCmd($cmd_parameters);
 					}
 				} elseif ($this->getExpression() == 'tag') {
 					$tags = $scenario->getTags();
@@ -1607,14 +1640,14 @@ class scenarioExpression {
 	
 	public function getAllId() {
 		$return = array(
-			'element' => array(),
-			'subelement' => array(),
-			'expression' => array($this->getId()),
+		'element' => array(),
+		'subelement' => array(),
+		'expression' => array($this->getId()),
 		);
 		$result = array(
-			'element' => array(),
-			'subelement' => array(),
-			'expression' => array(),
+		'element' => array(),
+		'subelement' => array(),
+		'expression' => array(),
 		);
 		if ($this->getType() == 'element') {
 			$element = scenarioElement::byId($this->getExpression());

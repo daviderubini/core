@@ -40,7 +40,7 @@ $plugins_list = plugin::listPlugin(false, true);
         <a id="bt_resetPluginSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i> </a>
       </div>
     </div>
-    
+        
     <div class="panel">
       <div class="panel-body">
         <div class="pluginListContainer">
@@ -58,6 +58,7 @@ $plugins_list = plugin::listPlugin(false, true);
         </div>
       </div>
     </div>
+    
   </div>
   <div class="col-xs-12" id="div_confPlugin" style="display:none;">
     <legend>
