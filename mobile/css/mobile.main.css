@@ -57,7 +57,20 @@ body {
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  scrollbar-color: var(--el-defaultColor) rgb(var(--bg-color)) !important;
+}
+
+html,
+body,
+textarea {
+  scrollbar-color: var(--txt-color) var(--sc-form-color) !important;
+  scrollbar-width: thin;
+  box-shadow: none !important;
+}
+
+a, .ui-link {
+  font-size: 16px;
+  color: var(--logo-primary-color) !important;
+  text-decoration: none;
 }
 
 .nd2-card{
@@ -85,6 +98,13 @@ body {
 
 .cursor {
   cursor: pointer;
+}
+
+
+[data-page="about"] textarea {
+  color: var(--linkHoverLight-color);
+  background-color: var(--bg-modal-color);
+  border: none !important;
 }
 
 .ui-btn {
@@ -168,13 +188,14 @@ body {
   padding: 0 !important;
   background-color: transparent;
   box-shadow: none !important;
-
+  
 }
 .eqLogic-widget,
 .scenario-widget {
   display: inline-block;
   vertical-align: top;
   padding-bottom: 10px;
+  overflow: hidden;
 }
 .eqLogic.eqLogic-widget .ui-input-text input,
 .eqLogic.eqLogic-widget textarea {
@@ -217,6 +238,8 @@ body {
 .eqLogic.eqLogic-widget .widget-name .object_name {
   vertical-align: super;
   font-size: 11px !important;
+}
+.eqLogic.eqLogic-widget:not(.displayObjectName) .widget-name .object_name {
   display: none;
 }
 
@@ -228,6 +251,12 @@ body {
   text-decoration: none;
   color: var(--sc-lightTxt-color) !important;
   font-size: 16px !important;
+}
+
+.widget-name {
+  padding-right: 22px;
+  padding-left: 12px;
+  word-break: break-word;
 }
 
 .eqLogic.eqLogic-widget,
@@ -252,7 +281,15 @@ body {
   color: var(--link-color) !important;
   margin: 7px;
   font-size: 30px !important;
+  top: 5px !important;
+  position: relative;
 }
+
+.cmd[data-type="action"] .iconCmd {
+  line-height: 16px;
+  min-height: 36px !important;
+}
+
 .timeCmd {
   color: var(--txt-color);
   background-color: rgb(var(--bg-color)) !important;
@@ -269,6 +306,7 @@ body {
 }
 .cmdName {
   font-size: 14px !important;
+  font-weight: bold;
 }
 .cmdName:first-letter {
   text-transform: uppercase;
@@ -294,6 +332,9 @@ body {
 .state i {
   font-size: 35px !important;
   padding: 5px;
+}
+.scenario-widget  {
+  min-height: 72px !important;
 }
 .scenario-widget .state {
   padding-top: 12px;
@@ -384,11 +425,16 @@ p.state {
   background: transparent !important;
 }
 
+.iconCmdLine img{
+  max-width: 12px;
+  max-height: 12px;
+}
 
 .ui-page-theme-a .ui-btn.ui-btn-raised {
   color: var(--link-color) !important;
   background-color: rgb(var(--defaultBkg-color)) !important;
   box-shadow: none;
+  line-height: 12px !important;
 }
 .ui-link i:hover {
   color: var(--linkHover-color) !important;
@@ -636,6 +682,11 @@ a.action.ui-btn {
   color : var(--linkHoverLight-color) !important;
 }
 
+.alert-info {
+  background-color: var(--al-info-color);
+  color: var(--linkHoverLight-color);
+}
+
 .alert-sucess {
   background-color: var(--al-success-color);
   color: var(--linkHoverLight-color);
@@ -759,7 +810,6 @@ div.ui-header.ui-bar-inherit > a[data-rel=back]{
   border-radius: var(--border-radius) !important;
 }
 
-
 .panel,
 .panel-body,
 .panel-heading {
@@ -860,7 +910,7 @@ a.ui-table-columntoggle-btn {
   #table_message td.plugin:before {
     content: 'Source: ';
   }
-
+  
   #table_message td.message {
     background: var(--bg-modal-color);
     border-bottom: 1px solid var(--al-info-color);

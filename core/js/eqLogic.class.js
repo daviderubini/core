@@ -20,14 +20,12 @@ jeedom.eqLogic = function () {
 };
 
 jeedom.eqLogic.cache = Array();
-jeedom.eqLogic.displayObjectName = false;
 
 jeedom.eqLogic.changeDisplayObjectName = function(_display){
-  jeedom.eqLogic.displayObjectName = _display;
   if(_display){
-    $('.object_name').show();
+    $('.eqLogic-widget').addClass('displayObjectName');
   }else{
-    $('.object_name').hide();
+    $('.eqLogic-widget').removeClass('displayObjectName');
   }
 }
 
@@ -396,8 +394,7 @@ jeedom.eqLogic.refreshValue = function (_params) {
         if(uid != 'undefined'){
           eqLogic.attr('data-eqLogic_uid',uid);
         }
-        eqLogic.empty().html(html.children());
-        eqLogic.attr("class", html.attr("class"))
+        eqLogic.empty().html(html.children())
         .trigger('change');
         if ($.mobile) {
           $('.eqLogic[data-eqLogic_id=' + i + ']').trigger("create");
@@ -407,9 +404,6 @@ jeedom.eqLogic.refreshValue = function (_params) {
             editWidgetMode();
           }
         }
-      }
-      if(jeedom.eqLogic.displayObjectName){
-        $('.object_name').show();
       }
     }
   };

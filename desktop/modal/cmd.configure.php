@@ -1295,7 +1295,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 		<?php }
 		?>
 	</ul>
-	
+
 	<div class="tab-content" id="div_displayCmdConfigure" style="overflow-x:hidden">
 		<div role="tabpanel" class="tab-pane active" id="cmd_information">
 			<br/>
@@ -1448,7 +1448,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 					</form>
 				</div>
 			</div>
-			
+
 			<form class="form-horizontal">
 				<fieldset id="fd_cmdUsedBy">
 					<legend><i class="fas fa-search"></i> {{Utilisé par}}</legend>
@@ -1549,22 +1549,24 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 									}
 								}
 								ksort($groups);
+								$optgroup = '';
 								foreach ($groups as $group) {
 									usort($group, function ($a, $b) {
 										return strcmp($a['name'], $b['name']);
 									});
 									foreach ($group as $key => $info) {
 										if ($key == 0) {
-											echo '<optgroup label="{{' . $info['family'] . '}}">';
+											$optgroup .= '<optgroup label="{{' . $info['family'] . '}}">';
 										}
 										$name = $info['name'];
 										if (isset($info['noapp']) && $info['noapp']) {
 											$name .= ' (Non géré par Application Mobile)';
 										}
-										echo '<option value="' . $info['key'] . '">' . $name . '</option>';
+										$optgroup .= '<option value="' . $info['key'] . '">' . $name . '</option>';
 									}
-									echo '</optgroup>';
+									$optgroup .= '</optgroup>';
 								}
+								if ($optgroup != '') echo $optgroup;
 								?>
 							</select>
 						</div>
@@ -1572,7 +1574,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 				</fieldset>
 			</form>
 			<?php if ($cmd->getType() == 'action') {?>
-				
+
 				<form class="form-horizontal">
 					<fieldset>
 						<legend><i class="fas fa-exclamation-triangle"></i> {{Restriction de l'action}}</legend>
@@ -1616,7 +1618,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 								<input type="number" class="cmdAttr form-control" data-l1key="configuration" data-l2key="jeedomCheckCmdTime" />
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{Action}}</label>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -1624,10 +1626,10 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 							</div>
 						</div>
 						<div id="div_actionCheckCmd"></div>
-						
+
 						<script type="text/javascript">
 						$("#div_actionCheckCmd").sortable({axis: "y", cursor: "move", items: ".actionCheckCmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-						
+
 						$('#bt_addActionCheckCmd').off('click').on('click',function(){
 							addActionCmd({}, 'actionCheckCmd','{{Action}}');
 						});
@@ -1666,7 +1668,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 							</div>
 						</div>
 						<div id="div_actionPostExecCmd"></div>
-						
+
 						<script type="text/javascript">
 						$("#div_actionPostExecCmd").sortable({axis: "y", cursor: "move", items: ".actionPostExecCmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 						$('#bt_addActionPostExecCmd').off('click').on('click',function(){
@@ -1676,7 +1678,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 					</fieldset>
 				</form>
 			<?php }?>
-			
+
 			<?php if ($cmd->getType() == 'info' && $JEEDOM_INTERNAL_CONFIG['cmd']['type']['info']['subtype'][$cmd->getSubType()]['isHistorized']['visible']) {
 				?>
 				<form class="form-horizontal">
@@ -1784,39 +1786,41 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 			<div role="tabpanel" class="tab-pane" id="cmd_alert">
 				<br/>
 				<?php
+				$form = '';
 				foreach ($JEEDOM_INTERNAL_CONFIG['alerts'] as $level => $value) {
 					if (!$value['check']) {
 						continue;
 					}
-					echo '<form class="form-horizontal">';
-					echo '<fieldset>';
-					echo '<legend>';
+					$form .= '<form class="form-horizontal">';
+					$form .= '<fieldset>';
+					$form .= '<legend>';
 					if($value['name'] == 'Warning'){
-						echo '<i class="fas fa-exclamation"></i>';
+						$form .= '<i class="fas fa-exclamation"></i>';
 					}elseif ($value['name'] == 'Danger') {
-						echo '<i class="fas fa-exclamation-triangle"></i>';
+						$form .= '<i class="fas fa-exclamation-triangle"></i>';
 					}
-					echo '{{Niveau}} ' . $value['name'] . '</legend>';
-					echo '<div class="form-group">';
-					echo '<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{En}} ' . $value['name'] . ' {{si (#value# pour la valeur)}}</label>';
-					echo '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
-					echo '<input class="cmdAttr form-control" data-l1key="alert" data-l2key="' . $level . 'if" />';
-					echo '</div>';
-					echo '</div>';
-					echo '<div class="form-group">';
-					echo '<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{Pendant plus de (en min, laisser vide pour immédiat)}}</label>';
-					echo '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">';
-					echo '<input type="number" class="cmdAttr form-control" data-l1key="alert" data-l2key="' . $level . 'during" />';
-					echo '</div>';
-					echo '</div>';
-					echo '</fieldset>';
-					echo '</form>';
+					$form .= '{{Niveau}} ' . $value['name'] . '</legend>';
+					$form .= '<div class="form-group">';
+					$form .= '<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{En}} ' . $value['name'] . ' {{si (#value# pour la valeur)}}</label>';
+					$form .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+					$form .= '<input class="cmdAttr form-control" data-l1key="alert" data-l2key="' . $level . 'if" />';
+					$form .= '</div>';
+					$form .= '</div>';
+					$form .= '<div class="form-group">';
+					$form .= '<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{Pendant plus de (en min, laisser vide pour immédiat)}}</label>';
+					$form .= '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">';
+					$form .= '<input type="number" class="cmdAttr form-control" data-l1key="alert" data-l2key="' . $level . 'during" />';
+					$form .= '</div>';
+					$form .= '</div>';
+					$form .= '</fieldset>';
+					$form .= '</form>';
 				}
+				echo $form;
 				?>
 			</div>
 		<?php }
 		?>
-		
+
 		<?php if ($cmd->widgetPossibility('custom')) {
 			?>
 			<div role="tabpanel" class="tab-pane" id="cmd_display">
@@ -1827,9 +1831,11 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 						<tr>
 							<th style="width:200px;"></th>
 							<?php
+							$display = '';
 							foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-								echo '<th>{{' . $value['name'] . '}}</th>';
+								$display .= '<th>{{' . $value['name'] . '}}</th>';
 							}
+							echo $display;
 							?>
 						</tr>
 					</thead>
@@ -1844,7 +1850,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 										<select class="form-control cmdAttr" data-l1key="template" data-l2key="dashboard">
 											<option value="default">Défaut</option>
 											<?php
-											
+
 											if (is_array($cmd_widgetDashboard[$cmd->getType()]) && is_array($cmd_widgetDashboard[$cmd->getType()][$cmd->getSubType()]) && count($cmd_widgetDashboard[$cmd->getType()][$cmd->getSubType()]) > 0) {
 												$types = array();
 												foreach ($cmd_widgetDashboard[$cmd->getType()][$cmd->getSubType()] as $key => $info) {
@@ -1858,6 +1864,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 													}
 												}
 												ksort($types);
+												$display = '';
 												foreach ($types as $type) {
 													usort($type, function ($a, $b) {
 														return strcmp($a['name'], $b['name']);
@@ -1867,16 +1874,17 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 															continue;
 														}
 														if ($key == 0) {
-															echo '<optgroup label="{{' . ucfirst($widget['type']) . '}}">';
+															$display .= '<optgroup label="{{' . ucfirst($widget['type']) . '}}">';
 														}
 														if(isset($widget['location']) && $widget['location'] != 'core' && $widget['location'] != 'custom'){
-															echo '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['location']).'/'.ucfirst($widget['name']) . '</option>';
+															$display .= '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['location']).'/'.ucfirst($widget['name']) . '</option>';
 														}else{
-															echo '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['name']) . '</option>';
+															$display .= '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['name']) . '</option>';
 														}
 													}
-													echo '</optgroup>';
+													$display .= '</optgroup>';
 												}
+												echo $display;
 											}
 											?>
 										</select>
@@ -1902,26 +1910,28 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 													}
 												}
 												ksort($types);
+												$display = '';
 												foreach ($types as $type) {
 													usort($type, function ($a, $b) {
 														return strcmp($a['name'], $b['name']);
 													});
-													
+
 													foreach ($type as $key => $widget) {
 														if ($widget['name'] == 'default') {
 															continue;
 														}
 														if ($key == 0) {
-															echo '<optgroup label="{{' . ucfirst($widget['type']) . '}}">';
+															$display .= '<optgroup label="{{' . ucfirst($widget['type']) . '}}">';
 														}
 														if(isset($widget['location']) && $widget['location'] != 'core' && $widget['location'] != 'custom'){
-															echo '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['location']).'/'.ucfirst($widget['name']) . '</option>';
+															$display .= '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['location']).'/'.ucfirst($widget['name']) . '</option>';
 														}else{
-															echo '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['name']) . '</option>';
+															$display .= '<option value="'.$widget['location'].'::' . $widget['name'].'">' . ucfirst($widget['name']) . '</option>';
 														}
 													}
-													echo '</optgroup>';
+													$display .= '</optgroup>';
 												}
+												echo $display;
 											}
 											?>
 										</select>
@@ -1936,13 +1946,15 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 							<tr>
 								<td>{{Afficher le nom}}</td>
 								<?php
+								$display = '';
 								foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-									echo '<td>';
+									$display .= '<td>';
 									if ($cmd->widgetPossibility('custom::displayName::' . $key)) {
-										echo '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showNameOn' . $key . '" checked />';
+										$display .= '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showNameOn' . $key . '" checked />';
 									}
-									echo '</td>';
+									$display .= '</td>';
 								}
+								echo $display;
 								?>
 							</tr>
 						<?php }
@@ -1952,13 +1964,15 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 							<tr>
 								<td>{{Afficher le nom ET l'icône}}</td>
 								<?php
+								$display = '';
 								foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-									echo '<td>';
+									$display .= '<td>';
 									if ($cmd->widgetPossibility('custom::displayIconAndName::' . $key)) {
-										echo '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showIconAndName' . $key . '" />';
+										$display .= '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showIconAndName' . $key . '" />';
 									}
-									echo '</td>';
+									$display .= '</td>';
 								}
+								echo $display;
 								?>
 							</tr>
 						<?php }
@@ -1967,13 +1981,15 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 							<tr>
 								<td>{{Afficher les statistiques}}</td>
 								<?php
+								$display = '';
 								foreach (jeedom::getConfiguration('eqLogic:displayType') as $key => $value) {
-									echo '<td>';
+									$display .= '<td>';
 									if ($cmd->widgetPossibility('custom::displayStats::' . $key)) {
-										echo '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showStatsOn' . $key . '" checked />';
+										$display .= '<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="showStatsOn' . $key . '" checked />';
 									}
-									echo '</td>';
+									$display .= '</td>';
 								}
+								echo $display;
 								?>
 							</tr>
 							<?php
@@ -1981,7 +1997,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 						?>
 					</tbody>
 				</table>
-				
+
 				<div class="form-group">
 					<label class="col-lg-3 col-md-3 col-sm-4 col-xs-6 control-label">{{Retour à la ligne forcé avant le widget}}</label>
 					<div class="col-xs-1">
@@ -1992,7 +2008,7 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 						<input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="forceReturnLineAfter" />
 					</div>
 				</div>
-				
+
 				<br/><br/>
 				<?php if ($cmd->widgetPossibility('custom::optionalParameters')) {
 					?>
@@ -2010,19 +2026,21 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 						<tbody>
 							<?php
 							if ($cmd->getDisplay('parameters') != '') {
+								$tr = '';
 								foreach ($cmd->getDisplay('parameters') as $key => $value) {
-									echo '<tr>';
-									echo '<td>';
-									echo '<input class="form-control key" value="' . $key . '" />';
-									echo '</td>';
-									echo '<td>';
-									echo '<input class="form-control value" value="' . $value . '" />';
-									echo '</td>';
-									echo '<td>';
-									echo '<a class="btn btn-danger btn-xs removeWidgetParameter"><i class="fas fa-times"></i> Supprimer</a>';
-									echo '</td>';
-									echo '</tr>';
+									$tr .= '<tr>';
+									$tr .= '<td>';
+									$tr .= '<input class="form-control key" value="' . $key . '" />';
+									$tr .= '</td>';
+									$tr .= '<td>';
+									$tr .= '<input class="form-control value" value="' . $value . '" />';
+									$tr .= '</td>';
+									$tr .= '<td>';
+									$tr .= '<a class="btn btn-danger btn-xs removeWidgetParameter"><i class="fas fa-times"></i> Supprimer</a>';
+									$tr .= '</td>';
+									$tr .= '</tr>';
 								}
+								echo $tr;
 							}
 							?>
 						</tbody>
@@ -2034,11 +2052,22 @@ $cmd_widgetMobile = cmd::availableWidget('mobile');
 		<?php }
 		?>
 	</div>
-	
+
 	<div id="md_cmdConfigureSelectMultiple" title="{{Sélection multiple de commandes}}"></div>
 </div>
 
 <script>
+$(function() {
+	if ($('body').attr('data-page')=="widgets") {
+      $('a[href="#cmd_display"]').click()
+    }
+
+    var dashWidget = $('select[data-l2key="dashboard"]')
+    if (dashWidget.val()==null) dashWidget.val($('select[data-l2key="dashboard"] option:first').val())
+    var mobileWidget = $('select[data-l2key="mobile"]')
+    if (mobileWidget.val()==null) mobileWidget.val($('select[data-l2key="mobile"] option:first').val())
+})
+
 $('#cmdConfigureTab').off('click').on('click',function(){
 	setTimeout(function(){ taAutosize(); }, 100);
 })
@@ -2343,7 +2372,7 @@ $('#bt_cmdConfigureSaveOn').on('click',function(){
 				$('#table_cmdConfigureSelectMultiple tbody tr .selectMultipleApplyCmd:visible').value(0);
 			}
 		});
-		
+
 		$('#bt_cmdConfigureSelectMultipleAlertApply').off().on('click', function () {
 			$('#table_cmdConfigureSelectMultiple tbody tr').each(function () {
 				if ($(this).find('.selectMultipleApplyCmd').prop('checked')) {

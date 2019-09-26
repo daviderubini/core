@@ -71,6 +71,21 @@ try {
     ajax::success(widgets::getTemplateConfiguration(init('template')));
   }
   
+  if (init('action') == 'getPreview') {
+    $widget = widgets::byId(init('id'));
+    $usedBy = $widget->getUsedBy();
+    if(!is_array($usedBy) || count($usedBy) == 0){
+      ajax::success(array('html' => '<div class="alert alert-warning">'.__('Aucune commande affectée au widget, prévisualisation impossible',__FILE__).'</div>'));
+    }
+    ajax::success(array('html' =>$usedBy[0]->getEqLogic()->toHtml('dashboard')));
+  }
+  
+  if (init('action') == 'replacement') {
+    ajax::success(widgets::replacement(init('version'),init('replace'),init('by')));
+  }
+  
+  throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+  
   /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
   ajax::error(displayException($e), $e->getCode());

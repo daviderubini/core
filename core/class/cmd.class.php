@@ -102,6 +102,17 @@ class cmd {
 		return self::cast(DB::Prepare($sql, array(), DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__));
 	}
 	
+	public static function isHistorized($_state = true) {
+		$values = array(
+			'isHistorized' => ($_state) ? 1 : 0
+		);
+		$sql = 'SELECT ' . DB::buildField(__CLASS__) . '
+		FROM cmd
+		WHERE isHistorized=:isHistorized
+		ORDER BY id';
+		return self::cast(DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL, PDO::FETCH_CLASS, __CLASS__));
+	}
+	
 	public static function allHistoryCmd() {
 		$sql = 'SELECT ' . DB::buildField(__CLASS__, 'c') . '
 		FROM cmd c
@@ -1163,16 +1174,34 @@ class cmd {
 		if(isset($widget_template[$this->getType()]) && isset($widget_template[$this->getType()][$this->getSubType()]) && isset($widget_template[$this->getType()][$this->getSubType()][$widget_name])){
 			$template_conf = $widget_template[$this->getType()][$this->getSubType()][$widget_name];
 			$template_name = 'cmd.' . $this->getType() . '.' . $this->getSubType() . '.' . $template_conf['template'];
-			if(isset($template_conf['replace'])){
+			if(isset($template_conf['replace']) && is_array($template_conf['replace']) && count($template_conf['replace']) > 0){
 				$replace = $template_conf['replace'];
+				foreach ($replace as &$value) {
+					$value = str_replace('#value#','"+_options.display_value+"',str_replace("'","\'",$value));
+				}
 			}else{
 				$replace = array();
 			}
 			$replace['#test#'] = '';
 			if(isset($template_conf['test']) && is_array($template_conf['test']) && count($template_conf['test']) > 0){
+				$i=0;
+				$replace['#change_theme#'] = '';
 				foreach ($template_conf['test'] as &$test) {
+					if(!isset($test['operation'])){
+						continue;
+					}
+					if(!isset($test['state_light'])){
+						$test['state_light'] = '';
+					}
+					if(!isset($test['state_dark'])){
+						$test['state_dark'] = '';
+					}
+					$test['state_light'] = str_replace('#value#','"+_options.display_value+"',str_replace("'","\'",$test['state_light']));
+					$test['state_dark'] = str_replace('#value#','"+_options.display_value+"',str_replace("'","\'",$test['state_dark']));
 					$test['operation'] = str_replace('#value#','_options.display_value',$test['operation']);
-					$replace['#test#'] .= 'if('. $test['operation'].'){state=\''.str_replace("'","\'",$test['state']).'\'}';
+					$replace['#test#'] .= 'if('. $test['operation'].'){cmd.attr("data-state",'.$i.');state=jeedom.widgets.getThemeImg(\''.$test['state_light'].'\',\''.$test['state_dark'].'\')}';
+					$replace['#change_theme#'] .= 'if(cmd.attr("data-state") == '.$i.'){state=jeedom.widgets.getThemeImg(\''.$test['state_light'].'\',\''.$test['state_dark'].'\')}';
+					$i++;
 				}
 			}
 		}
@@ -1400,7 +1429,7 @@ class cmd {
 		}
 		$oldValue = $this->execCmd();
 		$repeat = ($oldValue === $value && $oldValue !== '' && $oldValue !== null);
-		$this->setCollectDate(($_datetime != null) ? $_datetime : date('Y-m-d H:i:s'));
+		$this->setCollectDate(($_datetime !== null && $_datetime !== false) ? $_datetime : date('Y-m-d H:i:s'));
 		$this->setCache('collectDate', $this->getCollectDate());
 		$this->setValueDate(($repeat) ? $this->getValueDate() : $this->getCollectDate());
 		$eqLogic->setStatus(array('lastCommunication' => $this->getCollectDate(), 'timeout' => 0));

@@ -138,6 +138,22 @@ class widgets {
     return $return;
   }
   
+  public static function replacement($_version,$_replace,$_by){
+    $cmds = cmd::searchTemplate($_version.'":"'.$_replace.'"');
+    if(!is_array($cmds) || count($cmds) == 0){
+      return 0;
+    }
+    $replace_number = 0;
+    foreach ($cmds as $cmd) {
+      if($cmd->getTemplate($_version) == $_replace){
+        $cmd->setTemplate($_version,$_by);
+        $cmd->save();
+        $replace_number++;
+      }
+    }
+    return $replace_number;
+  }
+  
   /*     * *********************Méthodes d'instance************************* */
   
   public function preSave(){
@@ -146,20 +162,76 @@ class widgets {
     }
   }
   
+  public function preUpdate(){
+    $widgets = self::byId($this->getId());
+    if($widgets->getName() != $this->getName()){
+      $usedBy = $widgets->getUsedBy();
+      if(is_array($usedBy) && count($usedBy) > 0){
+        foreach ($usedBy as $cmd) {
+          if($cmd->getTemplate('dashboard') == 'custom::'.$widgets->getName()){
+            $cmd->setTemplate('dashboard','custom::'.$this->getName());
+          }
+          if($cmd->getTemplate('mobile') == 'custom::'.$widgets->getName()){
+            $cmd->setTemplate('mobile','custom::'.$this->getName());
+          }
+          $cmd->save(true);
+        }
+      }
+    }
+    if($widgets->getType() != $this->getType() || $widgets->getSubType() != $this->getSubType()){
+      $usedBy = $widgets->getUsedBy();
+      if(is_array($usedBy) && count($usedBy) > 0){
+        foreach ($usedBy as $cmd) {
+          if($cmd->getTemplate('dashboard') == 'custom::'.$widgets->getName()){
+            $cmd->setTemplate('dashboard','default');
+          }
+          if($cmd->getTemplate('mobile') == 'custom::'.$widgets->getName()){
+            $cmd->setTemplate('mobile','default');
+          }
+          $cmd->save(true);
+        }
+      }
+    }
+  }
+  
   public function save() {
     DB::save($this);
     return true;
   }
   
+  public function postSave(){
+    $usedBy = $this->getUsedBy();
+    if(is_array($usedBy) && count($usedBy) > 0){
+      foreach ($usedBy as $cmd) {
+        $eqLogic = $cmd->getEqLogic();
+        if(is_object($eqLogic)){
+          $eqLogic->emptyCacheWidget();
+        }
+      }
+    }
+  }
+  
   public function remove() {
+    $usedBy = $this->getUsedBy();
+    if(is_array($usedBy) && count($usedBy) > 0){
+      foreach ($usedBy as $cmd) {
+        if($cmd->getTemplate('dashboard') == 'custom::'.$this->getName()){
+          $cmd->setTemplate('dashboard','default');
+        }
+        if($cmd->getTemplate('mobile') == 'custom::'.$this->getName()){
+          $cmd->setTemplate('mobile','default');
+        }
+        $cmd->save(true);
+      }
+    }
     DB::remove($this);
   }
   
   public function getUsedBy(){
     $return = array();
     $return = array_merge(
-      cmd::searchTemplate('dashboard":"custom::'.$this->getName()),
-      cmd::searchTemplate('mobile":"custom::'.$this->getName())
+      cmd::searchTemplate('dashboard":"custom::'.$this->getName().'"'),
+      cmd::searchTemplate('mobile":"custom::'.$this->getName().'"')
     );
     return $return;
   }

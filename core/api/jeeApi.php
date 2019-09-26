@@ -57,6 +57,7 @@ if (init('type') != '') {
 			sleep(5);
 			throw new Exception(__('Vous n\'êtes pas autorisé à effectuer cette action (HTTP API désactivé), IP : ', __FILE__) . getClientIp());
 		}
+		log::add('api', 'debug', __('Demande sur l\'api http venant de : ', __FILE__) . getClientIp().' => '.json_encode($_GET));
 		if ($type == 'ask') {
 			$cmd = cmd::byId(init('cmd_id'));
 			if (!is_object($cmd)) {
@@ -1034,6 +1035,21 @@ try {
 	
 	if ($jsonrpc->getMethod() == 'update::checkUpdate') {
 		update::checkAllUpdate();
+		$jsonrpc->makeSuccess('ok');
+	}
+	
+	if ($jsonrpc->getMethod() == 'update::doUpdate') {
+		unautorizedInDemo();
+		if (isset($params['plugin_id'])) {
+			$update = update::byId($params['plugin_id']);
+		}
+		if (isset($params['logicalId'])) {
+			$update = update::byLogicalId($params['logicalId']);
+		}
+		if (!is_object($update)) {
+			throw new Exception(__('Impossible de trouver l\'objet', __FILE__));
+		}
+		$update->doUpdate();
 		$jsonrpc->makeSuccess('ok');
 	}
 	

@@ -46,11 +46,13 @@ class jeedom {
 			'widget::margin',
 			'widget::shadow',
 			'interface::advance::enable',
-			'interface::advance::coloredIcons'
+			'interface::advance::coloredIcons',
+			'logo_light',
+			'logo_dark',
+			'logo_mobile_light',
+			'logo_mobile_dark'
 		);
-		$css_convert = array(
-			'url-logo-svg' => '--url-logo-svg',
-		);
+		$css_convert = array();
 		$return = config::byKeys($key);
 		$return['current_desktop_theme'] = $return['default_bootstrap_theme'];
 		$return['current_mobile_theme'] = $return['mobile_theme_color'];
@@ -75,9 +77,6 @@ class jeedom {
 		if(count($return['css']) > 0){
 			foreach ($return['css'] as $key => &$value) {
 				switch ($key) {
-					case '--url-logo-svg':
-					$value = 'url('.$value.')';
-					break;
 					case '--border-radius':
 					if($value == ''){
 						$value=0;

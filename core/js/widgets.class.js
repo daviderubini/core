@@ -111,3 +111,56 @@ jeedom.widgets.getTemplateConfiguration = function(_params) {
   };
   $.ajax(paramsAJAX);
 }
+
+jeedom.widgets.getPreview = function(_params) {
+  var paramsRequired = ['id'];
+  var paramsSpecifics = {};
+  try {
+    jeedom.private.checkParamsRequired(_params || {}, paramsRequired);
+  } catch (e) {
+    (_params.error || paramsSpecifics.error || jeedom.private.default_params.error)(e);
+    return;
+  }
+  var params = $.extend({}, jeedom.private.default_params, paramsSpecifics, _params || {});
+  var paramsAJAX = jeedom.private.getParamsAJAX(params);
+  paramsAJAX.url = 'core/ajax/widgets.ajax.php';
+  paramsAJAX.data = {
+    action: "getPreview",
+    id: _params.id
+  };
+  $.ajax(paramsAJAX);
+}
+
+jeedom.widgets.replacement = function(_params) {
+  var paramsRequired = ['version','replace','by'];
+  var paramsSpecifics = {};
+  try {
+    jeedom.private.checkParamsRequired(_params || {}, paramsRequired);
+  } catch (e) {
+    (_params.error || paramsSpecifics.error || jeedom.private.default_params.error)(e);
+    return;
+  }
+  var params = $.extend({}, jeedom.private.default_params, paramsSpecifics, _params || {});
+  var paramsAJAX = jeedom.private.getParamsAJAX(params);
+  paramsAJAX.url = 'core/ajax/widgets.ajax.php';
+  paramsAJAX.data = {
+    action: "replacement",
+    version: _params.version,
+    replace: _params.replace,
+    by: _params.by
+  };
+  $.ajax(paramsAJAX);
+}
+
+jeedom.widgets.getThemeImg = function(_light,_dark){
+  if(_light != '' && _dark == ''){
+    return _light;
+  }
+  if(_light == '' && _dark != ''){
+    return _dark;
+  }
+  if ($('body').attr('data-theme') != undefined && $('body').attr('data-theme').endsWith('Light')) {
+    return _light;
+  }
+  return _dark;
+}
